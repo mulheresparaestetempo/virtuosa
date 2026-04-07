@@ -6,7 +6,7 @@
     <title>VIRTUOSAS - Mulheres para Este Tempo | PIBAM Espraiado</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --rosa: #B85C5C;
@@ -41,7 +41,10 @@
 
         body {
             font-family: 'Quicksand', sans-serif;
-            background-color: var(--cream);
+            background:
+                radial-gradient(circle at 50% 10%, rgba(245, 230, 179, 0.35) 0%, rgba(245, 230, 179, 0) 42%),
+                radial-gradient(circle at 18% 72%, rgba(212, 175, 55, 0.07) 0%, rgba(212, 175, 55, 0) 30%),
+                linear-gradient(180deg, #fffefb 0%, #fdf9f2 55%, #fcf6ea 100%);
             color: var(--text-elegant);
             overflow-x: hidden;
             font-weight: 400;
@@ -206,19 +209,27 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            line-height: 0;
             text-decoration: none;
             transition: all 0.3s ease;
         }
 
         .logo-img {
-            height: 60px;
+            height: 84px;
             width: auto;
             transition: all 0.3s ease;
             border-radius: 10px;
+            display: block;
+            object-fit: contain;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            filter: contrast(1.08) saturate(1.03);
+            box-shadow: 0 0 0 1px rgba(255, 253, 248, 0.7),
+                        0 0 14px rgba(212, 175, 55, 0.14);
         }
 
         nav.scrolled .logo-img {
-            height: 50px;
+            height: 70px;
         }
 
         .logo-text {
@@ -278,9 +289,10 @@
             color: white;
             padding: 10px 20px;
             border-radius: 25px;
-            font-weight: 600;
-            border: 1px solid var(--dourado);
-            box-shadow: 0 3px 15px rgba(184, 92, 92, 0.2);
+            font-weight: 700;
+            border: 1px solid rgba(212, 175, 55, 0.75);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 6px 18px rgba(184, 92, 92, 0.32);
         }
 
         .nav-links a.highlight-btn::after {
@@ -290,7 +302,8 @@
         .nav-links a.highlight-btn:hover {
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(184, 92, 92, 0.3);
+            box-shadow: 0 8px 24px rgba(184, 92, 92, 0.4),
+                        0 0 14px rgba(212, 175, 55, 0.24);
         }
 
         .mobile-menu-btn {
@@ -440,22 +453,24 @@
         }
 
         .verse {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-            font-weight: 400;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.35rem, 3vw, 1.85rem);
+            font-weight: 500;
             font-style: italic;
-            color: var(--text-elegant);
-            line-height: 1.8;
+            color: var(--text-dark);
+            line-height: 2;
             margin-bottom: 1rem;
+            text-shadow: 0 1px 8px rgba(138, 69, 69, 0.12);
         }
 
         .verse-ref {
             font-family: 'Quicksand', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--dourado-dark);
-            letter-spacing: 2px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--dourado);
+            letter-spacing: 4px;
             text-transform: uppercase;
+            text-shadow: 0 1px 6px rgba(212, 175, 55, 0.25);
         }
 
         .hero-cta {
@@ -480,8 +495,9 @@
             border-radius: 50px;
             text-decoration: none;
             transition: all 0.4s ease;
-            box-shadow: 0 8px 30px rgba(184, 92, 92, 0.3);
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 28px rgba(184, 92, 92, 0.34);
+            border: 1px solid rgba(212, 175, 55, 0.78);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
         }
 
         .btn-elegant svg {
@@ -491,7 +507,8 @@
 
         .btn-elegant:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(184, 92, 92, 0.4);
+            box-shadow: 0 14px 34px rgba(184, 92, 92, 0.45),
+                        0 0 16px rgba(212, 175, 55, 0.2);
         }
 
         .scroll-indicator {
@@ -623,19 +640,89 @@
             font-weight: 600;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: #b8962e;
-            background: white;
+            color: white;
+            background: linear-gradient(135deg, var(--rosa), var(--rosa-dark));
             padding: 16px 40px;
             border-radius: 50px;
             text-decoration: none;
             transition: all 0.4s ease;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(212, 175, 55, 0.78);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 26px rgba(184, 92, 92, 0.34);
         }
 
         .btn-event:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-            background: #fffdf8;
+            box-shadow: 0 14px 34px rgba(184, 92, 92, 0.45),
+                        0 0 16px rgba(212, 175, 55, 0.23);
+        }
+
+        /* Countdown Section */
+        .countdown-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(180deg, var(--ivory) 0%, var(--champagne) 100%);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .countdown-container {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .countdown-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 500;
+            color: var(--rosa-dark);
+            letter-spacing: 3px;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .countdown-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: var(--text-soft);
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(100px, 1fr));
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 6px;
+            padding: 1.1rem 0.5rem;
+            box-shadow: 0 5px 20px rgba(184, 92, 92, 0.08);
+        }
+
+        .countdown-value {
+            display: block;
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            color: var(--rosa);
+            letter-spacing: 2px;
+            line-height: 1.1;
+        }
+
+        .countdown-label {
+            display: block;
+            margin-top: 0.4rem;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1.8px;
+            color: var(--text-soft);
+            text-transform: uppercase;
         }
 
         /* Evangelistic Section */
@@ -704,21 +791,23 @@
             font-weight: 600;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(--rosa);
-            background: white;
+            color: white;
+            background: linear-gradient(135deg, var(--rosa), var(--rosa-dark));
             padding: 15px 30px;
             border-radius: 50px;
             text-decoration: none;
             transition: all 0.4s ease;
-            border: 1px solid var(--rosa-soft);
-            box-shadow: 0 5px 20px rgba(184, 92, 92, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.75);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 8px 24px rgba(184, 92, 92, 0.28);
             margin-top: 1rem;
         }
 
         .btn-light-elegant:hover {
-            background: var(--rosa);
             color: white;
             transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(184, 92, 92, 0.4),
+                        0 0 14px rgba(212, 175, 55, 0.2);
         }
 
         /* About Section */
@@ -1162,8 +1251,9 @@
             border-radius: 50px;
             text-decoration: none;
             transition: all 0.4s ease;
-            box-shadow: 0 10px 35px rgba(184, 92, 92, 0.35);
+            box-shadow: 0 10px 35px rgba(184, 92, 92, 0.4);
             border: 2px solid var(--dourado);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
         }
 
         .btn-form-cta svg {
@@ -1173,7 +1263,8 @@
 
         .btn-form-cta:hover {
             transform: translateY(-4px);
-            box-shadow: 0 15px 45px rgba(184, 92, 92, 0.45);
+            box-shadow: 0 15px 45px rgba(184, 92, 92, 0.5),
+                        0 0 16px rgba(212, 175, 55, 0.22);
         }
 
         .btn-dates-cta {
@@ -1185,14 +1276,15 @@
             font-weight: 600;
             letter-spacing: 1px;
             text-transform: uppercase;
-            color: var(--rosa);
-            background: white;
+            color: white;
+            background: linear-gradient(135deg, var(--rosa), var(--rosa-dark));
             padding: 15px 30px;
             border-radius: 50px;
             text-decoration: none;
             transition: all 0.4s ease;
-            box-shadow: 0 5px 20px rgba(184, 92, 92, 0.1);
-            border: 1px solid var(--rosa-soft);
+            box-shadow: 0 7px 22px rgba(184, 92, 92, 0.28);
+            border: 1px solid rgba(212, 175, 55, 0.72);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
             cursor: pointer;
         }
 
@@ -1202,9 +1294,9 @@
         }
 
         .btn-dates-cta:hover {
-            background: var(--rosa);
-            color: white;
             transform: translateY(-2px);
+            box-shadow: 0 11px 30px rgba(184, 92, 92, 0.42),
+                        0 0 14px rgba(212, 175, 55, 0.2);
         }
 
         /* Modal de Datas Disponíveis */
@@ -1359,6 +1451,112 @@
             color: white;
         }
 
+        /* Prayer Section */
+        .prayer-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(180deg, var(--champagne) 0%, var(--cream) 100%);
+            border-top: 1px solid rgba(212, 175, 55, 0.15);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        .prayer-container {
+            max-width: 860px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(255,253,248,0.95));
+            border-radius: 10px;
+            padding: 3rem;
+            box-shadow: 0 10px 35px rgba(184, 92, 92, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .prayer-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .prayer-header h2 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.8rem, 4vw, 2.4rem);
+            font-weight: 500;
+            color: var(--rosa-dark);
+            letter-spacing: 3px;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .prayer-header p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            color: var(--text-soft);
+            line-height: 1.7;
+        }
+
+        .prayer-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .prayer-form label {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-soft);
+        }
+
+        .prayer-form input,
+        .prayer-form textarea {
+            width: 100%;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 6px;
+            padding: 14px 16px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-elegant);
+            background: rgba(255, 255, 255, 0.95);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .prayer-form textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .prayer-form input:focus,
+        .prayer-form textarea:focus {
+            outline: none;
+            border-color: var(--dourado);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+        }
+
+        .prayer-submit {
+            margin-top: 0.8rem;
+            justify-self: start;
+            display: inline-block;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: white;
+            background: linear-gradient(135deg, var(--rosa), var(--rosa-dark));
+            padding: 14px 34px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(184, 92, 92, 0.34);
+            border: 1px solid rgba(212, 175, 55, 0.72);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
+        }
+
+        .prayer-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(184, 92, 92, 0.44),
+                        0 0 14px rgba(212, 175, 55, 0.2);
+        }
+
         /* CTA Section */
         .cta-section {
             padding: 5rem 2rem;
@@ -1421,13 +1619,15 @@
             font-weight: 600;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(--rosa);
-            background: white;
+            color: white;
+            background: linear-gradient(135deg, var(--rosa), var(--rosa-dark));
             padding: 16px 35px;
             border-radius: 50px;
             text-decoration: none;
             transition: all 0.4s ease;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.78);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(184, 92, 92, 0.38);
         }
 
         .whatsapp-btn svg {
@@ -1437,7 +1637,8 @@
 
         .whatsapp-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 14px 38px rgba(184, 92, 92, 0.5),
+                        0 0 16px rgba(212, 175, 55, 0.24);
         }
 
         /* Footer */
@@ -1640,7 +1841,7 @@
             }
 
             .verse {
-                font-size: 1.2rem;
+                font-size: 1.35rem;
             }
 
             .whatsapp-float {
@@ -1675,6 +1876,14 @@
             .btn-form-cta {
                 padding: 18px 30px;
                 font-size: 0.85rem;
+            }
+
+            .prayer-container {
+                padding: 2rem 1.3rem;
+            }
+
+            .countdown-grid {
+                grid-template-columns: repeat(2, minmax(110px, 1fr));
             }
 
             .dates-modal-content {
@@ -1775,6 +1984,33 @@
         
         <div class="scroll-indicator">
             <span>Descubra</span>
+        </div>
+    </section>
+
+    <!-- Countdown Section -->
+    <section class="countdown-section" aria-label="Contador regressivo para o evento de 09 de Maio">
+        <div class="countdown-container fade-in">
+            <h2 class="countdown-title">Faltam para 09 de Maio</h2>
+            <p class="countdown-subtitle" id="countdownStatus">Prepare seu coração para este momento especial.</p>
+
+            <div class="countdown-grid" role="timer" aria-live="polite">
+                <div class="countdown-item">
+                    <span class="countdown-value" id="countdownDays">00</span>
+                    <span class="countdown-label">Dias</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="countdownHours">00</span>
+                    <span class="countdown-label">Horas</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="countdownMinutes">00</span>
+                    <span class="countdown-label">Minutos</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="countdownSeconds">00</span>
+                    <span class="countdown-label">Segundos</span>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -1977,6 +2213,28 @@
         </div>
     </section>
 
+    <!-- Prayer Section -->
+    <section class="prayer-section">
+        <div class="prayer-container fade-in">
+            <div class="prayer-header">
+                <h2>Precisa de Oração?</h2>
+                <p>Compartilhe seu pedido. Vamos orar com você e por você.</p>
+            </div>
+            <form class="prayer-form">
+                <label for="prayerName">Nome</label>
+                <input type="text" id="prayerName" name="name" required>
+
+                <label for="prayerContact">WhatsApp ou e-mail</label>
+                <input type="text" id="prayerContact" name="contact" required>
+
+                <label for="prayerRequest">Pedido de oração</label>
+                <textarea id="prayerRequest" name="request" required></textarea>
+
+                <button type="submit" class="prayer-submit">Enviar Pedido</button>
+            </form>
+        </div>
+    </section>
+
     <!-- CTA WhatsApp Section -->
     <section class="cta-section">
         <div class="cta-decor left"></div>
@@ -2043,6 +2301,7 @@
 
         // Evento principal - Culto de Abertura
         const mainEvent = { day: 9, month: 5, year: 2026 };
+        const mainEventDate = new Date(mainEvent.year, mainEvent.month - 1, mainEvent.day, 0, 0, 0);
 
         // Datas reservadas
         const reservedDates = [];
@@ -2235,6 +2494,41 @@
         });
 
         renderCalendar();
+
+        // ===== COUNTDOWN =====
+        const countdownDays = document.getElementById('countdownDays');
+        const countdownHours = document.getElementById('countdownHours');
+        const countdownMinutes = document.getElementById('countdownMinutes');
+        const countdownSeconds = document.getElementById('countdownSeconds');
+        const countdownStatus = document.getElementById('countdownStatus');
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = mainEventDate.getTime() - now.getTime();
+
+            if (diff <= 0) {
+                countdownDays.textContent = '00';
+                countdownHours.textContent = '00';
+                countdownMinutes.textContent = '00';
+                countdownSeconds.textContent = '00';
+                countdownStatus.textContent = 'Chegou o grande dia! 09 de Maio.';
+                return;
+            }
+
+            const totalSeconds = Math.floor(diff / 1000);
+            const days = Math.floor(totalSeconds / 86400);
+            const hours = Math.floor((totalSeconds % 86400) / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            countdownDays.textContent = String(days).padStart(2, '0');
+            countdownHours.textContent = String(hours).padStart(2, '0');
+            countdownMinutes.textContent = String(minutes).padStart(2, '0');
+            countdownSeconds.textContent = String(seconds).padStart(2, '0');
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
 
         // ===== MOBILE MENU =====
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
