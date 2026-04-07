@@ -541,7 +541,7 @@
 
         /* Main Event Section - Elegant Gold Diamond Pattern */
         .main-event-section {
-            padding: 5rem 2rem;
+            padding: 5.5rem 2rem;
             background: linear-gradient(135deg, #c9a227 0%, #d4af37 50%, #c9a227 100%);
             position: relative;
             overflow: hidden;
@@ -659,7 +659,7 @@
 
         /* Countdown Section */
         .countdown-section {
-            padding: 4rem 2rem;
+            padding: 4.8rem 2rem;
             background: linear-gradient(180deg, var(--ivory) 0%, var(--champagne) 100%);
             border-top: 1px solid rgba(212, 175, 55, 0.2);
             border-bottom: 1px solid rgba(212, 175, 55, 0.2);
@@ -727,7 +727,7 @@
 
         /* Evangelistic Section */
         .evangelistic {
-            padding: 6rem 2rem;
+            padding: 6.5rem 2rem;
             background: linear-gradient(180deg, var(--rosa-soft) 0%, var(--cream) 100%);
             text-align: center;
             position: relative;
@@ -812,30 +812,31 @@
 
         /* About Section */
         .about {
-            padding: 6rem 2rem;
+            padding: 6.5rem 2rem;
             background: var(--cream);
         }
 
         .section-header {
             text-align: center;
-            max-width: 600px;
-            margin: 0 auto 4rem;
+            max-width: 680px;
+            margin: 0 auto 4.6rem;
         }
 
         .section-header h2 {
             font-family: 'Cinzel', serif;
-            font-size: clamp(1.6rem, 3vw, 2rem);
+            font-size: clamp(1.75rem, 3.2vw, 2.2rem);
             font-weight: 600;
-            color: var(--rosa);
-            letter-spacing: 6px;
-            margin-bottom: 0.5rem;
+            color: var(--rosa-dark);
+            letter-spacing: 4px;
+            margin-bottom: 0.8rem;
         }
 
         .section-header p {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
+            font-size: 1.18rem;
             color: var(--text-soft);
             font-style: italic;
+            line-height: 1.75;
         }
 
         .about-container {
@@ -924,7 +925,7 @@
 
         /* Pillars Section */
         .pillars {
-            padding: 6rem 2rem;
+            padding: 6.5rem 2rem;
             background: linear-gradient(180deg, var(--champagne) 0%, var(--cream) 100%);
         }
 
@@ -1177,7 +1178,7 @@
 
         /* Lares Section */
         .lares-section {
-            padding: 6rem 2rem;
+            padding: 6.5rem 2rem;
             background: linear-gradient(180deg, var(--rosa-soft) 0%, var(--cream) 100%);
         }
 
@@ -1453,7 +1454,7 @@
 
         /* Prayer Section */
         .prayer-section {
-            padding: 6rem 2rem;
+            padding: 6.2rem 2rem;
             background: linear-gradient(180deg, var(--champagne) 0%, var(--cream) 100%);
             border-top: 1px solid rgba(212, 175, 55, 0.15);
             border-bottom: 1px solid rgba(212, 175, 55, 0.15);
@@ -1573,7 +1574,7 @@
 
         /* CTA Section */
         .cta-section {
-            padding: 5rem 2rem;
+            padding: 5.5rem 2rem;
             background: linear-gradient(135deg, var(--rosa) 0%, var(--rosa-dark) 100%);
             text-align: center;
             position: relative;
@@ -1812,6 +1813,17 @@
         }
 
         @media (max-width: 768px) {
+            .main-event-section,
+            .countdown-section,
+            .evangelistic,
+            .about,
+            .pillars,
+            .lares-section,
+            .prayer-section,
+            .cta-section {
+                padding: 4.5rem 1.5rem;
+            }
+
             .nav-links {
                 display: none;
                 position: absolute;
@@ -1848,6 +1860,20 @@
 
             .hero h1 {
                 letter-spacing: 8px;
+            }
+
+            .section-header {
+                margin-bottom: 3rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.55rem;
+                letter-spacing: 2.5px;
+            }
+
+            .section-header p {
+                font-size: 1.1rem;
+                line-height: 1.75;
             }
 
             .verse-container {
