@@ -331,10 +331,13 @@
             justify-content: flex-start;
             align-items: center;
             text-align: center;
-            padding: 8.5rem 2rem 4rem;
+            padding: 9rem 2rem 4rem;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(135deg, var(--cream) 0%, var(--champagne) 50%, var(--dourado-pale) 100%);
+            background:
+                radial-gradient(circle at 15% 10%, rgba(212, 175, 55, 0.16) 0%, rgba(212, 175, 55, 0) 42%),
+                radial-gradient(circle at 85% 90%, rgba(184, 92, 92, 0.08) 0%, rgba(184, 92, 92, 0) 45%),
+                linear-gradient(145deg, #fffdf8 0%, #f8f2e6 48%, #f6efde 100%);
         }
 
         .hero-bg-pattern {
@@ -344,9 +347,16 @@
             right: 0;
             bottom: 0;
             background-image: 
-                radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(184, 92, 92, 0.06) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(212, 175, 55, 0.05) 0%, transparent 30%);
+                linear-gradient(115deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.18)),
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(212, 175, 55, 0.08) 0px,
+                    rgba(212, 175, 55, 0.08) 1px,
+                    transparent 1px,
+                    transparent 92px
+                ),
+                radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.09) 0%, transparent 55%),
+                radial-gradient(circle at 80% 20%, rgba(184, 92, 92, 0.05) 0%, transparent 52%);
             pointer-events: none;
         }
 
@@ -386,6 +396,56 @@
             z-index: 2;
             max-width: 800px;
             width: 100%;
+        }
+
+        .hero-ministry-identity {
+            position: relative;
+            max-width: 760px;
+            margin: 0 auto 2.2rem;
+            padding: 2.1rem 2rem 1.8rem;
+            border: 1px solid rgba(212, 175, 55, 0.42);
+            border-radius: 8px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(253, 249, 240, 0.92));
+            box-shadow: 0 14px 38px rgba(105, 74, 74, 0.12);
+        }
+
+        .hero-ministry-identity::before,
+        .hero-ministry-identity::after {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 1px;
+            top: 24px;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.7), transparent);
+        }
+
+        .hero-ministry-identity::before {
+            left: 16px;
+        }
+
+        .hero-ministry-identity::after {
+            right: 16px;
+        }
+
+        .hero-ministry-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.15rem, 2.8vw, 1.75rem);
+            line-height: 1.45;
+            letter-spacing: 3.6px;
+            font-weight: 600;
+            color: #5a4444;
+            text-transform: uppercase;
+            text-shadow: 0 1px 7px rgba(212, 175, 55, 0.14);
+            margin-bottom: 0.65rem;
+        }
+
+        .hero-ministry-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.15rem, 2.7vw, 1.55rem);
+            font-style: italic;
+            font-weight: 500;
+            letter-spacing: 1.4px;
+            color: #6f5d5d;
         }
 
         .hero-badge {
@@ -430,7 +490,7 @@
             border-radius: 5px;
             box-shadow: 0 16px 55px rgba(108, 74, 74, 0.14);
             max-width: 680px;
-            margin: 0 auto 3rem;
+            margin: 0 auto 3.2rem;
             border: 1px solid rgba(212, 175, 55, 0.35);
         }
 
@@ -1832,6 +1892,19 @@
                 letter-spacing: 8px;
             }
 
+            .hero-ministry-identity {
+                padding: 1.7rem 1.2rem 1.5rem;
+                margin-bottom: 1.7rem;
+            }
+
+            .hero-ministry-title {
+                letter-spacing: 2.3px;
+            }
+
+            .hero-ministry-subtitle {
+                letter-spacing: 1px;
+            }
+
             .verse-container {
                 padding: 2rem 1.5rem;
             }
@@ -1965,6 +2038,10 @@
         <div class="hero-decor-top"></div>
         
         <div class="hero-content">
+            <div class="hero-ministry-identity">
+                <p class="hero-ministry-title">Ministério Virtuosas PIBAM Espraiado</p>
+                <p class="hero-ministry-subtitle">Mulheres para este tempo</p>
+            </div>
             <div class="verse-container">
                 <span class="corner-ornament top-left"></span>
                 <span class="corner-ornament top-right"></span>
