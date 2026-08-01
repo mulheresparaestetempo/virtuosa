@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtuosas em Equilíbrio — Programa de Emagrecimento e Novos Hábitos | VIRTUOSAS</title>
+    <meta name="description" content="Programa de 21 dias com plano alimentar, protocolo de jejum e mudança de hábitos, conduzido com orientação nutricional para as mulheres do Ministério VIRTUOSAS.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rosa: #B85C5C;
+            --rosa-light: #c97a7a;
+            --rosa-soft: #e8c4c4;
+            --rosa-dark: #8a4545;
+            --rosa-deep: #6d3636;
+            --dourado: #D4AF37;
+            --dourado-light: #e6c966;
+            --dourado-soft: #f5e6b3;
+            --dourado-pale: #faf3dc;
+            --dourado-dark: #b8962e;
+            --dourado-deep: #8b7122;
+            --cream: #FFFDF8;
+            --cream-warm: #FDF9F0;
+            --ivory: #FEFCF6;
+            --champagne: #F7F3E8;
+            --text-dark: #2d2424;
+            --text-elegant: #4a3f3f;
+            --text-soft: #6b5e5e;
+            --verde: #6f8f6a;
+            --verde-soft: #e3ece1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--cream);
+            color: var(--text-elegant);
+            overflow-x: hidden;
+            font-weight: 400;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: inherit; }
+
+        .top-bar {
+            padding: 1.2rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--cream);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--rosa);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .top-seal {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            color: var(--dourado-dark);
+            text-transform: uppercase;
+        }
+
+        .ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+        .ornament::before, .ornament::after {
+            content: '';
+            width: 70px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--dourado));
+        }
+        .ornament::after { background: linear-gradient(90deg, var(--dourado), transparent); }
+        .ornament-icon { color: var(--dourado); font-size: 0.8rem; }
+
+        /* Hero */
+        .hero {
+            padding: 5rem 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(180deg, var(--champagne) 0%, var(--cream) 100%);
+            position: relative;
+        }
+        .hero-seal {
+            display: inline-block;
+            font-family: 'Cinzel', serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 4px;
+            color: var(--dourado-dark);
+            text-transform: uppercase;
+            margin-bottom: 1.2rem;
+        }
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2rem, 5.5vw, 3.2rem);
+            font-weight: 600;
+            color: var(--rosa-dark);
+            letter-spacing: 3px;
+            line-height: 1.25;
+            margin-bottom: 1rem;
+        }
+        .hero-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--text-soft);
+            max-width: 620px;
+            margin: 0 auto 2rem;
+        }
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.6rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--rosa-dark);
+            margin-bottom: 2.2rem;
+        }
+        .hero-meta span { display: inline-flex; align-items: center; gap: 8px; }
+
+        .btn-elegant {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: white;
+            background: linear-gradient(135deg, var(--rosa), var(--rosa-dark));
+            padding: 16px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.35s ease;
+            box-shadow: 0 10px 28px rgba(184, 92, 92, 0.28);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+        }
+        .btn-elegant:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(184, 92, 92, 0.4); }
+
+        /* Disclaimer */
+        .disclaimer {
+            max-width: 900px;
+            margin: 0 auto 0;
+            padding: 1.6rem 2rem;
+        }
+        .disclaimer-box {
+            background: var(--champagne);
+            border: 1px solid rgba(184, 92, 92, 0.3);
+            border-left: 4px solid var(--rosa);
+            border-radius: 6px;
+            padding: 1.5rem 1.8rem;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.92rem;
+            color: var(--text-elegant);
+            line-height: 1.75;
+        }
+        .disclaimer-box strong { color: var(--rosa-dark); }
+        .disclaimer-box ul { margin: 0.6rem 0 0 1.2rem; }
+        .disclaimer-box li { margin-bottom: 0.3rem; }
+
+        /* Section shared */
+        section { padding: 4.5rem 2rem; }
+        .section-inner { max-width: 1000px; margin: 0 auto; }
+        .section-header { text-align: center; max-width: 640px; margin: 0 auto 3rem; }
+        .section-header .eyebrow {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--dourado-dark);
+            display: block;
+            margin-bottom: 0.6rem;
+        }
+        .section-header h2 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 600;
+            color: var(--rosa);
+            letter-spacing: 3px;
+        }
+        .section-header p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem;
+            color: var(--text-soft);
+            font-style: italic;
+            margin-top: 0.8rem;
+        }
+
+        .receive-section { background: var(--cream); }
+        .receive-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.6rem;
+        }
+        .receive-card {
+            background: white;
+            border: 1px solid rgba(212, 175, 55, 0.18);
+            border-radius: 8px;
+            padding: 2rem 1.6rem;
+            box-shadow: 0 8px 30px rgba(184, 92, 92, 0.06);
+        }
+        .receive-icon { font-size: 1.6rem; color: var(--rosa); margin-bottom: 1rem; }
+        .receive-card h3 {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--rosa-dark);
+            margin-bottom: 0.6rem;
+        }
+        .receive-card p { font-size: 0.92rem; color: var(--text-soft); }
+
+        /* Benefits */
+        .benefits-section {
+            background: linear-gradient(160deg, var(--rosa-deep) 0%, #3f2323 100%);
+            color: white;
+        }
+        .benefits-section .section-header h2 { color: white; }
+        .benefits-section .section-header p { color: rgba(255,255,255,0.75); }
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.4rem;
+        }
+        .benefit-item {
+            display: flex;
+            gap: 1rem;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(212,175,55,0.25);
+            border-radius: 8px;
+            padding: 1.4rem 1.6rem;
+        }
+        .benefit-check {
+            flex-shrink: 0;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: var(--dourado);
+            color: var(--rosa-deep);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700;
+        }
+        .benefit-item h4 { font-weight: 700; margin-bottom: 0.3rem; }
+        .benefit-item p { font-size: 0.9rem; color: rgba(255,255,255,0.8); }
+
+        /* Fundamentos */
+        .fundamentos { background: var(--champagne); }
+        .fundamentos-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+        .fundamento-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.8rem;
+            border: 1px solid rgba(212,175,55,0.18);
+        }
+        .fundamento-card h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            color: var(--rosa-dark);
+            margin-bottom: 0.7rem;
+        }
+        .fundamento-card p { font-size: 0.93rem; color: var(--text-soft); }
+
+        /* Timeline / Cronograma */
+        .cronograma { background: var(--cream); }
+        .week-card {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid rgba(212,175,55,0.18);
+            box-shadow: 0 8px 30px rgba(184,92,92,0.06);
+            padding: 2rem;
+            margin-bottom: 1.8rem;
+        }
+        .week-card-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .week-number {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            color: white;
+            background: var(--rosa);
+            padding: 5px 14px;
+            border-radius: 20px;
+        }
+        .week-card h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.15rem;
+            color: var(--rosa-dark);
+        }
+        .week-fasting {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--dourado-dark);
+            background: var(--dourado-pale);
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-left: auto;
+        }
+        .week-card ul { margin-left: 1.2rem; }
+        .week-card li { margin-bottom: 0.4rem; font-size: 0.95rem; }
+
+        /* Meal plan */
+        .plano-alimentar { background: var(--verde-soft); }
+        .meal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.6rem;
+            margin-bottom: 2rem;
+        }
+        .meal-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.6rem;
+            border: 1px solid rgba(111,143,106,0.25);
+        }
+        .meal-card h3 {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            color: var(--verde);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .meal-card .time { font-size: 0.78rem; color: var(--text-soft); font-weight: 600; margin-bottom: 0.7rem; display:block;}
+        .meal-card ul { margin-left: 1.1rem; font-size: 0.9rem; }
+        .meal-card li { margin-bottom: 0.35rem; }
+
+        .rules-box {
+            background: white;
+            border-radius: 8px;
+            padding: 1.8rem 2rem;
+            border-left: 4px solid var(--verde);
+        }
+        .rules-box h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            color: var(--verde);
+            margin-bottom: 0.8rem;
+            letter-spacing: 1px;
+        }
+        .rules-box ol { margin-left: 1.2rem; }
+        .rules-box li { margin-bottom: 0.5rem; font-size: 0.95rem; }
+
+        /* Habits */
+        .habitos { background: var(--cream); }
+        .habit-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+        }
+        .habit-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            padding: 1.2rem;
+            background: var(--champagne);
+            border-radius: 8px;
+        }
+        .habit-num {
+            font-family: 'Cinzel', serif;
+            color: var(--dourado-dark);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .habit-item p { font-size: 0.92rem; }
+        .habit-item strong { color: var(--rosa-dark); display: block; margin-bottom: 0.2rem; }
+
+        /* Mindset pills */
+        .mindset { background: linear-gradient(180deg, var(--rosa-soft) 0%, var(--cream) 100%); }
+        .mindset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.4rem;
+        }
+        .mindset-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.6rem;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(184,92,92,0.08);
+        }
+        .mindset-card .quote-mark { font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--dourado); }
+        .mindset-card p { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-style: italic; color: var(--text-elegant); }
+
+        /* Table */
+        .table-wrap { overflow-x: auto; }
+        table.plano-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            font-size: 0.9rem;
+        }
+        table.plano-table th {
+            background: var(--rosa);
+            color: white;
+            padding: 12px 14px;
+            text-align: left;
+            font-weight: 700;
+        }
+        table.plano-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--champagne);
+        }
+        table.plano-table tr:last-child td { border-bottom: none; }
+
+        /* CTA */
+        .cta-final {
+            background: linear-gradient(135deg, var(--rosa), var(--rosa-dark));
+            text-align: center;
+            color: white;
+        }
+        .cta-final h2 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+        .cta-final p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-style: italic;
+            max-width: 560px;
+            margin: 0 auto 2rem;
+            color: rgba(255,255,255,0.9);
+        }
+        .btn-white {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--rosa-dark);
+            background: white;
+            padding: 16px 34px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        .btn-white:hover { transform: translateY(-3px); }
+
+        footer {
+            padding: 2.5rem 2rem;
+            text-align: center;
+            background: var(--cream-warm);
+            border-top: 1px solid rgba(212,175,55,0.2);
+            font-size: 0.8rem;
+            color: var(--text-soft);
+        }
+
+        @media (max-width: 800px) {
+            .receive-grid, .benefits-grid, .fundamentos-grid, .meal-grid, .habit-list { grid-template-columns: 1fr; }
+            .week-fasting { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <a href="index.html" class="back-link">&larr; Voltar ao VIRTUOSAS</a>
+        <span class="top-seal">PIBAM ESPRAIADO</span>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <span class="hero-seal">✦ Cuidado com o Corpo, a Mente e a Fé ✦</span>
+        <h1>Virtuosas em Equilíbrio</h1>
+        <p class="hero-subtitle">Um programa de 21 dias de orientação nutricional para emagrecer com saúde, leveza e sem passar fome — cuidando do corpo como templo, um hábito de cada vez.</p>
+        <div class="hero-meta">
+            <span>📅 Programa de 21 dias</span>
+            <span>🍽️ Plano alimentar incluso</span>
+            <span>⏱️ Protocolo de jejum progressivo</span>
+        </div>
+        <a href="#comecar" class="btn-elegant">Conhecer o Programa</a>
+    </section>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+        <div class="disclaimer-box">
+            <strong>Antes de começar — leia com atenção.</strong> Este material tem finalidade educativa e foi elaborado com base em princípios de nutrição e endocrinologia geralmente aceitos, mas <strong>não substitui uma consulta individual com médico(a) e nutricionista</strong>. Procure orientação profissional presencial antes de iniciar, especialmente se você:
+            <ul>
+                <li>tem diabetes (principalmente em uso de insulina ou outros medicamentos que baixam a glicose);</li>
+                <li>está grávida, amamentando ou tentando engravidar;</li>
+                <li>tem histórico de transtornos alimentares (compulsão, anorexia, bulimia);</li>
+                <li>tem menos de 18 anos ou mais de 65 anos com fragilidade;</li>
+                <li>tem doença renal, hepática, cardíaca ou da tireoide não controlada;</li>
+                <li>usa medicações contínuas — converse com seu médico sobre horários de jejum;</li>
+                <li>sentir tontura, fraqueza intensa, palpitação ou mal-estar em qualquer momento — interrompa o jejum e coma imediatamente.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- O que você vai receber -->
+    <section class="receive-section" id="comecar">
+        <div class="section-inner">
+            <div class="section-header">
+                <span class="eyebrow">O Programa</span>
+                <h2>O que você vai receber</h2>
+                <p>Tudo o que você precisa para emagrecer com saúde e mudar de hábitos de forma definitiva</p>
+            </div>
+            <div class="receive-grid">
+                <div class="receive-card">
+                    <div class="receive-icon">📘</div>
+                    <h3>Guia de Fundamentos</h3>
+                    <p>Entenda como o corpo usa energia, por que dietas radicais falham e como o jejum bem orientado pode ajudar seu metabolismo.</p>
+                </div>
+                <div class="receive-card">
+                    <div class="receive-icon">🗓️</div>
+                    <h3>Cronograma de 21 Dias</h3>
+                    <p>Semana a semana, saiba exatamente quando começar, quando quebrar o jejum e como progredir com segurança.</p>
+                </div>
+                <div class="receive-card">
+                    <div class="receive-icon">🍽️</div>
+                    <h3>Plano Alimentar Base</h3>
+                    <p>Um modelo de cardápio flexível, com opções por refeição, para adaptar ao seu paladar e à sua rotina.</p>
+                </div>
+                <div class="receive-card">
+                    <div class="receive-icon">💛</div>
+                    <h3>Pílulas de Mindset</h3>
+                    <p>Reflexões curtas para o dia a dia, ajudando a mudar sua relação com a comida, a ansiedade e o autocuidado.</p>
+                </div>
+                <div class="receive-card">
+                    <div class="receive-icon">✅</div>
+                    <h3>Trilha de Novos Hábitos</h3>
+                    <p>8 hábitos simples, um de cada vez, para sustentar o resultado muito depois do programa terminar.</p>
+                </div>
+                <div class="receive-card">
+                    <div class="receive-icon">🤝</div>
+                    <h3>Comunhão nos Lares</h3>
+                    <p>Viva o desafio em grupo com outras mulheres do ministério — compartilhando vitórias, dúvidas e apoio mútuo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefícios -->
+    <section class="benefits-section">
+        <div class="section-inner">
+            <div class="section-header">
+                <span class="eyebrow" style="color:var(--dourado-light)">Por que funciona</span>
+                <h2>Benefícios de um jejum bem orientado</h2>
+                <p>Resultados sustentáveis, sem promessas milagrosas</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-check">✓</div>
+                    <div>
+                        <h4>Emagrecimento gradual e saudável</h4>
+                        <p>Perda de peso consistente, priorizando gordura e preservando massa magra com proteína adequada.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-check">✓</div>
+                    <div>
+                        <h4>Mais energia e foco</h4>
+                        <p>Ao reduzir picos e quedas de glicose, muitas mulheres relatam mais disposição ao longo do dia.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-check">✓</div>
+                    <div>
+                        <h4>Redução da compulsão e da ansiedade por doces</h4>
+                        <p>Refeições com proteína, fibra e gordura boa ajudam a estabilizar o apetite e a vontade de "beliscar".</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-check">✓</div>
+                    <div>
+                        <h4>Sem passar fome</h4>
+                        <p>O jejum é progressivo e respeita seu corpo — comida de verdade, sem contar caloria obsessivamente.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fundamentos -->
+    <section class="fundamentos">
+        <div class="section-inner">
+            <div class="section-header">
+                <span class="eyebrow">Base Científica</span>
+                <h2>Fundamentos que você precisa entender</h2>
+                <p>Como nutricionista, prefiro que você entenda o "porquê" — isso é o que sustenta o hábito</p>
+            </div>
+            <div class="fundamentos-grid">
+                <div class="fundamento-card">
+                    <h3>O que é o jejum metabólico</h3>
+                    <p>É simplesmente concentrar suas refeições em uma janela de tempo menor no dia, dando ao corpo mais horas sem digestão para usar suas reservas de energia e melhorar a sensibilidade à insulina. Não é sobre comer menos calorias de forma extrema, é sobre <strong>quando</strong> você come.</p>
+                </div>
+                <div class="fundamento-card">
+                    <h3>Por que dietas restritivas falham</h3>
+                    <p>Cortes drásticos de calorias derrubam o metabolismo, aumentam a fome e geram efeito sanfona. Por isso trabalhamos com progressão gradual e comida de verdade, não com "detox" ou fórmulas milagrosas.</p>
+                </div>
+                <div class="fundamento-card">
+                    <h3>O papel da proteína e da fibra</h3>
+                    <p>Proteína em todas as refeições preserva massa muscular e prolonga a saciedade. Fibras (vegetais, frutas, grãos integrais) alimentam a microbiota e ajudam a controlar o apetite.</p>
+                </div>
+                <div class="fundamento-card">
+                    <h3>Hormônios e ciclo feminino</h3>
+                    <p>O corpo da mulher responde de forma diferente ao jejum ao longo do ciclo menstrual. Na fase pré-menstrual e menstrual, prefira janelas de jejum mais curtas e não se cobre por resultados iguais todos os dias.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cronograma -->
+    <section class="cronograma">
+        <div class="section-inner">
+            <div class="section-header">
+                <span class="eyebrow">Passo a Passo</span>
+                <h2>Cronograma de 21 dias</h2>
+                <p>Progressão segura, respeitando o tempo do seu corpo</p>
+            </div>
+
+            <div class="week-card">
+                <div class="week-card-header">
+                    <span class="week-number">SEMANA 1</span>
+                    <h3>Adaptação</h3>
+                    <span class="week-fasting">Jejum 12h : 12h</span>
+                </div>
+                <ul>
+                    <li>Defina sua janela fixa (ex.: última refeição às 20h, café da manhã às 8h).</li>
+                    <li>Corte açúcar de adição e ultraprocessados; troque por comida de verdade.</li>
+                    <li>Beba de 2 a 2,5 litros de água por dia; observe a cor da urina como referência de hidratação.</li>
+                    <li>Durma pelo menos 7 horas — sono ruim aumenta a fome no dia seguinte.</li>
+                    <li>Objetivo desta semana: consistência, não perfeição.</li>
+                </ul>
+            </div>
+
+            <div class="week-card">
+                <div class="week-card-header">
+                    <span class="week-number">SEMANA 2</span>
+                    <h3>Intensificação</h3>
+                    <span class="week-fasting">Jejum 14h : 10h</span>
+                </div>
+                <ul>
+                    <li>Amplie o jejum aos poucos, 30–60 min por vez, apenas se estiver se sentindo bem.</li>
+                    <li>Monte o "prato ideal" em cada refeição: metade vegetais, um quarto proteína, um quarto carboidrato de qualidade.</li>
+                    <li>Inclua caminhada ou atividade física leve 3x na semana, de preferência fora do jejum estendido.</li>
+                    <li>Comece a trilha de novos hábitos (semanas 2 a 4, veja abaixo).</li>
+                    <li>Se estiver no período pré-menstrual ou menstrual, mantenha o jejum de 12h e não force a progressão.</li>
+                </ul>
+            </div>
+
+            <div class="week-card">
+                <div class="week-card-header">
+                    <span class="week-number">SEMANA 3</span>
+                    <h3>Consolidação</h3>
+                    <span class="week-fasting">Jejum 16h : 8h (opcional)</span>
+                </div>
+                <ul>
+                    <li>Se estiver confortável, experimente 16:8 em 2 a 3 dias da semana — não precisa ser todos os dias.</li>
+                    <li>Revise o que funcionou: quais horários, quais refeições, quais hábitos ficaram mais fáceis.</li>
+                    <li>Planeje a manutenção: escolha o padrão de jejum (12h, 14h ou 16h) que você sustenta na vida real, não só no desafio.</li>
+                    <li>Celebre o progresso — o objetivo não é o número na balança, é a relação nova com a comida.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plano alimentar -->
+    <section class="plano-alimentar">
+        <div class="section-inner">
+            <div class="section-header">
+                <span class="eyebrow">Cardápio Modelo</span>
+                <h2>Plano alimentar de um dia</h2>
+                <p>Um modelo flexível para adaptar ao seu gosto — troque os alimentos por equivalentes do mesmo grupo</p>
+            </div>
+
+            <div class="meal-grid">
+                <div class="meal-card">
+                    <h3>🌅 Quebra-jejum</h3>
+                    <span class="time">Primeira refeição do dia</span>
+                    <ul>
+                        <li>2 a 3 ovos (ou 1 porção de proteína vegetal) + vegetais</li>
+                        <li>1 fruta com casca ou bagaço (fibra)</li>
+                        <li>Café ou chá sem açúcar, opcional</li>
+                        <li>Comece leve: evite quebrar o jejum com doces ou pão branco</li>
+                    </ul>
+                </div>
+                <div class="meal-card">
+                    <h3>🍲 Almoço</h3>
+                    <span class="time">Refeição principal</span>
+                    <ul>
+                        <li>Metade do prato em vegetais variados e coloridos</li>
+                        <li>Proteína magra (frango, peixe, carne, ovos, feijão + arroz)</li>
+                        <li>Carboidrato de qualidade (arroz integral, batata-doce, mandioca)</li>
+                        <li>Azeite de oliva como fonte de gordura boa</li>
+                    </ul>
+                </div>
+                <div class="meal-card">
+                    <h3>🥗 Lanche (opcional)</h3>
+                    <span class="time">Meio da tarde</span>
+                    <ul>
+                        <li>Iogurte natural + fruta, ou</li>
+                        <li>Oleaginosas (castanhas, amêndoas) em pequena porção, ou</li>
+                        <li>Ovo cozido ou queijo branco</li>
+                    </ul>
+                </div>
+                <div class="meal-card">
+                    <h3>🌙 Última refeição</h3>
+                    <span class="time">Antes de iniciar o jejum</span>
+                    <ul>
+                        <li>Semelhante ao almoço, porção um pouco menor</li>
+                        <li>Priorize legumes cozidos e proteína de fácil digestão</li>
+                        <li>Evite excesso de álcool e frituras à noite</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="rules-box">
+                <h3>Regras de ouro do jejum seguro</h3>
+                <ol>
+                    <li>Hidrate-se bem durante o jejum: água, água com limão, chás sem açúcar e café puro são permitidos.</li>
+                    <li>Quebre o jejum com comida de verdade, nunca com açúcar em jejum absoluto — isso gera pico de glicose e mais fome depois.</li>
+                    <li>Nunca jejue "porque comeu demais no dia anterior" — jejum não é punição, é ferramenta de saúde.</li>
+                    <li>Sentiu tontura, fraqueza forte, dor de cabeça intensa ou palpitação? Coma imediatamente e reavalie com seu médico.</li>
+                    <li>Mulheres devem ser mais cautelosas com jejuns longos — ouça seu corpo, principalmente perto do período menstrual.</li>
+                    <li>Se tomar medicação contínua, confirme com seu médico os horários compatíveis com o jejum.</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- Novos hábitos -->
+    <section class="habitos">
+        <div class="section-inner">
+            <div class="section-header">
+                <span class="eyebrow">Mudança Duradoura</span>
+                <h2>Trilha de 8 novos hábitos</h2>
+                <p>Não tente tudo de uma vez — adote um hábito por semana e mantenha os anteriores</p>
+            </div>
+            <div class="habit-list">
+                <div class="habit-item"><span class="habit-num">1</span><p><strong>Beba água ao acordar</strong>Um copo grande de água antes do café, todos os dias.</p></div>
+                <div class="habit-item"><span class="habit-num">2</span><p><strong>Proteína em toda refeição</strong>Inclua uma fonte de proteína no café, almoço e jantar.</p></div>
+                <div class="habit-item"><span class="habit-num">3</span><p><strong>Prato colorido</strong>Pelo menos duas cores de vegetais no almoço e no jantar.</p></div>
+                <div class="habit-item"><span class="habit-num">4</span><p><strong>Mastigar devagar</strong>Coma sem telas, prestando atenção à saciedade.</p></div>
+                <div class="habit-item"><span class="habit-num">5</span><p><strong>Movimento diário</strong>20 a 30 minutos de caminhada ou atividade que goste.</p></div>
+                <div class="habit-item"><span class="habit-num">6</span><p><strong>Sono protegido</strong>Defina um horário para desligar as telas e dormir 7h ou mais.</p></div>
+                <div class="habit-item"><span class="habit-num">7</span><p><strong>Pausa antes de repetir o prato</strong>Espere 10 minutos e pergunte se é fome ou vontade.</p></div>
+                <div class="habit-item"><span class="habit-num">8</span><p><strong>Gratidão e oração pelo corpo</strong>Um minuto ao dia para agradecer pelo corpo que Deus lhe deu, cuidando dele com carinho, não com culpa.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mindset -->
+    <section class="mindset">
+        <div class="section-inner">
+            <div class="section-header">
+                <span class="eyebrow">Pílulas de Mindset</span>
+                <h2>Para ler quando a vontade de desistir aparecer</h2>
+                <p>Pequenas reflexões para os dias mais difíceis do desafio</p>
+            </div>
+            <div class="mindset-grid">
+                <div class="mindset-card">
+                    <div class="quote-mark">"</div>
+                    <p>Comida não é inimiga. O problema nunca foi o alimento, foi a forma como aprendemos a usá-lo para lidar com emoções.</p>
+                </div>
+                <div class="mindset-card">
+                    <div class="quote-mark">"</div>
+                    <p>Um deslize não apaga o progresso. Volte para o plano na próxima refeição, sem culpa e sem punição.</p>
+                </div>
+                <div class="mindset-card">
+                    <div class="quote-mark">"</div>
+                    <p>Seu valor nunca esteve no número da balança. "Seu corpo é o templo do Espírito Santo" — cuide dele porque o ama, não porque o odeia.</p>
+                </div>
+                <div class="mindset-card">
+                    <div class="quote-mark">"</div>
+                    <p>Resultado que vem rápido demais, some rápido demais. Você está construindo um hábito para a vida toda, não para 21 dias.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Referência de janelas -->
+    <section class="fundamentos">
+        <div class="section-inner">
+            <div class="section-header">
+                <span class="eyebrow">Referência Rápida</span>
+                <h2>Janelas de jejum por semana</h2>
+            </div>
+            <div class="table-wrap">
+                <table class="plano-table">
+                    <thead>
+                        <tr><th>Semana</th><th>Janela de jejum</th><th>Janela de alimentação</th><th>Foco principal</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>12 horas</td><td>12 horas</td><td>Cortar açúcar e ultraprocessados, hidratação, sono</td></tr>
+                        <tr><td>2</td><td>14 horas</td><td>10 horas</td><td>Montar o prato ideal, atividade física leve</td></tr>
+                        <tr><td>3</td><td>12 a 16 horas (flexível)</td><td>8 a 12 horas</td><td>Consolidar hábitos e planejar a manutenção</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA final -->
+    <section class="cta-final">
+        <div class="section-inner">
+            <h2>Você não precisa fazer isso sozinha</h2>
+            <p>Compartilhe essa jornada com as mulheres do seu Lar. Juntas somos mais fortes — e mais consistentes.</p>
+            <a href="https://wa.me/5521977356086?text=Olá!%20Quero%20participar%20do%20Programa%20Virtuosas%20em%20Equilíbrio!" class="btn-white" target="_blank">Quero Participar</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Ministério VIRTUOSAS — PIBAM Espraiado. Conteúdo educativo, não substitui acompanhamento médico e nutricional individual.</p>
+    </footer>
+
+</body>
+</html>
