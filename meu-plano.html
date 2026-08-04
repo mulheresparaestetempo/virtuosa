@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Meu Plano — Programa Pessoal</title>
+<title>Viva Leve Virtuosa</title>
+<meta name="description" content="Viva Leve Virtuosa — plano pessoal de jejum, alimentação e hábitos, criado por Daiane Feliciano.">
 <style>
 @font-face {
   font-family: 'Fraunces';
@@ -135,23 +136,23 @@
 }
 
 :root{
-  --bg:#FFFDF8;
+  --bg:#FFFFFF;
   --surface:#FFFFFF;
-  --surface-2:#F8F1DF;
+  --surface-2:#F7F2E4;
   --ink:#2B2420;
   --ink-soft:#6B5D4F;
   --ink-faint:#A8998A;
-  --line:#EADFC4;
+  --line:#E8DFC7;
   --accent:#8B7122;
   --accent-ink:#FFFFFF;
   --accent-soft:#F3E9C7;
-  --warm:#B85C5C;
-  --warm-soft:#F3DEE0;
-  --rose:#C97A83;
-  --rose-soft:#F3DEE0;
+  --warm:#C9A227;
+  --warm-soft:#F7EFD3;
+  --rose:#C9A227;
+  --rose-soft:#F7EFD3;
   --danger:#A6432F;
   --danger-soft:#F5DDD6;
-  --shadow: 0 10px 30px rgba(43,36,32,0.08);
+  --shadow: 0 10px 26px rgba(43,36,32,0.06);
   --radius-lg: 22px;
   --radius-md: 16px;
   --radius-sm: 10px;
@@ -159,14 +160,14 @@
 
 :root[data-theme="dark"]{
   --bg:#171310; --surface:#211B15; --surface-2:#2C2317; --ink:#F3ECDD; --ink-soft:#C9BCA6; --ink-faint:#8F8270;
-  --line:#3A2F22; --accent:#D9B54B; --accent-ink:#20180A; --accent-soft:#3A2E15; --warm:#D98A93; --warm-soft:#3A2529;
-  --rose:#D98A93; --rose-soft:#3A2529; --danger:#E19381; --danger-soft:#3A241E; --shadow: 0 10px 30px rgba(0,0,0,0.4);
+  --line:#3A2F22; --accent:#D9B54B; --accent-ink:#20180A; --accent-soft:#3A2E15; --warm:#E8C468; --warm-soft:#3A2E15;
+  --rose:#E8C468; --rose-soft:#3A2E15; --danger:#E19381; --danger-soft:#3A241E; --shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#171310; --surface:#211B15; --surface-2:#2C2317; --ink:#F3ECDD; --ink-soft:#C9BCA6; --ink-faint:#8F8270;
-    --line:#3A2F22; --accent:#D9B54B; --accent-ink:#20180A; --accent-soft:#3A2E15; --warm:#D98A93; --warm-soft:#3A2529;
-    --rose:#D98A93; --rose-soft:#3A2529; --danger:#E19381; --danger-soft:#3A241E; --shadow: 0 10px 30px rgba(0,0,0,0.4);
+    --line:#3A2F22; --accent:#D9B54B; --accent-ink:#20180A; --accent-soft:#3A2E15; --warm:#E8C468; --warm-soft:#3A2E15;
+    --rose:#E8C468; --rose-soft:#3A2E15; --danger:#E19381; --danger-soft:#3A241E; --shadow: 0 10px 30px rgba(0,0,0,0.4);
   }
 }
 
@@ -199,6 +200,9 @@ input,select,textarea{font-family:inherit;}
 .brand-signature.small{ font-size:0.8rem; }
 .app-footer{ text-align:center; padding:14px 20px 4px; }
 .app-footer .rule{ width:60px; height:1px; background:var(--line); margin:0 auto 10px; }
+
+.app-brand{ font-family:'Plus Jakarta Sans', sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+.app-brand.small{ font-size:0.62rem; letter-spacing:0.16em; margin-bottom:4px; }
 
 .field-group{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:18px 18px 6px; box-shadow:var(--shadow); }
 .field-group-title{ font-size:0.72rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:12px; }
@@ -269,8 +273,8 @@ input,select,textarea{font-family:inherit;}
 .stat-tile.wide{ grid-column:1 / -1; display:flex; align-items:baseline; justify-content:space-between; }
 
 .banner{ border-radius:var(--radius-md); padding:14px 16px; font-size:0.85rem; line-height:1.55; display:flex; gap:10px; }
-.banner-caution{ background:var(--warm-soft); color:var(--ink); border:1px solid rgba(184,92,92,0.3); }
-.banner-care{ background:var(--rose-soft); color:var(--ink); border:1px solid rgba(201,122,131,0.3); }
+.banner-caution{ background:var(--warm-soft); color:var(--ink); border:1px solid rgba(201,162,39,0.35); }
+.banner-care{ background:var(--surface-2); color:var(--ink); border:1px solid var(--line); }
 .banner b{ display:block; margin-bottom:2px; }
 
 /* ---------- App shell (shared with previous version) ---------- */
@@ -425,10 +429,11 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
   <!-- ============ ONBOARDING ============ -->
   <section class="onb" id="onbForm">
     <div class="onb-intro">
+      <div class="app-brand">Viva Leve Virtuosa</div>
       <span class="onb-eyebrow">Antes de começar</span>
       <h1>Vamos montar seu plano</h1>
       <p>Preciso de algumas informações suas para calcular um jejum e um plano alimentar que façam sentido para o seu corpo — não um modelo genérico.</p>
-      <p class="brand-signature small" style="margin-top:10px">um cuidado de Daiane Feliciano</p>
+      <p class="brand-signature small" style="margin-top:10px">criado por Daiane Feliciano</p>
     </div>
 
     <form id="profileForm">
@@ -522,6 +527,7 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
   <!-- ============ RESULTS ============ -->
   <section class="onb hidden" id="onbResult">
     <div class="result-hero">
+      <div class="app-brand small">Viva Leve Virtuosa</div>
       <span class="eyebrow">Pronto</span>
       <h1 id="resultTitle">Esse é o seu plano</h1>
       <p class="note" id="resultSub">Calculado com base nos dados que você me deu.</p>
@@ -569,6 +575,7 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
 
     <header class="topbar">
       <div>
+        <div class="app-brand small">Viva Leve Virtuosa</div>
         <span class="eyebrow" id="dateLabel">—</span>
         <h1 id="greeting">Olá</h1>
       </div>
@@ -797,7 +804,7 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
 
       <div class="app-footer">
         <div class="rule"></div>
-        <p class="brand-signature">Daiane Feliciano</p>
+        <p class="brand-signature">Criado por Daiane Feliciano</p>
       </div>
 
     </main>
