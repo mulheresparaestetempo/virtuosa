@@ -2144,6 +2144,10 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
   initFastLog();
   initSymptomQuiz();
 
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  }
+
   var existingProfile = loadProfile();
   if(existingProfile){
     document.getElementById('onbForm').classList.add('hidden');
