@@ -24,7 +24,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "owner": "appfilha",
+    "owner": "appfilhas-team",
     "extra": {
       "eas": {
         "projectId": "b45b70d6-e550-48c5-915a-d294b2af0481"
