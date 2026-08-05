@@ -3,6 +3,7 @@ export type DiaDevocional = {
   titulo: string;
   versiculo: string;
   resumo: string;
+  audioUrl?: string;
   louvorTitulo?: string;
   louvorUrl?: string;
 };

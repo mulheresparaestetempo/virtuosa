@@ -123,7 +123,24 @@ export default function LugarSecretoScreen() {
 
         <Text style={[styles.secaoTitulo, styles.secaoAcoesTitulo]}>Ações rápidas</Text>
         <View style={styles.acoesLista}>
-          <LouvorAberturaPlayer />
+          {conteudoDia.audioUrl ? (
+            <TouchableOpacity
+              style={styles.card}
+              activeOpacity={0.85}
+              onPress={() => Linking.openURL(conteudoDia.audioUrl!)}
+            >
+              <View style={[styles.iconeCirculo, { backgroundColor: cores.bordo }]}>
+                <Text style={styles.iconeTexto}>🎧</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.tituloAcao}>Ouça o devocional de hoje</Text>
+                <Text style={styles.subtituloAcao}>Áudio enviado pela líder</Text>
+              </View>
+              <Text style={styles.seta}>›</Text>
+            </TouchableOpacity>
+          ) : (
+            <LouvorAberturaPlayer />
+          )}
 
           <TouchableOpacity
             style={styles.card}

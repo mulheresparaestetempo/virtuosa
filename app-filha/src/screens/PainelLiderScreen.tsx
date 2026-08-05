@@ -18,6 +18,7 @@ export default function PainelLiderScreen() {
   const [novoTitulo, setNovoTitulo] = useState('');
   const [novoVersiculo, setNovoVersiculo] = useState('');
   const [novoResumo, setNovoResumo] = useState('');
+  const [novoAudioUrl, setNovoAudioUrl] = useState('');
   const [novoLouvorTitulo, setNovoLouvorTitulo] = useState('');
   const [novoLouvorUrl, setNovoLouvorUrl] = useState('');
   const [salvo, setSalvo] = useState(false);
@@ -45,6 +46,7 @@ export default function PainelLiderScreen() {
       titulo: novoTitulo.trim(),
       versiculo: novoVersiculo.trim(),
       resumo: novoResumo.trim(),
+      audioUrl: novoAudioUrl.trim() || undefined,
       louvorTitulo: novoLouvorTitulo.trim() || undefined,
       louvorUrl: novoLouvorUrl.trim() || undefined,
     };
@@ -56,6 +58,7 @@ export default function PainelLiderScreen() {
     setNovoTitulo('');
     setNovoVersiculo('');
     setNovoResumo('');
+    setNovoAudioUrl('');
     setNovoLouvorTitulo('');
     setNovoLouvorUrl('');
     setSalvo(true);
@@ -134,6 +137,19 @@ export default function PainelLiderScreen() {
             value={novoResumo}
             onChangeText={campoNovoDia(setNovoResumo)}
             multiline
+          />
+          <Text style={styles.subLabel}>Áudio do devocional de hoje</Text>
+          <Text style={styles.ajudaTexto}>
+            Cole aqui o link do áudio que você já envia no grupo do WhatsApp (suba o áudio no Google
+            Drive, Dropbox ou similar, ative "qualquer pessoa com o link" e cole o link abaixo).
+          </Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Link do áudio (Google Drive, Dropbox...)"
+            placeholderTextColor={cores.cinzaClaro}
+            value={novoAudioUrl}
+            onChangeText={campoNovoDia(setNovoAudioUrl)}
+            autoCapitalize="none"
           />
           <Text style={styles.subLabel}>Sugestão de louvor (opcional)</Text>
           <TextInput
@@ -247,6 +263,7 @@ const styles = StyleSheet.create({
   stepperBotaoTexto: { color: '#fff', fontSize: 18, fontWeight: '700', lineHeight: 20 },
   stepperValor: { fontSize: 18, fontWeight: '700', color: cores.bordo, minWidth: 24, textAlign: 'center' },
   subLabel: { fontSize: 13, fontWeight: '700', color: cores.bordo, marginTop: 4, marginBottom: 8 },
+  ajudaTexto: { fontSize: 12, color: cores.cinzaClaro, lineHeight: 16, marginBottom: 8, marginTop: -4 },
   input: {
     backgroundColor: '#fff',
     borderRadius: 10,
