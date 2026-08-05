@@ -7,6 +7,7 @@ import LugarSecretoScreen from './src/screens/LugarSecretoScreen';
 import BibliaScreen from './src/screens/BibliaScreen';
 import DiarioScreen from './src/screens/DiarioScreen';
 import JornadasScreen from './src/screens/JornadasScreen';
+import MaisStack from './src/navigation/MaisStack';
 import { cores } from './src/theme';
 
 const Tab = createBottomTabNavigator();
@@ -53,6 +54,14 @@ export default function App() {
           options={{
             title: 'Jornadas',
             tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🌱</Text>,
+          }}
+        />
+        <Tab.Screen
+          name="Mais"
+          component={MaisStack}
+          options={{
+            title: 'Mais',
+            tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🌷</Text>,
           }}
         />
       </Tab.Navigator>
