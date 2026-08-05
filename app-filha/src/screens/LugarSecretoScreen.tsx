@@ -1,13 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
+  Image,
+  Linking,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import { cores } from '../theme';
+import { carregar, salvar } from '../storage';
+import CabecalhoMinisterio from '../components/CabecalhoMinisterio';
+
+const CHAVE_DEVOCIONAL = 'devocional_do_dia';
+const CHAVE_GALERIA = 'galeria_fotos';
 
 const hoje = new Date().toLocaleDateString('pt-BR', {
   weekday: 'long',
@@ -15,12 +23,25 @@ const hoje = new Date().toLocaleDateString('pt-BR', {
   month: 'long',
 });
 
-const devocionalDoDia = {
+type DevocionalDoDia = {
+  titulo: string;
+  versiculo: string;
+  resumo: string;
+  louvorTitulo: string;
+  louvorUrl: string;
+};
+
+const devocionalPadrao: DevocionalDoDia = {
   titulo: 'Descanso na Presença',
-  versiculo: '"Vinde a mim, todos os que estais cansados e sobrecarregados, e eu vos aliviarei." — Mateus 11:28',
+  versiculo:
+    '"Vinde a mim, todos os que estais cansados e sobrecarregados, e eu vos aliviarei." — Mateus 11:28',
   resumo:
     'Hoje o Pai te convida para um lugar secreto de descanso. Antes de correr para as tarefas do dia, pare, respire e entregue o seu cansaço a Ele.',
+  louvorTitulo: 'Descanso — Gabriela Rocha',
+  louvorUrl: '',
 };
+
+type Foto = { id: string; url: string; legenda: string };
 
 const secoes = [
   { emoji: '🎧', titulo: 'Áudio devocional', subtitulo: '8 min · narrado' },
@@ -32,21 +53,70 @@ const secoes = [
 export default function LugarSecretoScreen() {
   const [musicaAtiva, setMusicaAtiva] = useState(false);
   const [orando, setOrando] = useState(false);
+  const [devocional, setDevocional] = useState<DevocionalDoDia>(devocionalPadrao);
+  const [fotos, setFotos] = useState<Foto[]>([]);
+  const [carregado, setCarregado] = useState(false);
+  const [mostrarFormFoto, setMostrarFormFoto] = useState(false);
+  const [novaFotoUrl, setNovaFotoUrl] = useState('');
+  const [novaFotoLegenda, setNovaFotoLegenda] = useState('');
+
+  useEffect(() => {
+    carregar(CHAVE_DEVOCIONAL, devocionalPadrao).then(setDevocional);
+    carregar<Foto[]>(CHAVE_GALERIA, []).then((salvas) => {
+      setFotos(salvas);
+      setCarregado(true);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (carregado) salvar(CHAVE_GALERIA, fotos);
+  }, [fotos, carregado]);
+
+  function adicionarFoto() {
+    if (!novaFotoUrl.trim()) return;
+    setFotos([
+      { id: String(Date.now()), url: novaFotoUrl.trim(), legenda: novaFotoLegenda.trim() },
+      ...fotos,
+    ]);
+    setNovaFotoUrl('');
+    setNovaFotoLegenda('');
+    setMostrarFormFoto(false);
+  }
 
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container}>
+        <CabecalhoMinisterio />
+
         <Text style={styles.saudacao}>Bem-vinda ao seu Lugar Secreto 🕊️</Text>
         <Text style={styles.data}>{hoje}</Text>
 
         <View style={styles.cardPrincipal}>
-          <Text style={styles.tituloDevocional}>{devocionalDoDia.titulo}</Text>
-          <Text style={styles.versiculo}>{devocionalDoDia.versiculo}</Text>
-          <Text style={styles.resumo}>{devocionalDoDia.resumo}</Text>
+          <Text style={styles.tituloDevocional}>{devocional.titulo}</Text>
+          <Text style={styles.versiculo}>{devocional.versiculo}</Text>
+          <Text style={styles.resumo}>{devocional.resumo}</Text>
           <TouchableOpacity style={styles.botaoPrimario}>
             <Text style={styles.botaoPrimarioTexto}>Ler devocional completo</Text>
           </TouchableOpacity>
         </View>
+
+        {!!devocional.louvorTitulo && (
+          <View style={styles.cardLouvor}>
+            <Text style={styles.louvorEmoji}>🎶</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.louvorLabel}>Louvor de abertura</Text>
+              <Text style={styles.louvorTitulo}>{devocional.louvorTitulo}</Text>
+            </View>
+            {!!devocional.louvorUrl && (
+              <TouchableOpacity
+                style={styles.botaoOuvir}
+                onPress={() => Linking.openURL(devocional.louvorUrl)}
+              >
+                <Text style={styles.botaoOuvirTexto}>Ouvir</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
 
         <View style={styles.grade}>
           {secoes.map((secao) => (
@@ -57,6 +127,55 @@ export default function LugarSecretoScreen() {
             </TouchableOpacity>
           ))}
         </View>
+
+        <View style={styles.secaoGaleriaCabecalho}>
+          <Text style={styles.secaoTitulo}>Galeria de fotos</Text>
+          <TouchableOpacity onPress={() => setMostrarFormFoto((v) => !v)}>
+            <Text style={styles.linkAdicionar}>{mostrarFormFoto ? 'Cancelar' : '+ Adicionar'}</Text>
+          </TouchableOpacity>
+        </View>
+
+        {mostrarFormFoto && (
+          <View style={styles.formFoto}>
+            <TextInput
+              style={styles.input}
+              placeholder="Link da foto (ex.: https://...)"
+              placeholderTextColor={cores.cinzaClaro}
+              value={novaFotoUrl}
+              onChangeText={setNovaFotoUrl}
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Legenda (opcional)"
+              placeholderTextColor={cores.cinzaClaro}
+              value={novaFotoLegenda}
+              onChangeText={setNovaFotoLegenda}
+            />
+            <TouchableOpacity style={styles.botaoSalvarFoto} onPress={adicionarFoto}>
+              <Text style={styles.botaoSalvarFotoTexto}>Adicionar à galeria</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {fotos.length === 0 ? (
+          <Text style={styles.semFotos}>
+            Nenhuma foto ainda. Toque em "+ Adicionar" para compartilhar um registro do ministério.
+          </Text>
+        ) : (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.galeria}>
+            {fotos.map((foto) => (
+              <View key={foto.id} style={styles.fotoCard}>
+                <Image source={{ uri: foto.url }} style={styles.foto} />
+                {!!foto.legenda && (
+                  <Text style={styles.fotoLegenda} numberOfLines={2}>
+                    {foto.legenda}
+                  </Text>
+                )}
+              </View>
+            ))}
+          </ScrollView>
+        )}
 
         <View style={styles.rodapeControles}>
           <TouchableOpacity
@@ -84,6 +203,14 @@ export default function LugarSecretoScreen() {
   );
 }
 
+const sombra = {
+  shadowColor: '#3a2a1a',
+  shadowOpacity: 0.08,
+  shadowRadius: 10,
+  shadowOffset: { width: 0, height: 4 },
+  elevation: 2,
+};
+
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
@@ -107,10 +234,11 @@ const styles = StyleSheet.create({
   },
   cardPrincipal: {
     backgroundColor: cores.cremeCard,
-    borderRadius: 16,
+    borderRadius: 18,
     padding: 20,
     borderWidth: 1,
     borderColor: cores.bordaCard,
+    ...sombra,
   },
   tituloDevocional: {
     fontSize: 20,
@@ -142,6 +270,34 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 15,
   },
+  cardLouvor: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: cores.borda,
+    padding: 16,
+    marginTop: 14,
+    gap: 12,
+    ...sombra,
+  },
+  louvorEmoji: { fontSize: 26 },
+  louvorLabel: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: cores.ouroEscuro,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  louvorTitulo: { fontSize: 15, fontWeight: '700', color: cores.bordo, marginTop: 2 },
+  botaoOuvir: {
+    backgroundColor: cores.bordo,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 20,
+  },
+  botaoOuvirTexto: { color: '#fff', fontWeight: '700', fontSize: 12.5 },
   grade: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -171,8 +327,54 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: cores.cinzaClaro,
   },
+  secaoGaleriaCabecalho: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  secaoTitulo: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: cores.ouroEscuro,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  linkAdicionar: { fontSize: 13, fontWeight: '700', color: cores.rosa },
+  formFoto: {
+    backgroundColor: cores.cremeCard,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: cores.bordaCard,
+    padding: 14,
+    marginBottom: 14,
+  },
+  input: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: cores.borda,
+    padding: 12,
+    fontSize: 14,
+    color: cores.cinzaTexto,
+    marginBottom: 10,
+  },
+  botaoSalvarFoto: { backgroundColor: cores.rosa, paddingVertical: 12, borderRadius: 10, alignItems: 'center' },
+  botaoSalvarFotoTexto: { color: '#fff', fontWeight: '700', fontSize: 14 },
+  semFotos: { fontSize: 13, color: cores.cinzaClaro, marginBottom: 8 },
+  galeria: { marginBottom: 4 },
+  fotoCard: { width: 120, marginRight: 12 },
+  foto: {
+    width: 120,
+    height: 120,
+    borderRadius: 14,
+    backgroundColor: cores.cremeCard,
+    borderWidth: 1,
+    borderColor: cores.borda,
+  },
+  fotoLegenda: { fontSize: 11, color: cores.cinzaTexto, marginTop: 4 },
   rodapeControles: {
-    marginTop: 8,
+    marginTop: 22,
     gap: 10,
   },
   controle: {
