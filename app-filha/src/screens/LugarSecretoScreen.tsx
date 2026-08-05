@@ -10,11 +10,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { doc, updateDoc } from 'firebase/firestore';
 import { cores } from '../theme';
 import { carregar, salvar } from '../storage';
 import CabecalhoMinisterio from '../components/CabecalhoMinisterio';
 import LouvorAberturaPlayer from '../components/LouvorAberturaPlayer';
 import { CHAVE_PLANO_DEVOCIONAL, diaDoPlano, planoPadrao, type PlanoDevocional } from '../data/devocional';
+import { db, firebaseConfigurado } from '../firebase';
+import { useAuth } from '../context/AuthContext';
 
 const CHAVE_GALERIA = 'galeria_fotos';
 const CHAVE_PEDIDOS_ACOLHIMENTO = 'acolhimento_pedidos';
@@ -39,6 +42,7 @@ const secoes = [
 ];
 
 export default function LugarSecretoScreen() {
+  const { usuario } = useAuth();
   const [musicaAtiva, setMusicaAtiva] = useState(false);
   const [orando, setOrando] = useState(false);
   const [plano, setPlano] = useState<PlanoDevocional>(planoPadrao);
@@ -51,6 +55,11 @@ export default function LugarSecretoScreen() {
   const [acolhimentoSolicitado, setAcolhimentoSolicitado] = useState(false);
 
   const conteudoDia = diaDoPlano(plano);
+
+  useEffect(() => {
+    if (!firebaseConfigurado || !usuario) return;
+    updateDoc(doc(db, 'usuarias', usuario.uid), { ultimoDiaDevocionalLido: plano.diaAtual }).catch(() => {});
+  }, [usuario, plano.diaAtual]);
 
   useEffect(() => {
     carregar(CHAVE_PLANO_DEVOCIONAL, planoPadrao).then(setPlano);

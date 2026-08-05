@@ -14,12 +14,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Configurações do projeto > Seus apps > app Web (ícone </>).
 // Esses valores não são secretos — é seguro deixá-los no código do app.
 const firebaseConfig = {
-  apiKey: 'COLE_AQUI',
-  authDomain: 'COLE_AQUI',
-  projectId: 'COLE_AQUI',
-  storageBucket: 'COLE_AQUI',
-  messagingSenderId: 'COLE_AQUI',
-  appId: 'COLE_AQUI',
+  apiKey: 'AIzaSyDhTQRP7HdwaDruyAP_rRZRoSnC6O1Gttg',
+  authDomain: 'app-filha-af1f9.firebaseapp.com',
+  projectId: 'app-filha-af1f9',
+  storageBucket: 'app-filha-af1f9.firebasestorage.app',
+  messagingSenderId: '557958037513',
+  appId: '1:557958037513:web:e2e4f96045453ed87138d8',
 };
 
 export const firebaseConfigurado = firebaseConfig.apiKey !== 'COLE_AQUI';

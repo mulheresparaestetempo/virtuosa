@@ -1,15 +1,26 @@
 import { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { cores } from '../theme';
 import { carregar, salvar } from '../storage';
+import { db, firebaseConfigurado } from '../firebase';
 import { CHAVE_PLANO_DEVOCIONAL, planoPadrao, type DiaDevocional, type PlanoDevocional } from '../data/devocional';
 
-const discipulas = [
-  { nome: 'Camila', trilha: 'Identidade', progresso: 66, frequencia: 'Ativa', pedidosAbertos: 1, acolhimentosAbertos: 0 },
-  { nome: 'Mariana', trilha: 'Vida de Oração', progresso: 40, frequencia: 'Ativa', pedidosAbertos: 2, acolhimentosAbertos: 1 },
-  { nome: 'Juliana', trilha: 'Novo Começo', progresso: 25, frequencia: 'Inativa há 9 dias', pedidosAbertos: 0, acolhimentosAbertos: 0 },
-  { nome: 'Beatriz', trilha: 'Jejum', progresso: 100, frequencia: 'Ativa', pedidosAbertos: 0, acolhimentosAbertos: 1 },
-];
+type Membro = {
+  id: string;
+  nome: string;
+  papel?: string;
+  ultimoAcesso?: { toDate: () => Date };
+  ultimoDiaDevocionalLido?: number;
+};
+
+function formatarAcesso(data?: Date) {
+  if (!data) return 'Nunca acessou';
+  const diffDias = Math.floor((Date.now() - data.getTime()) / 86400000);
+  if (diffDias <= 0) return 'Ativa hoje';
+  if (diffDias === 1) return 'Ativa ontem';
+  return `Inativa há ${diffDias} dias`;
+}
 
 export default function PainelLiderScreen() {
   const [plano, setPlano] = useState<PlanoDevocional>(planoPadrao);
@@ -22,6 +33,15 @@ export default function PainelLiderScreen() {
   const [novoLouvorTitulo, setNovoLouvorTitulo] = useState('');
   const [novoLouvorUrl, setNovoLouvorUrl] = useState('');
   const [salvo, setSalvo] = useState(false);
+  const [membros, setMembros] = useState<Membro[]>([]);
+
+  useEffect(() => {
+    if (!firebaseConfigurado) return;
+    const unsub = onSnapshot(collection(db, 'usuarias'), (snap) => {
+      setMembros(snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Membro, 'id'>) })));
+    });
+    return unsub;
+  }, []);
 
   useEffect(() => {
     carregar(CHAVE_PLANO_DEVOCIONAL, planoPadrao).then((p) => {
@@ -79,9 +99,9 @@ export default function PainelLiderScreen() {
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.aviso}>
-          Prévia com dados fictícios — o acompanhamento real de discípulas depende de uma conta
-          por usuária e sincronização em nuvem, ainda não implementadas neste protótipo. O
-          conteúdo do Diário nunca aparece aqui, só frequência e engajamento.
+          {firebaseConfigurado
+            ? 'Lista com contas reais cadastradas no app. O conteúdo do Diário nunca aparece aqui, só quem acessou e leu o devocional.'
+            : 'Prévia com dados fictícios — conecte o Firebase para ver contas reais aqui.'}
         </Text>
 
         <View style={styles.cardDevocional}>
@@ -188,31 +208,37 @@ export default function PainelLiderScreen() {
           )}
         </View>
 
-        {discipulas.map((d) => (
-          <View key={d.nome} style={styles.card}>
-            <View style={styles.cabecalho}>
-              <Text style={styles.nome}>{d.nome}</Text>
-              <View
-                style={[
-                  styles.badgeFrequencia,
-                  d.frequencia !== 'Ativa' && styles.badgeFrequenciaAlerta,
-                ]}
-              >
-                <Text style={styles.badgeFrequenciaTexto}>{d.frequencia}</Text>
+        <Text style={[styles.secaoTitulo, styles.secaoMembrosTitulo]}>
+          Quem está no app ({membros.length})
+        </Text>
+
+        {firebaseConfigurado && membros.length === 0 && (
+          <Text style={styles.semMembros}>Ninguém se cadastrou no app ainda.</Text>
+        )}
+
+        {membros.map((m) => {
+          const leuHoje = m.ultimoDiaDevocionalLido === plano.diaAtual;
+          return (
+            <View key={m.id} style={styles.card}>
+              <View style={styles.cabecalho}>
+                <Text style={styles.nome}>{m.nome || 'Sem nome'}</Text>
+                <View
+                  style={[
+                    styles.badgeFrequencia,
+                    !m.ultimoAcesso && styles.badgeFrequenciaAlerta,
+                  ]}
+                >
+                  <Text style={styles.badgeFrequenciaTexto}>
+                    {formatarAcesso(m.ultimoAcesso?.toDate())}
+                  </Text>
+                </View>
               </View>
+              <Text style={styles.trilhaLabel}>
+                {leuHoje ? `✓ Leu o devocional do Dia ${plano.diaAtual}` : `Ainda não leu o Dia ${plano.diaAtual}`}
+              </Text>
             </View>
-
-            <Text style={styles.trilhaLabel}>Jornada atual: {d.trilha}</Text>
-            <View style={styles.barraFundo}>
-              <View style={[styles.barraPreenchida, { width: `${d.progresso}%` }]} />
-            </View>
-
-            <View style={styles.linhaStats}>
-              <Text style={styles.stat}>🙏 {d.pedidosAbertos} pedido(s) aberto(s)</Text>
-              <Text style={styles.stat}>🤝 {d.acolhimentosAbertos} acolhimento(s) aberto(s)</Text>
-            </View>
-          </View>
-        ))}
+          );
+        })}
       </ScrollView>
     </SafeAreaView>
   );
@@ -238,6 +264,8 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
     marginBottom: 12,
   },
+  secaoMembrosTitulo: { marginTop: 4 },
+  semMembros: { fontSize: 13, color: cores.cinzaClaro, marginBottom: 12 },
   linhaDiaAtual: {
     flexDirection: 'row',
     justifyContent: 'space-between',

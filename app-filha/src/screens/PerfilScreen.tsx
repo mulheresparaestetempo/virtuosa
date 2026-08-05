@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { cores } from '../theme';
 import { carregar, salvar } from '../storage';
+import { useAuth } from '../context/AuthContext';
+import { firebaseConfigurado } from '../firebase';
 
 const CHAVE_PERFIL = 'perfil_filha';
 
@@ -39,6 +41,7 @@ const campos: { chave: keyof Perfil; label: string }[] = [
 ];
 
 export default function PerfilScreen() {
+  const { usuario, sair } = useAuth();
   const [perfil, setPerfil] = useState<Perfil>(perfilInicial);
   const [editando, setEditando] = useState(false);
   const [totalMemoriais, setTotalMemoriais] = useState(0);
@@ -83,6 +86,15 @@ export default function PerfilScreen() {
         >
           <Text style={styles.botaoTexto}>{editando ? 'Salvar alterações' : 'Editar perfil'}</Text>
         </TouchableOpacity>
+
+        {firebaseConfigurado && usuario && (
+          <>
+            <Text style={styles.contaEmail}>Conta: {usuario.email}</Text>
+            <TouchableOpacity style={styles.botaoSair} onPress={() => sair()}>
+              <Text style={styles.botaoSairTexto}>Sair da conta</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -123,4 +135,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   botaoTexto: { color: '#fff', fontWeight: '700', fontSize: 15 },
+  contaEmail: { fontSize: 12, color: cores.cinzaClaro, textAlign: 'center', marginTop: 18 },
+  botaoSair: { alignItems: 'center', marginTop: 10, paddingVertical: 10 },
+  botaoSairTexto: { color: cores.rosa, fontWeight: '700', fontSize: 14 },
 });
