@@ -3,9 +3,7 @@ export const ministerio = {
   nome: 'Filhas Virtuosas',
   logo: require('../../assets/logo-ministerio.png'),
 
-  // Troque pelo link de convite real do grupo (Configurações do grupo > Convidar via link).
-  whatsapp: 'https://chat.whatsapp.com/COLOQUE_O_LINK_DO_GRUPO_AQUI',
+  whatsapp: 'https://chat.whatsapp.com/IvsPQAXMFa57Y3AKzjvXLI',
 
-  // Troque pelo @ do Instagram do ministério.
-  instagram: 'https://instagram.com/filhasvirtuosas',
+  instagram: 'https://www.instagram.com/virtuosaspibam/',
 };
