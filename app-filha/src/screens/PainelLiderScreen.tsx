@@ -66,7 +66,7 @@ export default function PainelLiderScreen() {
             onChangeText={(v) => campo('resumo', v)}
             multiline
           />
-          <Text style={styles.subLabel}>Louvor de abertura</Text>
+          <Text style={styles.subLabel}>Sugestão de louvor (opcional)</Text>
           <TextInput
             style={styles.input}
             placeholder="Nome do louvor e cantora/banda"

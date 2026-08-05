@@ -13,6 +13,7 @@ import {
 import { cores } from '../theme';
 import { carregar, salvar } from '../storage';
 import CabecalhoMinisterio from '../components/CabecalhoMinisterio';
+import LouvorAberturaPlayer from '../components/LouvorAberturaPlayer';
 
 const CHAVE_DEVOCIONAL = 'devocional_do_dia';
 const CHAVE_GALERIA = 'galeria_fotos';
@@ -87,6 +88,7 @@ export default function LugarSecretoScreen() {
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container}>
         <CabecalhoMinisterio />
+        <LouvorAberturaPlayer />
 
         <Text style={styles.saudacao}>Bem-vinda ao seu Lugar Secreto 🕊️</Text>
         <Text style={styles.data}>{hoje}</Text>
@@ -104,7 +106,7 @@ export default function LugarSecretoScreen() {
           <View style={styles.cardLouvor}>
             <Text style={styles.louvorEmoji}>🎶</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.louvorLabel}>Louvor de abertura</Text>
+              <Text style={styles.louvorLabel}>Sugestão de louvor da líder</Text>
               <Text style={styles.louvorTitulo}>{devocional.louvorTitulo}</Text>
             </View>
             {!!devocional.louvorUrl && (
