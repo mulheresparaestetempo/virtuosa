@@ -6,16 +6,16 @@ import type { MaisStackParamList } from '../navigation/MaisStack';
 type Props = NativeStackScreenProps<MaisStackParamList, 'MaisHub'>;
 
 const itensDisponiveis: { rota: keyof MaisStackParamList; titulo: string; emoji: string; descricao: string }[] = [
+  { rota: 'MinhaCaminhada', titulo: 'Minha Caminhada', emoji: '✨', descricao: 'Sua linha do tempo espiritual' },
   { rota: 'Memoriais', titulo: 'Memoriais', emoji: '🌸', descricao: 'Marcos da sua caminhada com Deus' },
+  { rota: 'MinhaDiscipuladora', titulo: 'Minha Discipuladora', emoji: '👩🏻', descricao: 'Metas, conversas e próximo encontro' },
   { rota: 'Comunidade', titulo: 'Comunidade', emoji: '❤️', descricao: 'Pedidos de oração e testemunhos' },
   { rota: 'Acolhimento', titulo: 'Acolhimento', emoji: '🤝', descricao: 'Solicite visitas e cuidado pastoral' },
+  { rota: 'Biblioteca', titulo: 'Biblioteca', emoji: '🎧', descricao: 'Devocionais, podcasts, estudos e mais' },
+  { rota: 'Agenda', titulo: 'Agenda', emoji: '📅', descricao: 'Eventos, jejuns coletivos e Santa Ceia' },
 ];
 
 const itensEmBreve = [
-  { titulo: 'Minha Discipuladora', emoji: '👩🏻' },
-  { titulo: 'Minha Caminhada', emoji: '✨' },
-  { titulo: 'Biblioteca', emoji: '🎧' },
-  { titulo: 'Agenda', emoji: '📅' },
   { titulo: 'Assistente Bíblica', emoji: '🤖' },
   { titulo: 'Painel da Líder', emoji: '👩🏻‍💼' },
   { titulo: 'Painel da Igreja', emoji: '⛪' },

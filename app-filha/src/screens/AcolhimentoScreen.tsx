@@ -8,7 +8,7 @@ const CHAVE_PEDIDOS = 'acolhimento_pedidos';
 type StatusPedido = 'aberto' | 'em_andamento' | 'concluido';
 
 type Pedido = {
-  id: string;
+  id: string; // Number(id) é o timestamp de criação — reaproveitado pela linha do tempo em Minha Caminhada
   tipo: string;
   data: string;
   status: StatusPedido;

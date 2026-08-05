@@ -14,7 +14,7 @@ import { carregar, salvar } from '../storage';
 const CHAVE_MEMORIAIS = 'memoriais';
 
 type Memorial = {
-  id: string;
+  id: string; // Number(id) é o timestamp de criação — reaproveitado pela linha do tempo em Minha Caminhada
   titulo: string;
   descricao: string;
   data: string;
@@ -32,9 +32,11 @@ const sugestoes = [
   'Tornou-se discipuladora',
 ];
 
+const UM_DIA_MS = 86400000;
+
 const memoriaisIniciais: Memorial[] = [
   {
-    id: '1',
+    id: String(Date.now() - 21 * UM_DIA_MS),
     titulo: 'Primeiro devocional',
     descricao: 'Comecei minha caminhada diária no Lugar Secreto.',
     data: '15 de julho',

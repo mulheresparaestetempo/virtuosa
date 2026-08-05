@@ -16,7 +16,7 @@ const CHAVE_POSTS = 'comunidade_posts';
 type TipoPost = 'pedido_oracao' | 'testemunho';
 
 type Post = {
-  id: string;
+  id: string; // Number(id) é o timestamp de criação — reaproveitado pela linha do tempo em Minha Caminhada
   tipo: TipoPost;
   autora: string;
   texto: string;
@@ -29,9 +29,11 @@ const tipos: { valor: TipoPost; label: string; emoji: string }[] = [
   { valor: 'testemunho', label: 'Testemunho', emoji: '✨' },
 ];
 
+const UM_DIA_MS = 86400000;
+
 const postsIniciais: Post[] = [
   {
-    id: '1',
+    id: String(Date.now() - 1 * UM_DIA_MS),
     tipo: 'pedido_oracao',
     autora: 'Mariana',
     texto: 'Peço oração pela saúde da minha mãe, que está internada.',
@@ -39,7 +41,7 @@ const postsIniciais: Post[] = [
     oracoes: 12,
   },
   {
-    id: '2',
+    id: String(Date.now() - 3 * UM_DIA_MS),
     tipo: 'testemunho',
     autora: 'Camila',
     texto: 'Deus respondeu! Consegui o novo emprego que tanto orei.',
