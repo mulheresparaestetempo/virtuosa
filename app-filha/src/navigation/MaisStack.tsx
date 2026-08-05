@@ -9,6 +9,12 @@ import MinhaDiscipuladoraScreen from '../screens/MinhaDiscipuladoraScreen';
 import MinhaCaminhadaScreen from '../screens/MinhaCaminhadaScreen';
 import BibliotecaScreen from '../screens/BibliotecaScreen';
 import AgendaScreen from '../screens/AgendaScreen';
+import AssistenteBiblicaScreen from '../screens/AssistenteBiblicaScreen';
+import PerfilScreen from '../screens/PerfilScreen';
+import PainelLiderScreen from '../screens/PainelLiderScreen';
+import PainelIgrejaScreen from '../screens/PainelIgrejaScreen';
+import MapaScreen from '../screens/MapaScreen';
+import MissoesScreen from '../screens/MissoesScreen';
 
 export type MaisStackParamList = {
   MaisHub: undefined;
@@ -19,6 +25,12 @@ export type MaisStackParamList = {
   MinhaCaminhada: undefined;
   Biblioteca: undefined;
   Agenda: undefined;
+  AssistenteBiblica: undefined;
+  Perfil: undefined;
+  PainelLider: undefined;
+  PainelIgreja: undefined;
+  Mapa: undefined;
+  Missoes: undefined;
 };
 
 const Stack = createNativeStackNavigator<MaisStackParamList>();
@@ -48,6 +60,16 @@ export default function MaisStack() {
       />
       <Stack.Screen name="Biblioteca" component={BibliotecaScreen} options={{ title: 'Biblioteca' }} />
       <Stack.Screen name="Agenda" component={AgendaScreen} options={{ title: 'Agenda' }} />
+      <Stack.Screen
+        name="AssistenteBiblica"
+        component={AssistenteBiblicaScreen}
+        options={{ title: 'Assistente Bíblica' }}
+      />
+      <Stack.Screen name="Perfil" component={PerfilScreen} options={{ title: 'Perfil da Filha' }} />
+      <Stack.Screen name="PainelLider" component={PainelLiderScreen} options={{ title: 'Painel da Líder' }} />
+      <Stack.Screen name="PainelIgreja" component={PainelIgrejaScreen} options={{ title: 'Painel da Igreja' }} />
+      <Stack.Screen name="Mapa" component={MapaScreen} options={{ title: 'Mapa' }} />
+      <Stack.Screen name="Missoes" component={MissoesScreen} options={{ title: 'Missões' }} />
     </Stack.Navigator>
   );
 }

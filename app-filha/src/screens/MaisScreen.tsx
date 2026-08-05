@@ -13,15 +13,12 @@ const itensDisponiveis: { rota: keyof MaisStackParamList; titulo: string; emoji:
   { rota: 'Acolhimento', titulo: 'Acolhimento', emoji: '🤝', descricao: 'Solicite visitas e cuidado pastoral' },
   { rota: 'Biblioteca', titulo: 'Biblioteca', emoji: '🎧', descricao: 'Devocionais, podcasts, estudos e mais' },
   { rota: 'Agenda', titulo: 'Agenda', emoji: '📅', descricao: 'Eventos, jejuns coletivos e Santa Ceia' },
-];
-
-const itensEmBreve = [
-  { titulo: 'Assistente Bíblica', emoji: '🤖' },
-  { titulo: 'Painel da Líder', emoji: '👩🏻‍💼' },
-  { titulo: 'Painel da Igreja', emoji: '⛪' },
-  { titulo: 'Mapa', emoji: '🗺️' },
-  { titulo: 'Missões', emoji: '🌍' },
-  { titulo: 'Perfil da Filha', emoji: '🌺' },
+  { rota: 'AssistenteBiblica', titulo: 'Assistente Bíblica', emoji: '🤖', descricao: 'Busca por tema na Palavra' },
+  { rota: 'PainelLider', titulo: 'Painel da Líder', emoji: '👩🏻‍💼', descricao: 'Acompanhamento pastoral (prévia)' },
+  { rota: 'PainelIgreja', titulo: 'Painel da Igreja', emoji: '⛪', descricao: 'Células, ministérios e relatórios' },
+  { rota: 'Mapa', titulo: 'Mapa', emoji: '🗺️', descricao: 'Igrejas, células e cultos no lar' },
+  { rota: 'Missoes', titulo: 'Missões', emoji: '🌍', descricao: 'Missionários, projetos e motivos de oração' },
+  { rota: 'Perfil', titulo: 'Perfil da Filha', emoji: '🌺', descricao: 'Seus dados e ministério' },
 ];
 
 export default function MaisScreen({ navigation }: Props) {
@@ -44,16 +41,6 @@ export default function MaisScreen({ navigation }: Props) {
             <Text style={styles.seta}>›</Text>
           </TouchableOpacity>
         ))}
-
-        <Text style={styles.secaoTitulo}>Em breve</Text>
-        <View style={styles.gradeEmBreve}>
-          {itensEmBreve.map((item) => (
-            <View key={item.titulo} style={styles.cardEmBreve}>
-              <Text style={styles.cardEmoji}>{item.emoji}</Text>
-              <Text style={styles.cardEmBreveTitulo}>{item.titulo}</Text>
-            </View>
-          ))}
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -78,26 +65,4 @@ const styles = StyleSheet.create({
   cardTitulo: { fontSize: 15, fontWeight: '700', color: cores.bordo },
   cardDescricao: { fontSize: 12, color: cores.cinzaClaro, marginTop: 2 },
   seta: { fontSize: 22, color: cores.ouroEscuro },
-  secaoTitulo: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: cores.ouroEscuro,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginTop: 12,
-    marginBottom: 10,
-  },
-  gradeEmBreve: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
-  cardEmBreve: {
-    width: '48%',
-    backgroundColor: '#fdfaf0',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: cores.borda,
-    borderStyle: 'dashed',
-    padding: 14,
-    marginBottom: 12,
-    opacity: 0.7,
-  },
-  cardEmBreveTitulo: { fontSize: 13, fontWeight: '600', color: cores.cinzaTexto, marginTop: 6 },
 });
