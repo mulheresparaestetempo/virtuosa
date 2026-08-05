@@ -258,6 +258,29 @@ input,select,textarea{font-family:inherit;}
 .achv.unlocked span{ color:var(--ink-soft); }
 
 .weight-input-row{ display:flex; gap:10px; align-items:flex-end; margin-bottom:14px; }
+
+.food-item{ display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--line); }
+.food-item:last-child{ border-bottom:none; }
+.food-item .t{ flex:1; font-size:0.88rem; color:var(--ink); }
+.food-item .k{ font-weight:800; color:var(--accent); font-size:0.85rem; white-space:nowrap; }
+.food-item .rm{ background:none; border:none; color:var(--ink-faint); font-size:0.7rem; text-decoration:underline; white-space:nowrap; }
+.food-chip{ display:inline-flex; align-items:center; padding:9px 14px; border-radius:999px; border:1.5px solid var(--line); background:var(--surface); color:var(--ink); font-size:0.8rem; font-weight:600; cursor:pointer; }
+.food-chip:active{ background:var(--accent-soft); }
+
+.status-banner{ border-radius:var(--radius-lg); padding:20px; text-align:center; box-shadow:var(--shadow); }
+.status-banner .icon{ font-family:'Fraunces', serif; font-size:1.6rem; margin-bottom:6px; }
+.status-banner .title{ font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:0.85rem; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px; }
+.status-banner .text{ font-size:0.88rem; line-height:1.5; }
+.status-banner.tone-parabens{ background:linear-gradient(160deg, var(--surface) 0%, var(--accent-soft) 100%); border:1.5px solid var(--accent); color:var(--ink); }
+.status-banner.tone-parabens .title{ color:var(--accent); }
+.status-banner.tone-atencao{ background:var(--warm-soft); border:1.5px solid rgba(201,162,39,0.4); color:var(--ink); }
+.status-banner.tone-atencao .title{ color:var(--ink); }
+.status-banner.tone-cuidado{ background:var(--danger-soft); border:1.5px solid rgba(166,67,47,0.35); color:var(--ink); }
+.status-banner.tone-cuidado .title{ color:var(--danger); }
+
+.suggestion-note{ margin-top:12px; padding:12px 14px; border-radius:var(--radius-sm); font-size:0.85rem; line-height:1.5; text-align:left; }
+.suggestion-note.good{ background:var(--accent-soft); color:var(--ink); }
+.suggestion-note.gentle{ background:var(--surface-2); color:var(--ink-soft); }
 .weight-input-row .field{ flex:1; margin-bottom:0; }
 .weight-input-row .btn{ flex-shrink:0; }
 .weight-progress-track{ height:10px; border-radius:6px; background:var(--accent-soft); overflow:hidden; margin:10px 0; }
@@ -490,6 +513,25 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
 <div class="app">
   <div class="bg-decor" aria-hidden="true"></div>
 
+  <!-- ============ STORAGE WARNING ============ -->
+  <section class="onb hidden" id="storageWarning">
+    <div class="onb-intro">
+      <div class="app-brand">Viva Leve Virtuosa</div>
+      <span class="onb-eyebrow" style="color:var(--danger)">Não consigo salvar seus dados</span>
+      <h1>Seu navegador está bloqueando o app</h1>
+      <p>Preenchi seus dados antes, mas este navegador não está deixando eu guardar nada — por isso parece que zera toda vez. Isso é uma configuração do iPhone, não um erro do app. Veja como resolver:</p>
+    </div>
+    <div class="field-group">
+      <div class="field-group-title">No iPhone (Ajustes do aparelho, não do Safari)</div>
+      <p class="note" style="text-align:left;margin-bottom:10px">Ajustes → Safari → Privacidade e Segurança → confira se <strong style="color:var(--ink)">"Bloquear Todos os Cookies"</strong> está <strong style="color:var(--ink)">desligado</strong>.</p>
+      <div class="field-group-title">Se estiver em aba anônima/privada</div>
+      <p class="note" style="text-align:left;margin-bottom:10px">Feche e abra o link numa aba normal — aba anônima nunca guarda nada, de propósito.</p>
+      <div class="field-group-title">Depois de ajustar</div>
+      <p class="note" style="text-align:left">Feche esta aba (ou o app instalado) e abra de novo pelo ícone da Tela de Início.</p>
+    </div>
+    <button class="btn btn-primary btn-block" id="storageRetryBtn" style="margin-top:18px">Já ajustei, tentar de novo</button>
+  </section>
+
   <!-- ============ ONBOARDING ============ -->
   <section class="onb" id="onbForm">
     <div class="onb-intro">
@@ -701,6 +743,25 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
           </div>
         </div>
 
+        <div class="card" id="foodLogCard">
+          <div class="card-title">Sua alimentação hoje</div>
+          <div class="stat-tile wide" style="margin-bottom:10px">
+            <div><div class="v" id="foodTotal">0 kcal</div><div class="l" id="foodStatus">Nada registrado ainda hoje</div></div>
+          </div>
+          <div class="weight-progress-track" style="margin-bottom:14px"><div class="fill" id="foodProgressFill" style="width:0%"></div></div>
+          <div id="foodLogList"></div>
+
+          <div class="card-title" style="margin-top:14px">Adicionar do cardápio de hoje</div>
+          <div class="chip-row" id="foodMenuChips" style="margin-bottom:4px"></div>
+
+          <div class="card-title" style="margin-top:10px">Ou registre outro alimento</div>
+          <div class="weight-input-row">
+            <div class="field" style="flex:2"><label for="foodFreeName">O que comeu</label><input type="text" id="foodFreeName" placeholder="Ex: sanduíche natural"></div>
+            <div class="field" style="flex:1"><label for="foodFreeKcal">Kcal aprox.</label><input type="number" id="foodFreeKcal" min="0" max="3000"></div>
+          </div>
+          <button class="btn btn-ghost btn-block btn-sm" id="foodFreeAdd">Adicionar</button>
+        </div>
+
         <div class="card">
           <div class="card-title">Hábitos de hoje</div>
           <ul id="todayHabits"></ul>
@@ -726,6 +787,7 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
         <div class="card" id="phaseCard">
           <div class="card-title">Janela por fase</div>
           <div id="phaseRows"></div>
+          <div id="fastingSuggestion"></div>
         </div>
 
         <details class="accordion">
@@ -876,6 +938,7 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
       </section>
 
       <section class="view" id="view-progresso">
+        <div id="statusBanner"></div>
         <div id="weightCard"></div>
         <div class="card" id="chartCard" style="display:none">
           <div class="card-title">Evolução do peso</div>
@@ -1083,8 +1146,26 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
     var p2=function(n){return n<10?'0'+n:''+n;};
     return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate())+'T'+p2(d.getHours())+':'+p2(d.getMinutes());
   }
-  function get(key, fallback){ var v=localStorage.getItem(key); if(v===null) return fallback; try{return JSON.parse(v);}catch(e){return fallback;} }
-  function set(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
+  function get(key, fallback){
+    try{
+      var v=localStorage.getItem(key);
+      if(v===null) return fallback;
+      try{return JSON.parse(v);}catch(e){return fallback;}
+    }catch(e){ return fallback; }
+  }
+  function set(key, val){
+    try{ localStorage.setItem(key, JSON.stringify(val)); return true; }
+    catch(e){ return false; }
+  }
+  function storageAvailable(){
+    try{
+      var t='__vp_test__';
+      localStorage.setItem(t,'1');
+      var ok = localStorage.getItem(t)==='1';
+      localStorage.removeItem(t);
+      return ok;
+    }catch(e){ return false; }
+  }
 
   var PROFILE_KEY='vp_profile';
   var START_KEY='vp_start';
@@ -1444,6 +1525,30 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
     };
 
     document.getElementById('phaseRows').innerHTML = phaseRowsHtml(p.calc);
+
+    var sugg = fastingSuggestion(p, day, phase);
+    var suggEl = document.getElementById('fastingSuggestion');
+    suggEl.innerHTML = sugg ? ('<div class="suggestion-note '+sugg.tone+'">'+sugg.text+'</div>') : '';
+  }
+
+  function fastingSuggestion(p, day, phase){
+    var breaks = p.calc.breaks;
+    var phaseStart = 1;
+    for(var i=0;i<breaks.length;i++){
+      if(day<=breaks[i]){ phaseStart = i===0 ? 1 : breaks[i-1]+1; break; }
+    }
+    var done = get('vp_daysDone', []);
+    var completedInPhase = 0;
+    for(var d=phaseStart; d<=day; d++){ if(done.indexOf(d)>-1) completedInPhase++; }
+    var elapsedInPhase = day - phaseStart + 1;
+
+    if(completedInPhase>=3 && phase.hours<16){
+      return {tone:'good', text:'Você já completou '+completedInPhase+' dias nessa janela de '+phase.hours+'h sem problema. Se estiver se sentindo bem, pode tentar aumentar um pouco a partir de amanhã.'};
+    }
+    if(elapsedInPhase>=3 && completedInPhase < Math.ceil(elapsedInPhase*0.5)){
+      return {tone:'gentle', text:'Essa janela está sendo mais difícil que o esperado — sem problema nenhum. Foque em completar o que der, sem pressa pra aumentar o tempo.'};
+    }
+    return null;
   }
 
   function renderDayGrid(p){
@@ -1483,6 +1588,73 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
       })(i);
     }
     document.getElementById('waterCount').textContent=count+'/8';
+  }
+
+  /* ---------------- food log ---------------- */
+  function foodLogKey(){ return 'vp_foodlog_'+todayKey(); }
+  function getFoodLog(){ return get(foodLogKey(), []); }
+  function setFoodLog(arr){ set(foodLogKey(), arr); }
+
+  function renderFoodLog(p){
+    var log = getFoodLog();
+    var total = log.reduce(function(s,i){ return s+i.kcal; }, 0);
+    var target = p.calc.target;
+
+    document.getElementById('foodTotal').textContent = total+' kcal de '+target+' kcal';
+    var statusEl = document.getElementById('foodStatus');
+    var remaining = target-total;
+    if(total===0){ statusEl.textContent = 'Nada registrado ainda hoje'; }
+    else if(total < target*0.9){ statusEl.textContent = 'Tudo certo — ainda cabem ~'+Math.round(remaining)+' kcal hoje.'; }
+    else if(total <= target*1.1){ statusEl.textContent = 'No ponto certo pra hoje.'; }
+    else { statusEl.textContent = 'Passou um pouco da meta — sem problema, ajuste amanhã.'; }
+    document.getElementById('foodProgressFill').style.width = Math.min(target?(total/target*100):0,100)+'%';
+
+    var listEl = document.getElementById('foodLogList');
+    listEl.innerHTML = log.map(function(item,idx){
+      return '<div class="food-item"><span class="t">'+item.t+'</span><span class="k">'+item.kcal+' kcal</span><button class="rm" data-idx="'+idx+'">remover</button></div>';
+    }).join('');
+    listEl.querySelectorAll('[data-idx]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var arr = getFoodLog();
+        arr.splice(+btn.getAttribute('data-idx'), 1);
+        setFoodLog(arr);
+        renderFoodLog(p);
+      });
+    });
+
+    var dow = new Date().getDay();
+    var chipsEl = document.getElementById('foodMenuChips');
+    chipsEl.innerHTML = '';
+    MEALS.forEach(function(m){
+      var kcal = Math.round(p.calc.target*m.pct/10)*10;
+      var title = p.calc.noFast ? (m.titleNoFast||m.title) : (m.titleFast||m.title);
+      var b = document.createElement('button');
+      b.type='button'; b.className='food-chip';
+      b.textContent = title+' (~'+kcal+' kcal)';
+      b.addEventListener('click', function(){
+        var arr = getFoodLog();
+        arr.push({t:title, kcal:kcal});
+        setFoodLog(arr);
+        renderFoodLog(p);
+      });
+      chipsEl.appendChild(b);
+    });
+  }
+
+  function initFoodLog(){
+    document.getElementById('foodFreeAdd').addEventListener('click', function(){
+      var nameEl = document.getElementById('foodFreeName');
+      var kcalEl = document.getElementById('foodFreeKcal');
+      var name = nameEl.value.trim();
+      var kcal = parseFloat(kcalEl.value);
+      if(!name || !(kcal>0)) return;
+      var arr = getFoodLog();
+      arr.push({t:name, kcal:Math.round(kcal)});
+      setFoodLog(arr);
+      nameEl.value=''; kcalEl.value='';
+      var p = loadProfile();
+      if(p) renderFoodLog(p);
+    });
   }
 
   function renderTodayHabits(){
@@ -1997,6 +2169,29 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
     }).join('');
   }
 
+  function overallStatus(p){
+    var fStreak = p.calc.noFast ? 0 : fastingStreak();
+    var hStreak = habitStreak();
+    var log = getWeightLog();
+    var lostSoFar = 0;
+    if(log.length && !p.calc.noFast){ lostSoFar = Math.round((p.pesoInicial - log[log.length-1].kg)*10)/10; }
+
+    if(fStreak>=3 || hStreak>=3 || lostSoFar>=1){
+      return {tone:'tone-parabens', title:'Parabéns', text:'Sua constância está ótima. '+(lostSoFar>0 ? ('Já são '+lostSoFar+' kg a menos desde o início — ') : '')+'continue assim, um dia de cada vez.'};
+    }
+    var today = Math.min(Math.max(dayNumber(),1),21);
+    if(today>=3 && fStreak===0 && hStreak===0){
+      return {tone:'tone-cuidado', title:'Cuidado', text:'Faz alguns dias que nada foi marcado por aqui. Não precisa ser perfeita — só volte a registrar hoje, mesmo que pouco.'};
+    }
+    return {tone:'tone-atencao', title:'Atenção', text:'Você está no caminho. Registrar todo dia, mesmo os pequenos passos, é o que sustenta o resultado.'};
+  }
+
+  function renderStatusBanner(p){
+    var wrap = document.getElementById('statusBanner');
+    var s = overallStatus(p);
+    wrap.innerHTML = '<div class="status-banner '+s.tone+'" style="margin-bottom:18px"><div class="title">'+s.title+'</div><div class="text">'+s.text+'</div></div>';
+  }
+
   /* ---------------- settings / backup ---------------- */
   function initFastLog(){
     var dialog = document.getElementById('fastLogDialog');
@@ -2125,6 +2320,7 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
     renderHeader(p);
     renderBanners(p);
     renderWater();
+    renderFoodLog(p);
     renderTodayHabits();
     renderHabitsView();
     renderFast(p);
@@ -2135,27 +2331,46 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
     renderChart(p);
     renderStreaks();
     renderAchievements(p);
+    renderStatusBanner(p);
   }
 
-  initOnboarding();
-  initTabs();
-  initRestart();
-  initSettings();
-  initFastLog();
-  initSymptomQuiz();
+  function boot(){
+    if(!storageAvailable()){
+      document.getElementById('onbForm').classList.add('hidden');
+      document.getElementById('storageWarning').classList.remove('hidden');
+      document.getElementById('storageRetryBtn').addEventListener('click', function(){
+        if(storageAvailable()){ location.reload(); }
+        else {
+          var btn = document.getElementById('storageRetryBtn');
+          btn.textContent = 'Ainda bloqueado — ajuste e tente de novo';
+        }
+      });
+      return;
+    }
 
-  if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('sw.js').catch(function(){});
+    initOnboarding();
+    initTabs();
+    initRestart();
+    initSettings();
+    initFastLog();
+    initSymptomQuiz();
+    initFoodLog();
+
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.register('sw.js').catch(function(){});
+    }
+
+    var existingProfile = loadProfile();
+    if(existingProfile){
+      document.getElementById('onbForm').classList.add('hidden');
+      document.getElementById('appShell').classList.remove('hidden');
+      renderAll();
+    }
+
+    setInterval(function(){ var p=loadProfile(); if(p) renderHeader(p); }, 60000);
   }
 
-  var existingProfile = loadProfile();
-  if(existingProfile){
-    document.getElementById('onbForm').classList.add('hidden');
-    document.getElementById('appShell').classList.remove('hidden');
-    renderAll();
-  }
-
-  setInterval(function(){ var p=loadProfile(); if(p) renderHeader(p); }, 60000);
+  boot();
 })();
 </script>
 </body>
