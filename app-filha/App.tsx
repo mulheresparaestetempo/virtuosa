@@ -6,6 +6,7 @@ import { Text } from 'react-native';
 import LugarSecretoScreen from './src/screens/LugarSecretoScreen';
 import BibliaScreen from './src/screens/BibliaScreen';
 import DiarioScreen from './src/screens/DiarioScreen';
+import JornadasScreen from './src/screens/JornadasScreen';
 import { cores } from './src/theme';
 
 const Tab = createBottomTabNavigator();
@@ -44,6 +45,14 @@ export default function App() {
           options={{
             title: 'Diário',
             tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📔</Text>,
+          }}
+        />
+        <Tab.Screen
+          name="Jornadas"
+          component={JornadasScreen}
+          options={{
+            title: 'Jornadas',
+            tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🌱</Text>,
           }}
         />
       </Tab.Navigator>

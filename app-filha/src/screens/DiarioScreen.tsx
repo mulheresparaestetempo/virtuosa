@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -9,6 +9,9 @@ import {
   View,
 } from 'react-native';
 import { cores } from '../theme';
+import { carregar, salvar } from '../storage';
+
+const CHAVE_ENTRADAS = 'diario_entradas';
 
 type TipoEntrada = 'oracao' | 'resposta' | 'reflexao' | 'versiculo' | 'gratidao';
 
@@ -54,8 +57,20 @@ function hojeFormatado() {
 
 export default function DiarioScreen() {
   const [entradas, setEntradas] = useState<Entrada[]>(entradasIniciais);
+  const [carregado, setCarregado] = useState(false);
   const [tipoSelecionado, setTipoSelecionado] = useState<TipoEntrada>('oracao');
   const [texto, setTexto] = useState('');
+
+  useEffect(() => {
+    carregar(CHAVE_ENTRADAS, entradasIniciais).then((salvas) => {
+      setEntradas(salvas);
+      setCarregado(true);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (carregado) salvar(CHAVE_ENTRADAS, entradas);
+  }, [entradas, carregado]);
 
   function adicionarEntrada() {
     if (!texto.trim()) return;

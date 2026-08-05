@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -9,6 +9,9 @@ import {
   View,
 } from 'react-native';
 import { cores } from '../theme';
+import { carregar, salvar } from '../storage';
+
+const CHAVE_FAVORITOS = 'biblia_favoritos';
 
 const versiculoDoDia = {
   texto: 'Entrega o teu caminho ao Senhor; confia nele, e ele o fará.',
@@ -30,8 +33,22 @@ const livros = [
 
 export default function BibliaScreen() {
   const [busca, setBusca] = useState('');
-  const [favoritado, setFavoritado] = useState(false);
+  const [favoritos, setFavoritos] = useState<string[]>([]);
   const [livroSelecionado, setLivroSelecionado] = useState<string | null>(null);
+
+  useEffect(() => {
+    carregar<string[]>(CHAVE_FAVORITOS, []).then(setFavoritos);
+  }, []);
+
+  const favoritado = favoritos.includes(versiculoDoDia.referencia);
+
+  function alternarFavorito() {
+    const atualizados = favoritado
+      ? favoritos.filter((ref) => ref !== versiculoDoDia.referencia)
+      : [...favoritos, versiculoDoDia.referencia];
+    setFavoritos(atualizados);
+    salvar(CHAVE_FAVORITOS, atualizados);
+  }
 
   const livrosFiltrados = useMemo(
     () =>
@@ -55,7 +72,7 @@ export default function BibliaScreen() {
           <Text style={styles.versiculoTexto}>"{versiculoDoDia.texto}"</Text>
           <View style={styles.versiculoRodape}>
             <Text style={styles.versiculoReferencia}>{versiculoDoDia.referencia}</Text>
-            <TouchableOpacity onPress={() => setFavoritado((v) => !v)}>
+            <TouchableOpacity onPress={alternarFavorito}>
               <Text style={styles.estrela}>{favoritado ? '⭐' : '☆'}</Text>
             </TouchableOpacity>
           </View>
