@@ -1,18 +1,16 @@
+import { useEffect } from 'react';
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { cores } from '../theme';
 import { ministerio } from '../data/ministerio';
 
-function formatarTempo(segundos: number) {
-  const total = Math.max(0, Math.floor(segundos));
-  const min = Math.floor(total / 60);
-  const seg = total % 60;
-  return `${min}:${seg.toString().padStart(2, '0')}`;
-}
-
 export default function LouvorAberturaPlayer() {
   const player = useAudioPlayer(ministerio.louvorAbertura.audio);
   const status = useAudioPlayerStatus(player);
+
+  useEffect(() => {
+    player.play();
+  }, [player]);
 
   function alternar() {
     if (status.playing) {
@@ -24,18 +22,18 @@ export default function LouvorAberturaPlayer() {
   }
 
   return (
-    <View style={styles.card}>
-      <TouchableOpacity style={styles.botaoPlay} onPress={alternar}>
-        <Text style={styles.botaoPlayTexto}>{status.playing ? '⏸' : '▶'}</Text>
-      </TouchableOpacity>
-      <View style={{ flex: 1 }}>
-        <Text style={styles.label}>Louvor de abertura</Text>
-        <Text style={styles.titulo}>{ministerio.louvorAbertura.titulo}</Text>
+    <TouchableOpacity style={styles.card} onPress={alternar} activeOpacity={0.85}>
+      <View style={styles.iconeCirculo}>
+        <Text style={styles.iconeTexto}>{status.playing ? '⏸' : '🎧'}</Text>
       </View>
-      <Text style={styles.tempo}>
-        {formatarTempo(status.currentTime)} / {formatarTempo(status.duration)}
-      </Text>
-    </View>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.titulo}>Ouça o devocional de hoje</Text>
+        <Text style={styles.subtitulo}>
+          {status.playing ? 'Tocando agora...' : ministerio.louvorAbertura.titulo}
+        </Text>
+      </View>
+      <Text style={styles.seta}>›</Text>
+    </TouchableOpacity>
   );
 }
 
@@ -48,7 +46,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 14,
-    marginBottom: 22,
     gap: 12,
     shadowColor: '#3a2a1a',
     shadowOpacity: 0.08,
@@ -56,22 +53,16 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     elevation: 2,
   },
-  botaoPlay: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
+  iconeCirculo: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
     backgroundColor: cores.bordo,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  botaoPlayTexto: { color: '#fff', fontSize: 16 },
-  label: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: cores.ouroEscuro,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  titulo: { fontSize: 15, fontWeight: '700', color: cores.bordo, marginTop: 2 },
-  tempo: { fontSize: 12, color: cores.cinzaClaro },
+  iconeTexto: { fontSize: 20 },
+  titulo: { fontSize: 15, fontWeight: '700', color: cores.bordo },
+  subtitulo: { fontSize: 12, color: cores.cinzaClaro, marginTop: 2 },
+  seta: { fontSize: 22, color: cores.ouroEscuro },
 });

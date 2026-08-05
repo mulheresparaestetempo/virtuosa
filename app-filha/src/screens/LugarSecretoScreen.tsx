@@ -14,9 +14,13 @@ import { cores } from '../theme';
 import { carregar, salvar } from '../storage';
 import CabecalhoMinisterio from '../components/CabecalhoMinisterio';
 import LouvorAberturaPlayer from '../components/LouvorAberturaPlayer';
+import { CHAVE_PLANO_DEVOCIONAL, diaDoPlano, planoPadrao, type PlanoDevocional } from '../data/devocional';
 
-const CHAVE_DEVOCIONAL = 'devocional_do_dia';
 const CHAVE_GALERIA = 'galeria_fotos';
+const CHAVE_PEDIDOS_ACOLHIMENTO = 'acolhimento_pedidos';
+
+type Foto = { id: string; url: string; legenda: string };
+type PedidoAcolhimento = { id: string; tipo: string; data: string; status: 'aberto' };
 
 const hoje = new Date().toLocaleDateString('pt-BR', {
   weekday: 'long',
@@ -24,28 +28,11 @@ const hoje = new Date().toLocaleDateString('pt-BR', {
   month: 'long',
 });
 
-type DevocionalDoDia = {
-  titulo: string;
-  versiculo: string;
-  resumo: string;
-  louvorTitulo: string;
-  louvorUrl: string;
-};
-
-const devocionalPadrao: DevocionalDoDia = {
-  titulo: 'Descanso na Presença',
-  versiculo:
-    '"Vinde a mim, todos os que estais cansados e sobrecarregados, e eu vos aliviarei." — Mateus 11:28',
-  resumo:
-    'Hoje o Pai te convida para um lugar secreto de descanso. Antes de correr para as tarefas do dia, pare, respire e entregue o seu cansaço a Ele.',
-  louvorTitulo: 'Descanso — Gabriela Rocha',
-  louvorUrl: '',
-};
-
-type Foto = { id: string; url: string; legenda: string };
+function hojeCurto() {
+  return new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long' });
+}
 
 const secoes = [
-  { emoji: '🎧', titulo: 'Áudio devocional', subtitulo: '8 min · narrado' },
   { emoji: '🙏', titulo: 'Oração guiada', subtitulo: '5 min · com a discipuladora Ana' },
   { emoji: '🌱', titulo: 'Desafio do dia', subtitulo: 'Escreva 3 motivos de gratidão' },
   { emoji: '💌', titulo: 'Cartinha do Pai', subtitulo: 'Uma palavra de amor para você' },
@@ -54,15 +41,19 @@ const secoes = [
 export default function LugarSecretoScreen() {
   const [musicaAtiva, setMusicaAtiva] = useState(false);
   const [orando, setOrando] = useState(false);
-  const [devocional, setDevocional] = useState<DevocionalDoDia>(devocionalPadrao);
+  const [plano, setPlano] = useState<PlanoDevocional>(planoPadrao);
   const [fotos, setFotos] = useState<Foto[]>([]);
   const [carregado, setCarregado] = useState(false);
   const [mostrarFormFoto, setMostrarFormFoto] = useState(false);
   const [novaFotoUrl, setNovaFotoUrl] = useState('');
   const [novaFotoLegenda, setNovaFotoLegenda] = useState('');
+  const [cultoSolicitado, setCultoSolicitado] = useState(false);
+  const [acolhimentoSolicitado, setAcolhimentoSolicitado] = useState(false);
+
+  const conteudoDia = diaDoPlano(plano);
 
   useEffect(() => {
-    carregar(CHAVE_DEVOCIONAL, devocionalPadrao).then(setDevocional);
+    carregar(CHAVE_PLANO_DEVOCIONAL, planoPadrao).then(setPlano);
     carregar<Foto[]>(CHAVE_GALERIA, []).then((salvas) => {
       setFotos(salvas);
       setCarregado(true);
@@ -84,41 +75,90 @@ export default function LugarSecretoScreen() {
     setMostrarFormFoto(false);
   }
 
+  async function solicitar(tipo: string, marcarFeito: (v: boolean) => void) {
+    const pedidos = await carregar<PedidoAcolhimento[]>(CHAVE_PEDIDOS_ACOLHIMENTO, []);
+    const novo: PedidoAcolhimento = { id: String(Date.now()), tipo, data: hojeCurto(), status: 'aberto' };
+    await salvar(CHAVE_PEDIDOS_ACOLHIMENTO, [novo, ...pedidos]);
+    marcarFeito(true);
+  }
+
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container}>
         <CabecalhoMinisterio />
-        <LouvorAberturaPlayer />
 
         <Text style={styles.saudacao}>Bem-vinda ao seu Lugar Secreto 🕊️</Text>
         <Text style={styles.data}>{hoje}</Text>
 
         <View style={styles.cardPrincipal}>
-          <Text style={styles.tituloDevocional}>{devocional.titulo}</Text>
-          <Text style={styles.versiculo}>{devocional.versiculo}</Text>
-          <Text style={styles.resumo}>{devocional.resumo}</Text>
+          <View style={styles.badgeDia}>
+            <Text style={styles.badgeDiaTexto}>Dia {plano.diaAtual}</Text>
+          </View>
+          <Text style={styles.nomeMes}>{plano.nomeMes}</Text>
+          <Text style={styles.tituloDevocional}>{conteudoDia.titulo}</Text>
+          <Text style={styles.versiculo}>{conteudoDia.versiculo}</Text>
+          <Text style={styles.resumo}>{conteudoDia.resumo}</Text>
           <TouchableOpacity style={styles.botaoPrimario}>
             <Text style={styles.botaoPrimarioTexto}>Ler devocional completo</Text>
           </TouchableOpacity>
         </View>
 
-        {!!devocional.louvorTitulo && (
+        {!!conteudoDia.louvorTitulo && (
           <View style={styles.cardLouvor}>
             <Text style={styles.louvorEmoji}>🎶</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.louvorLabel}>Sugestão de louvor da líder</Text>
-              <Text style={styles.louvorTitulo}>{devocional.louvorTitulo}</Text>
+              <Text style={styles.louvorTitulo}>{conteudoDia.louvorTitulo}</Text>
             </View>
-            {!!devocional.louvorUrl && (
+            {!!conteudoDia.louvorUrl && (
               <TouchableOpacity
                 style={styles.botaoOuvir}
-                onPress={() => Linking.openURL(devocional.louvorUrl)}
+                onPress={() => Linking.openURL(conteudoDia.louvorUrl!)}
               >
                 <Text style={styles.botaoOuvirTexto}>Ouvir</Text>
               </TouchableOpacity>
             )}
           </View>
         )}
+
+        <Text style={[styles.secaoTitulo, styles.secaoAcoesTitulo]}>Ações rápidas</Text>
+        <View style={styles.acoesLista}>
+          <LouvorAberturaPlayer />
+
+          <TouchableOpacity
+            style={styles.card}
+            activeOpacity={0.85}
+            onPress={() => solicitar('Culto no lar', setCultoSolicitado)}
+          >
+            <View style={[styles.iconeCirculo, { backgroundColor: cores.ouro }]}>
+              <Text style={styles.iconeTexto}>🏠</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.tituloAcao}>Agende um culto no seu lar</Text>
+              <Text style={styles.subtituloAcao}>
+                {cultoSolicitado ? 'Pedido enviado — a líder foi avisada ✓' : 'Receba a igreja em sua casa'}
+              </Text>
+            </View>
+            <Text style={styles.seta}>›</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.card}
+            activeOpacity={0.85}
+            onPress={() => solicitar('Visita de acolhimento', setAcolhimentoSolicitado)}
+          >
+            <View style={[styles.iconeCirculo, { backgroundColor: cores.rosa }]}>
+              <Text style={styles.iconeTexto}>🤝</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.tituloAcao}>Agende uma visita de acolhimento</Text>
+              <Text style={styles.subtituloAcao}>
+                {acolhimentoSolicitado ? 'Pedido enviado — a líder foi avisada ✓' : 'Peça cuidado e oração presencial'}
+              </Text>
+            </View>
+            <Text style={styles.seta}>›</Text>
+          </TouchableOpacity>
+        </View>
 
         <View style={styles.grade}>
           {secoes.map((secao) => (
@@ -237,16 +277,33 @@ const styles = StyleSheet.create({
   cardPrincipal: {
     backgroundColor: cores.cremeCard,
     borderRadius: 18,
-    padding: 20,
+    padding: 22,
     borderWidth: 1,
     borderColor: cores.bordaCard,
     ...sombra,
   },
+  badgeDia: {
+    alignSelf: 'flex-start',
+    backgroundColor: cores.bordo,
+    borderRadius: 20,
+    paddingVertical: 5,
+    paddingHorizontal: 14,
+    marginBottom: 10,
+  },
+  badgeDiaTexto: { color: '#fff', fontWeight: '700', fontSize: 13 },
+  nomeMes: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: cores.ouroEscuro,
+    textTransform: 'uppercase',
+    letterSpacing: 0.6,
+    marginBottom: 6,
+  },
   tituloDevocional: {
-    fontSize: 20,
+    fontSize: 23,
     fontWeight: '700',
     color: cores.bordo,
-    marginBottom: 8,
+    marginBottom: 10,
   },
   versiculo: {
     fontSize: 14,
@@ -300,6 +357,30 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   botaoOuvirTexto: { color: '#fff', fontWeight: '700', fontSize: 12.5 },
+  secaoAcoesTitulo: { marginTop: 24, marginBottom: 10 },
+  acoesLista: { gap: 12, marginBottom: 6 },
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: cores.borda,
+    padding: 14,
+    gap: 12,
+    ...sombra,
+  },
+  iconeCirculo: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconeTexto: { fontSize: 20 },
+  tituloAcao: { fontSize: 15, fontWeight: '700', color: cores.bordo },
+  subtituloAcao: { fontSize: 12, color: cores.cinzaClaro, marginTop: 2 },
+  seta: { fontSize: 22, color: cores.ouroEscuro },
   grade: {
     flexDirection: 'row',
     flexWrap: 'wrap',

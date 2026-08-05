@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { cores } from '../theme';
 import { carregar, salvar } from '../storage';
-
-const CHAVE_DEVOCIONAL = 'devocional_do_dia';
+import { CHAVE_PLANO_DEVOCIONAL, planoPadrao, type DiaDevocional, type PlanoDevocional } from '../data/devocional';
 
 const discipulas = [
   { nome: 'Camila', trilha: 'Identidade', progresso: 66, frequencia: 'Ativa', pedidosAbertos: 1, acolhimentosAbertos: 0 },
@@ -12,25 +11,65 @@ const discipulas = [
   { nome: 'Beatriz', trilha: 'Jejum', progresso: 100, frequencia: 'Ativa', pedidosAbertos: 0, acolhimentosAbertos: 1 },
 ];
 
-const devocionalVazio = { titulo: '', versiculo: '', resumo: '', louvorTitulo: '', louvorUrl: '' };
-
 export default function PainelLiderScreen() {
-  const [devocional, setDevocional] = useState(devocionalVazio);
-  const [publicado, setPublicado] = useState(false);
+  const [plano, setPlano] = useState<PlanoDevocional>(planoPadrao);
+  const [carregado, setCarregado] = useState(false);
+  const [novoDia, setNovoDia] = useState('');
+  const [novoTitulo, setNovoTitulo] = useState('');
+  const [novoVersiculo, setNovoVersiculo] = useState('');
+  const [novoResumo, setNovoResumo] = useState('');
+  const [novoLouvorTitulo, setNovoLouvorTitulo] = useState('');
+  const [novoLouvorUrl, setNovoLouvorUrl] = useState('');
+  const [salvo, setSalvo] = useState(false);
 
   useEffect(() => {
-    carregar(CHAVE_DEVOCIONAL, devocionalVazio).then(setDevocional);
+    carregar(CHAVE_PLANO_DEVOCIONAL, planoPadrao).then((p) => {
+      setPlano(p);
+      setCarregado(true);
+    });
   }, []);
 
-  function campo(chave: keyof typeof devocionalVazio, valor: string) {
-    setPublicado(false);
-    setDevocional((atual) => ({ ...atual, [chave]: valor }));
+  useEffect(() => {
+    if (carregado) salvar(CHAVE_PLANO_DEVOCIONAL, plano);
+  }, [plano, carregado]);
+
+  function ajustarDiaAtual(delta: number) {
+    setPlano((atual) => ({ ...atual, diaAtual: Math.min(31, Math.max(1, atual.diaAtual + delta)) }));
   }
 
-  async function publicarDevocional() {
-    if (!devocional.titulo.trim() || !devocional.resumo.trim()) return;
-    await salvar(CHAVE_DEVOCIONAL, devocional);
-    setPublicado(true);
+  function salvarDiaNoPlano() {
+    const dia = parseInt(novoDia, 10);
+    if (!dia || dia < 1 || dia > 31 || !novoTitulo.trim() || !novoResumo.trim()) return;
+    const entrada: DiaDevocional = {
+      dia,
+      titulo: novoTitulo.trim(),
+      versiculo: novoVersiculo.trim(),
+      resumo: novoResumo.trim(),
+      louvorTitulo: novoLouvorTitulo.trim() || undefined,
+      louvorUrl: novoLouvorUrl.trim() || undefined,
+    };
+    setPlano((atual) => ({
+      ...atual,
+      dias: [...atual.dias.filter((d) => d.dia !== dia), entrada].sort((a, b) => a.dia - b.dia),
+    }));
+    setNovoDia('');
+    setNovoTitulo('');
+    setNovoVersiculo('');
+    setNovoResumo('');
+    setNovoLouvorTitulo('');
+    setNovoLouvorUrl('');
+    setSalvo(true);
+  }
+
+  function campoNovoDia(setter: (v: string) => void) {
+    return (v: string) => {
+      setSalvo(false);
+      setter(v);
+    };
+  }
+
+  function removerDia(dia: number) {
+    setPlano((atual) => ({ ...atual, dias: atual.dias.filter((d) => d.dia !== dia) }));
   }
 
   return (
@@ -43,27 +82,57 @@ export default function PainelLiderScreen() {
         </Text>
 
         <View style={styles.cardDevocional}>
-          <Text style={styles.secaoTitulo}>Enviar devocional do dia</Text>
+          <Text style={styles.secaoTitulo}>Devocional do mês</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Nome do devocional (ex.: Devocional de Agosto)"
+            placeholderTextColor={cores.cinzaClaro}
+            value={plano.nomeMes}
+            onChangeText={(v) => setPlano((atual) => ({ ...atual, nomeMes: v }))}
+          />
+
+          <View style={styles.linhaDiaAtual}>
+            <Text style={styles.diaAtualLabel}>Dia atual do devocional</Text>
+            <View style={styles.stepper}>
+              <TouchableOpacity style={styles.stepperBotao} onPress={() => ajustarDiaAtual(-1)}>
+                <Text style={styles.stepperBotaoTexto}>−</Text>
+              </TouchableOpacity>
+              <Text style={styles.stepperValor}>{plano.diaAtual}</Text>
+              <TouchableOpacity style={styles.stepperBotao} onPress={() => ajustarDiaAtual(1)}>
+                <Text style={styles.stepperBotaoTexto}>+</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <Text style={styles.subLabel}>Adicionar ou editar o conteúdo de um dia</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Número do dia (ex.: 17)"
+            placeholderTextColor={cores.cinzaClaro}
+            value={novoDia}
+            onChangeText={campoNovoDia(setNovoDia)}
+            keyboardType="number-pad"
+          />
           <TextInput
             style={styles.input}
             placeholder="Título do devocional"
             placeholderTextColor={cores.cinzaClaro}
-            value={devocional.titulo}
-            onChangeText={(v) => campo('titulo', v)}
+            value={novoTitulo}
+            onChangeText={campoNovoDia(setNovoTitulo)}
           />
           <TextInput
             style={styles.input}
             placeholder="Versículo (com referência)"
             placeholderTextColor={cores.cinzaClaro}
-            value={devocional.versiculo}
-            onChangeText={(v) => campo('versiculo', v)}
+            value={novoVersiculo}
+            onChangeText={campoNovoDia(setNovoVersiculo)}
           />
           <TextInput
             style={[styles.input, styles.inputMultilinha]}
             placeholder="Texto do devocional"
             placeholderTextColor={cores.cinzaClaro}
-            value={devocional.resumo}
-            onChangeText={(v) => campo('resumo', v)}
+            value={novoResumo}
+            onChangeText={campoNovoDia(setNovoResumo)}
             multiline
           />
           <Text style={styles.subLabel}>Sugestão de louvor (opcional)</Text>
@@ -71,22 +140,36 @@ export default function PainelLiderScreen() {
             style={styles.input}
             placeholder="Nome do louvor e cantora/banda"
             placeholderTextColor={cores.cinzaClaro}
-            value={devocional.louvorTitulo}
-            onChangeText={(v) => campo('louvorTitulo', v)}
+            value={novoLouvorTitulo}
+            onChangeText={campoNovoDia(setNovoLouvorTitulo)}
           />
           <TextInput
             style={styles.input}
             placeholder="Link para ouvir (YouTube, Spotify...)"
             placeholderTextColor={cores.cinzaClaro}
-            value={devocional.louvorUrl}
-            onChangeText={(v) => campo('louvorUrl', v)}
+            value={novoLouvorUrl}
+            onChangeText={campoNovoDia(setNovoLouvorUrl)}
             autoCapitalize="none"
           />
-          <TouchableOpacity style={styles.botaoPublicar} onPress={publicarDevocional}>
-            <Text style={styles.botaoPublicarTexto}>
-              {publicado ? 'Publicado! ✓' : 'Publicar no Lugar Secreto'}
-            </Text>
+          <TouchableOpacity style={styles.botaoPublicar} onPress={salvarDiaNoPlano}>
+            <Text style={styles.botaoPublicarTexto}>{salvo ? 'Salvo no plano! ✓' : 'Salvar dia no plano'}</Text>
           </TouchableOpacity>
+
+          {plano.dias.length > 0 && (
+            <View style={styles.listaDias}>
+              <Text style={styles.subLabel}>Dias já cadastrados neste devocional</Text>
+              {plano.dias.map((d) => (
+                <View key={d.dia} style={styles.diaLinha}>
+                  <Text style={styles.diaLinhaTexto} numberOfLines={1}>
+                    Dia {d.dia} — {d.titulo}
+                  </Text>
+                  <TouchableOpacity onPress={() => removerDia(d.dia)}>
+                    <Text style={styles.diaLinhaRemover}>remover</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+          )}
         </View>
 
         {discipulas.map((d) => (
@@ -139,6 +222,30 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
     marginBottom: 12,
   },
+  linhaDiaAtual: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: cores.borda,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    marginBottom: 16,
+  },
+  diaAtualLabel: { fontSize: 13, fontWeight: '700', color: cores.bordo },
+  stepper: { flexDirection: 'row', alignItems: 'center', gap: 14 },
+  stepperBotao: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: cores.ouro,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stepperBotaoTexto: { color: '#fff', fontSize: 18, fontWeight: '700', lineHeight: 20 },
+  stepperValor: { fontSize: 18, fontWeight: '700', color: cores.bordo, minWidth: 24, textAlign: 'center' },
   subLabel: { fontSize: 13, fontWeight: '700', color: cores.bordo, marginTop: 4, marginBottom: 8 },
   input: {
     backgroundColor: '#fff',
@@ -153,6 +260,22 @@ const styles = StyleSheet.create({
   inputMultilinha: { minHeight: 90, textAlignVertical: 'top' },
   botaoPublicar: { backgroundColor: cores.ouro, paddingVertical: 12, borderRadius: 10, alignItems: 'center' },
   botaoPublicarTexto: { color: '#fff', fontWeight: '700', fontSize: 15 },
+  listaDias: { marginTop: 16 },
+  diaLinha: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: cores.borda,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    marginBottom: 8,
+    gap: 8,
+  },
+  diaLinhaTexto: { flex: 1, fontSize: 13, color: cores.cinzaTexto },
+  diaLinhaRemover: { fontSize: 12, fontWeight: '700', color: cores.rosa },
   card: {
     backgroundColor: '#fff',
     borderRadius: 14,
