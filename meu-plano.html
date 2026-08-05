@@ -337,6 +337,30 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
 .fast-time{ font-variant-numeric:tabular-nums; font-size:1.8rem; font-weight:800; color:var(--ink); line-height:1; }
 .fast-target{ font-size:0.72rem; color:var(--ink-faint); font-weight:600; margin-top:4px; }
 .fast-status{ font-size:0.85rem; color:var(--ink-soft); margin-bottom:14px; }
+
+.inline-form{ margin-top:14px; padding-top:14px; border-top:1px dashed var(--line); text-align:left; }
+.inline-form.hidden{ display:none; }
+.hidden{ display:none; }
+.inline-form label{ display:block; font-size:0.78rem; font-weight:600; color:var(--ink); margin-bottom:6px; }
+.inline-form input[type="datetime-local"]{
+  width:100%; border:1.5px solid var(--line); background:var(--surface-2); color:var(--ink);
+  border-radius:var(--radius-sm); padding:11px 12px; font-size:0.9rem; margin-bottom:12px;
+}
+.inline-form .row{ display:flex; gap:10px; }
+.inline-form .row .btn{ flex:1; }
+
+/* Accordion */
+.accordion{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); box-shadow:var(--shadow); overflow:hidden; }
+.accordion summary{
+  list-style:none; cursor:pointer; padding:18px 20px; display:flex; align-items:center; justify-content:space-between;
+  font-size:0.85rem; font-weight:700; color:var(--accent);
+}
+.accordion summary::-webkit-details-marker{ display:none; }
+.accordion summary::after{ content:'+'; font-size:1.3rem; font-weight:400; color:var(--ink-faint); }
+.accordion[open] summary::after{ content:'–'; }
+.accordion[open] summary{ border-bottom:1px solid var(--line); }
+.accordion-body{ padding:4px 20px 20px; display:flex; flex-direction:column; gap:16px; }
+.accordion-body .card{ box-shadow:none; border:1px solid var(--line); }
 .fast-status.reached{ color:var(--accent); font-weight:700; }
 
 .water-row{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
@@ -629,19 +653,36 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
         <div id="hojeBanner"></div>
 
         <div class="card fast-card" id="fastCard">
-          <div class="card-title" id="fastPhaseLabel">Jejum de hoje</div>
-          <div class="fast-ring-wrap">
-            <svg viewBox="0 0 120 120">
-              <circle class="fast-ring-bg" cx="60" cy="60" r="52"></circle>
-              <circle class="fast-ring-fg" id="fastRing" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle>
-            </svg>
-            <div class="fast-ring-center">
-              <div class="fast-time" id="fastTime">00:00</div>
-              <div class="fast-target" id="fastTargetLabel">meta 12h</div>
+          <div id="fastActive">
+            <div class="card-title" id="fastPhaseLabel">Jejum de hoje</div>
+            <div class="fast-ring-wrap">
+              <svg viewBox="0 0 120 120">
+                <circle class="fast-ring-bg" cx="60" cy="60" r="52"></circle>
+                <circle class="fast-ring-fg" id="fastRing" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle>
+              </svg>
+              <div class="fast-ring-center">
+                <div class="fast-time" id="fastTime">00:00</div>
+                <div class="fast-target" id="fastTargetLabel">meta 12h</div>
+              </div>
+            </div>
+            <div class="fast-status" id="fastStatus">Toque em começar quando fizer sua última refeição.</div>
+            <button class="btn btn-primary btn-block" id="fastBtn">Começar jejum</button>
+            <div style="display:flex; justify-content:center; gap:16px; margin-top:10px">
+              <button class="edit-link" id="fastAdjustLink">ajustar horário</button>
+            </div>
+            <div id="fastAdjustForm" class="inline-form hidden">
+              <label for="fastAdjustInput">Jejum começou em:</label>
+              <input type="datetime-local" id="fastAdjustInput">
+              <div class="row">
+                <button class="btn btn-ghost btn-sm" id="fastAdjustCancel">Cancelar</button>
+                <button class="btn btn-primary btn-sm" id="fastAdjustSave">Salvar horário</button>
+              </div>
             </div>
           </div>
-          <div class="fast-status" id="fastStatus">Toque em começar quando fizer sua última refeição.</div>
-          <button class="btn btn-primary btn-block" id="fastBtn">Começar jejum</button>
+          <div id="fastNoFastMsg" class="hidden">
+            <div class="card-title">Hoje</div>
+            <p style="font-size:1rem;line-height:1.6">Nesse momento o foco não é jejum — é comer bem, com regularidade. Você já está cuidando de si só por estar aqui.</p>
+          </div>
         </div>
 
         <div class="card">
@@ -679,78 +720,85 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
           <div id="phaseRows"></div>
         </div>
 
-        <div class="card" id="mechCard">
-          <div class="card-title">O que é o jejum metabólico</div>
-          <p class="note" style="text-align:left;margin-bottom:10px">Concentrar as refeições numa janela menor dá ao corpo mais horas sem digestão. Depois que o glicogênio do fígado se esgota (geralmente entre 8 e 12h sem comer), o corpo passa a usar mais gordura como energia, e a insulina — o hormônio que guarda gordura — fica baixa por mais tempo. É por isso que o jejum ajuda a mobilizar gordura, não por "acelerar o metabolismo" de forma mágica.</p>
-          <p class="note" style="text-align:left">Não é sobre comer menos de forma extrema — é sobre <strong style="color:var(--ink)">quando</strong> você come. Fora da janela de jejum, você come normalmente, sem contar caloria com obsessão.</p>
-        </div>
+        <details class="accordion">
+          <summary>Saiba mais sobre o protocolo</summary>
+          <div class="accordion-body">
 
-        <div class="card" id="duringCard">
-          <div class="card-title">Durante o jejum</div>
-          <p style="font-weight:700;font-size:0.85rem;color:var(--ink);margin-bottom:4px">Pode à vontade</p>
-          <p class="note" style="text-align:left;margin-bottom:14px">Água (com ou sem gás), café puro, chás sem açúcar, água com limão. Uma pitada de sal na água ajuda se sentir fraqueza (veja eletrólitos abaixo).</p>
-          <p style="font-weight:700;font-size:0.85rem;color:var(--ink);margin-bottom:4px">Quebra o jejum</p>
-          <p class="note" style="text-align:left">Qualquer caloria: açúcar, leite, suco, adoçante calórico, balas, chiclete com açúcar. Se tiver dúvida sobre um item, o teste é simples: tem caloria, quebra o jejum.</p>
-        </div>
+            <div class="card" id="mechCard">
+              <div class="card-title">O que é o jejum metabólico</div>
+              <p class="note" style="text-align:left;margin-bottom:10px">Concentrar as refeições numa janela menor dá ao corpo mais horas sem digestão. Depois que o glicogênio do fígado se esgota (geralmente entre 8 e 12h sem comer), o corpo passa a usar mais gordura como energia, e a insulina — o hormônio que guarda gordura — fica baixa por mais tempo. É por isso que o jejum ajuda a mobilizar gordura, não por "acelerar o metabolismo" de forma mágica.</p>
+              <p class="note" style="text-align:left">Não é sobre comer menos de forma extrema — é sobre <strong style="color:var(--ink)">quando</strong> você come. Fora da janela de jejum, você come normalmente, sem contar caloria com obsessão.</p>
+            </div>
 
-        <div class="card" id="electroCard">
-          <div class="card-title">Eletrólitos — principalmente nas janelas de 14h e 16h</div>
-          <ul class="rules-list">
-            <li><strong style="color:var(--ink)">Sódio:</strong> uma pitada de sal (não mais que isso) num copo de água se sentir dor de cabeça ou fraqueza.</li>
-            <li><strong style="color:var(--ink)">Potássio:</strong> coma bem na janela de alimentação — abacate, banana, batata-doce, folhas verdes.</li>
-            <li><strong style="color:var(--ink)">Magnésio:</strong> oleaginosas e vegetais escuros ajudam a evitar cãibra e insônia.</li>
-            <li>Sinal de que falta eletrólito: dor de cabeça, cansaço fora do comum, cãibra ou coração acelerado em repouso.</li>
-          </ul>
-        </div>
+            <div class="card" id="duringCard">
+              <div class="card-title">Durante o jejum</div>
+              <p style="font-weight:700;font-size:0.85rem;color:var(--ink);margin-bottom:4px">Pode à vontade</p>
+              <p class="note" style="text-align:left;margin-bottom:14px">Água (com ou sem gás), café puro, chás sem açúcar, água com limão. Uma pitada de sal na água ajuda se sentir fraqueza (veja eletrólitos abaixo).</p>
+              <p style="font-weight:700;font-size:0.85rem;color:var(--ink);margin-bottom:4px">Quebra o jejum</p>
+              <p class="note" style="text-align:left">Qualquer caloria: açúcar, leite, suco, adoçante calórico, balas, chiclete com açúcar. Se tiver dúvida sobre um item, o teste é simples: tem caloria, quebra o jejum.</p>
+            </div>
 
-        <div class="card" id="inflamCard">
-          <div class="card-title">Desinflamar o corpo</div>
-          <p class="note" style="text-align:left;margin-bottom:12px">Inchaço, cansaço, dor articular e dificuldade para emagrecer costumam andar junto com inflamação de baixo grau — muitas vezes causada pelo que comemos e como dormimos, não por uma doença.</p>
-          <p style="font-weight:700;font-size:0.85rem;color:var(--ink);margin-bottom:6px">O que alimenta a inflamação</p>
-          <ul class="rules-list" style="margin-bottom:12px">
-            <li>Ultraprocessados, frituras e excesso de açúcar de adição.</li>
-            <li>Álcool em excesso.</li>
-            <li>Sono ruim e estresse constante.</li>
-          </ul>
-          <p style="font-weight:700;font-size:0.85rem;color:var(--ink);margin-bottom:6px">O que ajuda a desinflamar</p>
-          <ul class="rules-list">
-            <li>Peixes gordurosos (sardinha, salmão), azeite de oliva e oleaginosas — fontes de ômega-3.</li>
-            <li>Vegetais e frutas coloridas em quantidade, todos os dias.</li>
-            <li>Cúrcuma e gengibre, temperando a comida.</li>
-            <li>Dormir bem e mover o corpo — tão anti-inflamatório quanto a comida.</li>
-          </ul>
-        </div>
+            <div class="card" id="electroCard">
+              <div class="card-title">Eletrólitos — principalmente nas janelas de 14h e 16h</div>
+              <ul class="rules-list">
+                <li><strong style="color:var(--ink)">Sódio:</strong> uma pitada de sal (não mais que isso) num copo de água se sentir dor de cabeça ou fraqueza.</li>
+                <li><strong style="color:var(--ink)">Potássio:</strong> coma bem na janela de alimentação — abacate, banana, batata-doce, folhas verdes.</li>
+                <li><strong style="color:var(--ink)">Magnésio:</strong> oleaginosas e vegetais escuros ajudam a evitar cãibra e insônia.</li>
+                <li>Sinal de que falta eletrólito: dor de cabeça, cansaço fora do comum, cãibra ou coração acelerado em repouso.</li>
+              </ul>
+            </div>
 
-        <div class="card" id="supplementCard">
-          <div class="card-title">Suplementação — com cautela</div>
-          <p class="note" style="text-align:left;margin-bottom:12px">Suplemento não substitui exame de sangue. O ideal é pedir ao seu médico um painel básico (veja "Exames recomendados" na aba Progresso) antes de suplementar qualquer coisa — tomar o que seu corpo não precisa não ajuda, e em alguns casos atrapalha.</p>
-          <ul class="rules-list">
-            <li><strong style="color:var(--ink)">Vitamina D:</strong> das mais comuns em falta no Brasil — só dá pra saber a dose certa com exame.</li>
-            <li><strong style="color:var(--ink)">Ômega-3:</strong> se você come pouco peixe na semana, pode fazer sentido — priorize a comida primeiro.</li>
-            <li><strong style="color:var(--ink)">Magnésio:</strong> ajuda sono e cãibra em quem tem baixa ingestão pela alimentação.</li>
-            <li>Ferro, B12 e outros só devem ser suplementados com exame mostrando necessidade — excesso de ferro, por exemplo, não é inofensivo.</li>
-          </ul>
-        </div>
+            <div class="card" id="inflamCard">
+              <div class="card-title">Desinflamar o corpo</div>
+              <p class="note" style="text-align:left;margin-bottom:12px">Inchaço, cansaço, dor articular e dificuldade para emagrecer costumam andar junto com inflamação de baixo grau — muitas vezes causada pelo que comemos e como dormimos, não por uma doença.</p>
+              <p style="font-weight:700;font-size:0.85rem;color:var(--ink);margin-bottom:6px">O que alimenta a inflamação</p>
+              <ul class="rules-list" style="margin-bottom:12px">
+                <li>Ultraprocessados, frituras e excesso de açúcar de adição.</li>
+                <li>Álcool em excesso.</li>
+                <li>Sono ruim e estresse constante.</li>
+              </ul>
+              <p style="font-weight:700;font-size:0.85rem;color:var(--ink);margin-bottom:6px">O que ajuda a desinflamar</p>
+              <ul class="rules-list">
+                <li>Peixes gordurosos (sardinha, salmão), azeite de oliva e oleaginosas — fontes de ômega-3.</li>
+                <li>Vegetais e frutas coloridas em quantidade, todos os dias.</li>
+                <li>Cúrcuma e gengibre, temperando a comida.</li>
+                <li>Dormir bem e mover o corpo — tão anti-inflamatório quanto a comida.</li>
+              </ul>
+            </div>
 
-        <div class="card" id="faqCard">
-          <div class="card-title">Perguntas frequentes</div>
-          <div class="habit-block">
-            <div class="habit-top"><div class="t">Como evitar mau hálito no jejum?</div></div>
-            <p class="note" style="text-align:left">Escove os dentes mais vezes, use enxaguante bucal e beba bastante água. Mascar um cravo ou pauzinho de canela também ajuda — é normal e passa quando você come.</p>
+            <div class="card" id="supplementCard">
+              <div class="card-title">Suplementação — com cautela</div>
+              <p class="note" style="text-align:left;margin-bottom:12px">Suplemento não substitui exame de sangue. O ideal é pedir ao seu médico um painel básico (veja "Exames recomendados" na aba Progresso) antes de suplementar qualquer coisa — tomar o que seu corpo não precisa não ajuda, e em alguns casos atrapalha.</p>
+              <ul class="rules-list">
+                <li><strong style="color:var(--ink)">Vitamina D:</strong> das mais comuns em falta no Brasil — só dá pra saber a dose certa com exame.</li>
+                <li><strong style="color:var(--ink)">Ômega-3:</strong> se você come pouco peixe na semana, pode fazer sentido — priorize a comida primeiro.</li>
+                <li><strong style="color:var(--ink)">Magnésio:</strong> ajuda sono e cãibra em quem tem baixa ingestão pela alimentação.</li>
+                <li>Ferro, B12 e outros só devem ser suplementados com exame mostrando necessidade — excesso de ferro, por exemplo, não é inofensivo.</li>
+              </ul>
+            </div>
+
+            <div class="card" id="faqCard">
+              <div class="card-title">Perguntas frequentes</div>
+              <div class="habit-block">
+                <div class="habit-top"><div class="t">Como evitar mau hálito no jejum?</div></div>
+                <p class="note" style="text-align:left">Escove os dentes mais vezes, use enxaguante bucal e beba bastante água. Mascar um cravo ou pauzinho de canela também ajuda — é normal e passa quando você come.</p>
+              </div>
+              <div class="habit-block">
+                <div class="habit-top"><div class="t">Café com leite ou adoçante quebra o jejum?</div></div>
+                <p class="note" style="text-align:left">Leite tem caloria, então quebra. Adoçante sem caloria (stevia, sucralose) geralmente não atrapalha o jejum metabólico — café puro continua sendo a opção mais segura.</p>
+              </div>
+              <div class="habit-block">
+                <div class="habit-top"><div class="t">Posso treinar em jejum?</div></div>
+                <p class="note" style="text-align:left">Atividade leve a moderada geralmente é tranquila. Para treinos intensos, muita gente prefere treinar perto do fim da janela de jejum ou logo após comer — teste e veja o que seu corpo prefere.</p>
+              </div>
+              <div class="habit-block" style="border-bottom:none">
+                <div class="habit-top"><div class="t">É fome de verdade ou só vontade?</div></div>
+                <p class="note" style="text-align:left">Fome de verdade cresce aos poucos e aceita qualquer comida. Vontade aparece de repente e pede algo específico (doce, salgadinho). Beba água e espere 10 minutos antes de decidir.</p>
+              </div>
+            </div>
+
           </div>
-          <div class="habit-block">
-            <div class="habit-top"><div class="t">Café com leite ou adoçante quebra o jejum?</div></div>
-            <p class="note" style="text-align:left">Leite tem caloria, então quebra. Adoçante sem caloria (stevia, sucralose) geralmente não atrapalha o jejum metabólico — café puro continua sendo a opção mais segura.</p>
-          </div>
-          <div class="habit-block">
-            <div class="habit-top"><div class="t">Posso treinar em jejum?</div></div>
-            <p class="note" style="text-align:left">Atividade leve a moderada geralmente é tranquila. Para treinos intensos, muita gente prefere treinar perto do fim da janela de jejum ou logo após comer — teste e veja o que seu corpo prefere.</p>
-          </div>
-          <div class="habit-block" style="border-bottom:none">
-            <div class="habit-top"><div class="t">É fome de verdade ou só vontade?</div></div>
-            <p class="note" style="text-align:left">Fome de verdade cresce aos poucos e aceita qualquer comida. Vontade aparece de repente e pede algo específico (doce, salgadinho). Beba água e espere 10 minutos antes de decidir.</p>
-          </div>
-        </div>
+        </details>
 
         <div class="card" id="rulesCard">
           <div class="card-title">Sinais de alerta — pare e coma se sentir</div>
@@ -770,13 +818,29 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
           </ul>
         </div>
 
-        <div class="settings-line">
+        <div class="settings-line" id="jejumSettingsLine" style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap">
+          <button id="fastLogLink">registrar jejum já feito</button>
           <button id="restartBtn">Recomeçar do dia 1</button>
         </div>
       </section>
 
       <section class="view" id="view-plano">
         <div id="goalCard"></div>
+
+        <div class="card">
+          <div class="card-title">Questionário rápido — o que priorizar</div>
+          <p class="note" style="text-align:left;margin-bottom:12px">Marque o que você sente com frequência. Não é diagnóstico — é pra eu te apontar qual desafio abaixo vale mais a pena começar primeiro.</p>
+          <div class="chip-row" id="symptomChips">
+            <input type="checkbox" id="sym-inchaco" class="chip-input"><label class="chip" for="sym-inchaco">Inchaço abdominal frequente</label>
+            <input type="checkbox" id="sym-prisao" class="chip-input"><label class="chip" for="sym-prisao">Prisão de ventre</label>
+            <input type="checkbox" id="sym-fadiga" class="chip-input"><label class="chip" for="sym-fadiga">Fadiga que café não resolve</label>
+            <input type="checkbox" id="sym-doce" class="chip-input"><label class="chip" for="sym-doce">Vontade de doce descontrolada</label>
+            <input type="checkbox" id="sym-tpm" class="chip-input"><label class="chip" for="sym-tpm">TPM mais forte que antes</label>
+          </div>
+          <button class="btn btn-primary btn-sm" id="symptomBtn">Ver recomendação</button>
+          <div id="symptomResult"></div>
+        </div>
+
         <div id="challengesWrap"></div>
 
         <div class="card">
@@ -887,6 +951,26 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
       </div>
     </div>
 
+    <div class="dialog-backdrop" id="fastLogDialog">
+      <div class="dialog">
+        <h3>Registrar um jejum já feito</h3>
+        <p>Pra quando você esqueceu de tocar em "começar" ou "encerrar" na hora certa.</p>
+        <div class="field">
+          <label for="fastLogStart">Começou em</label>
+          <input type="datetime-local" id="fastLogStart">
+        </div>
+        <div class="field">
+          <label for="fastLogEnd">Terminou em</label>
+          <input type="datetime-local" id="fastLogEnd">
+        </div>
+        <div class="form-error" id="fastLogError">Confira as datas — o fim precisa ser depois do início.</div>
+        <div class="row">
+          <button class="btn btn-ghost" id="fastLogCancel">Cancelar</button>
+          <button class="btn btn-primary" id="fastLogSave">Registrar</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -987,6 +1071,10 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
   function todayKey(d){ d=d||new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
   function startOfDay(d){ var x=new Date(d); x.setHours(0,0,0,0); return x; }
   function addDays(d,n){ var x=new Date(d); x.setDate(x.getDate()+n); return x; }
+  function toLocalInputValue(d){
+    var p2=function(n){return n<10?'0'+n:''+n;};
+    return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate())+'T'+p2(d.getHours())+':'+p2(d.getMinutes());
+  }
   function get(key, fallback){ var v=localStorage.getItem(key); if(v===null) return fallback; try{return JSON.parse(v);}catch(e){return fallback;} }
   function set(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
 
@@ -1262,20 +1350,25 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
   function ringCirc(){ return 2*Math.PI*52; }
 
   function renderFast(p){
-    var fastCard = document.getElementById('fastCard');
+    var fastActive = document.getElementById('fastActive');
+    var fastNoFastMsg = document.getElementById('fastNoFastMsg');
     var dayGridCard = document.getElementById('dayGridCard');
     var phaseCard = document.getElementById('phaseCard');
     var rulesCard = document.getElementById('rulesCard');
+    var fastLogLink = document.getElementById('fastLogLink');
     var extraCards = [document.getElementById('mechCard'), document.getElementById('duringCard'), document.getElementById('electroCard')];
 
     if(p.calc.noFast){
-      fastCard.innerHTML = '<div class="card-title">Hoje</div><p style="font-size:1rem;line-height:1.6">Nesse momento o foco não é jejum — é comer bem, com regularidade. Você já está cuidando de si só por estar aqui.</p>';
+      fastActive.style.display='none'; fastNoFastMsg.style.display='';
       dayGridCard.style.display='none'; phaseCard.style.display='none'; rulesCard.style.display='none';
+      fastLogLink.style.display='none';
       extraCards.forEach(function(el){ el.style.display='none'; });
       if(fastTimer) clearInterval(fastTimer);
       return;
     }
+    fastActive.style.display=''; fastNoFastMsg.style.display='none';
     dayGridCard.style.display=''; phaseCard.style.display=''; rulesCard.style.display='';
+    fastLogLink.style.display='';
     extraCards.forEach(function(el){ el.style.display=''; });
 
     var day = Math.min(Math.max(dayNumber(),1),21);
@@ -1320,6 +1413,25 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
       } else {
         localStorage.setItem(FAST_KEY, Date.now());
       }
+      renderFast(p); renderDayGrid(p);
+    };
+
+    var adjustForm = document.getElementById('fastAdjustForm');
+    var adjustInput = document.getElementById('fastAdjustInput');
+    adjustForm.classList.add('hidden');
+    document.getElementById('fastAdjustLink').onclick = function(){
+      var base = startTs ? new Date(+startTs) : new Date();
+      adjustInput.value = toLocalInputValue(base);
+      adjustForm.classList.remove('hidden');
+    };
+    document.getElementById('fastAdjustCancel').onclick = function(){ adjustForm.classList.add('hidden'); };
+    document.getElementById('fastAdjustSave').onclick = function(){
+      var val = adjustInput.value;
+      if(!val) return;
+      var ts = new Date(val).getTime();
+      if(isNaN(ts) || ts > Date.now()) return;
+      localStorage.setItem(FAST_KEY, ts);
+      adjustForm.classList.add('hidden');
       renderFast(p); renderDayGrid(p);
     };
 
@@ -1878,6 +1990,75 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
   }
 
   /* ---------------- settings / backup ---------------- */
+  function initFastLog(){
+    var dialog = document.getElementById('fastLogDialog');
+    var openBtn = document.getElementById('fastLogLink');
+    var err = document.getElementById('fastLogError');
+
+    openBtn.addEventListener('click', function(){
+      var now = new Date();
+      var startDefault = new Date(now.getTime() - 12*3600000);
+      document.getElementById('fastLogStart').value = toLocalInputValue(startDefault);
+      document.getElementById('fastLogEnd').value = toLocalInputValue(now);
+      err.classList.remove('show');
+      dialog.classList.add('open');
+    });
+    document.getElementById('fastLogCancel').addEventListener('click', function(){ dialog.classList.remove('open'); });
+
+    document.getElementById('fastLogSave').addEventListener('click', function(){
+      var sVal = document.getElementById('fastLogStart').value;
+      var eVal = document.getElementById('fastLogEnd').value;
+      var sTs = new Date(sVal).getTime();
+      var eTs = new Date(eVal).getTime();
+      if(!sVal || !eVal || isNaN(sTs) || isNaN(eTs) || eTs<=sTs || eTs>Date.now()){
+        err.classList.add('show');
+        return;
+      }
+      err.classList.remove('show');
+
+      var p = loadProfile();
+      if(p && !p.calc.noFast){
+        var programStart = startDate();
+        var dNum = Math.floor((startOfDay(new Date(sTs)) - startOfDay(programStart))/86400000) + 1;
+        dNum = Math.min(Math.max(dNum,1),21);
+        var phase = phaseFor(dNum, p.calc);
+        if((eTs-sTs) >= phase.hours*3600000*0.8){
+          var done = get('vp_daysDone', []);
+          if(done.indexOf(dNum)===-1){ done.push(dNum); set('vp_daysDone', done); }
+        }
+      }
+      dialog.classList.remove('open');
+      renderAll();
+    });
+  }
+
+  function initSymptomQuiz(){
+    var ids = ['sym-inchaco','sym-prisao','sym-fadiga','sym-doce','sym-tpm'];
+    var saved = get('vp_symptoms', []);
+    ids.forEach(function(id){
+      var el = document.getElementById(id);
+      if(!el) return;
+      el.checked = saved.indexOf(id)>-1;
+      el.addEventListener('change', function(){
+        var arr = ids.filter(function(i){ var e=document.getElementById(i); return e && e.checked; });
+        set('vp_symptoms', arr);
+      });
+    });
+    document.getElementById('symptomBtn').addEventListener('click', function(){
+      var checked = ids.filter(function(i){ var e=document.getElementById(i); return e && e.checked; });
+      var n = checked.length;
+      var html;
+      if(n<=1){
+        html = '<div class="banner banner-care" style="margin-top:12px"><div><b>Poucos sinais por aqui</b>Sem grande urgência. O Protocolo de Desinflamação (7 dias, na lista de desafios abaixo) já serve bem como manutenção.</div></div>';
+      } else if(n<=3){
+        html = '<div class="banner banner-caution" style="margin-top:12px"><div><b>Vale focar nisso essa semana</b>Comece pelo Protocolo de Desinflamação abaixo, e capriche em água e fibra (vegetais, frutas). Costuma fazer diferença em poucos dias.</div></div>';
+      } else {
+        html = '<div class="banner banner-caution" style="margin-top:12px"><div><b>Isso pede mais atenção</b>Comece pelo Protocolo de Desinflamação, mas o mais importante: leve a lista de "Exames recomendados" (aba Progresso) ao seu médico. Sintomas assim, juntos e frequentes, merecem investigação de verdade — não só ajuste de dieta.</div></div>';
+      }
+      document.getElementById('symptomResult').innerHTML = html;
+    });
+  }
+
   function initSettings(){
     var dialog = document.getElementById('settingsDialog');
     document.getElementById('settingsBtn').addEventListener('click', function(){ dialog.classList.add('open'); });
@@ -1952,6 +2133,8 @@ main{ flex:1; padding:18px 18px 100px; display:flex; flex-direction:column; gap:
   initTabs();
   initRestart();
   initSettings();
+  initFastLog();
+  initSymptomQuiz();
 
   var existingProfile = loadProfile();
   if(existingProfile){
