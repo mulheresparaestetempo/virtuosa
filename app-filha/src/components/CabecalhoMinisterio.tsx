@@ -6,11 +6,8 @@ export default function CabecalhoMinisterio() {
   return (
     <View style={styles.container}>
       <View style={styles.linhaTopo}>
-        <Image source={ministerio.logo} style={styles.logo} />
-        <View style={styles.textos}>
-          <Text style={styles.nome}>{ministerio.nome}</Text>
-          <Text style={styles.legenda}>Um lugar de cuidado, fé e comunidade</Text>
-        </View>
+        <Image source={ministerio.logo} style={styles.logo} resizeMode="contain" />
+        <Text style={styles.legenda}>Um lugar de cuidado, fé e comunidade</Text>
       </View>
 
       <View style={styles.linhaLinks}>
@@ -37,16 +34,12 @@ const styles = StyleSheet.create({
   container: { marginBottom: 22 },
   linhaTopo: { flexDirection: 'row', alignItems: 'center', marginBottom: 14 },
   logo: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    borderWidth: 2,
-    borderColor: cores.ouro,
-    marginRight: 12,
+    width: 34,
+    height: 34,
+    marginRight: 8,
+    opacity: 0.92,
   },
-  textos: { flex: 1 },
-  nome: { fontSize: 20, fontWeight: '700', color: cores.bordo },
-  legenda: { fontSize: 12, color: cores.ouroEscuro, marginTop: 2 },
+  legenda: { fontSize: 12, color: cores.ouroEscuro, flexShrink: 1 },
   linhaLinks: { flexDirection: 'row', gap: 10 },
   botaoLink: {
     flex: 1,
