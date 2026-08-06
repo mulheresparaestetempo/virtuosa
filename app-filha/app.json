@@ -25,6 +25,12 @@
       "favicon": "./assets/favicon.png"
     },
     "owner": "appfilhas-team",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/b45b70d6-e550-48c5-915a-d294b2af0481"
+    },
     "extra": {
       "eas": {
         "projectId": "b45b70d6-e550-48c5-915a-d294b2af0481"
