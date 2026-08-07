@@ -18,17 +18,20 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies (painel_lider)
-        run: cd apps/painel_lider && npm install
+        run: cd apps/painel_lider && npm install --legacy-peer-deps
 
       - name: Build Next.js app
         run: cd apps/painel_lider && npm run build
 
-      - name: Export static site
-        run: cd apps/painel_lider && npm run export || true
+      - name: Create public directory
+        run: |
+          mkdir -p /tmp/public
+          cp -r apps/painel_lider/.next/static /tmp/public/ || true
+          cp -r apps/painel_lider/public/* /tmp/public/ || true
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./apps/painel_lider/out
-          cname: virtuosa.mulheresparaestetempo.dev
+          publish_dir: /tmp/public
+          force_orphan: true
