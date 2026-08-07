@@ -1,7 +1,8 @@
-# App FILHA — Plataforma de Discipulado Feminino
+# App Abba Virtuosa — Plataforma de Discipulado Feminino
 
 > Documento de arquitetura e priorização. Consolida o briefing original
-> ("Projeto App FILHA — Plataforma de Discipulado Feminino"), a estrutura
+> ("Projeto App FILHA — Plataforma de Discipulado Feminino", nome de
+> trabalho do projeto antes do rebranding para Abba Virtuosa), a estrutura
 > expandida de 18 módulos definida como base oficial do projeto, e a
 > discussão de refinamento (priorização, modelo de dados, decisões de
 > privacidade e arquitetura da IA).
@@ -16,8 +17,10 @@ comunhão e do cuidado pastoral, até que elas também estejam preparadas para
 discipular outras mulheres.
 
 ## Visão da plataforma
-O FILHA não é apenas um aplicativo de devocionais. É uma plataforma de
-discipulado feminino, conectando quatro pilares:
+Construir o aplicativo cristão feminino mais completo do Brasil. O Abba
+Virtuosa não é apenas um aplicativo de devocionais. É uma plataforma de
+discipulado feminino, conectando mulheres, líderes, igrejas e ministérios em
+torno de quatro pilares:
 
 1. **Intimidade com Deus** — devocionais, oração, jejum e Bíblia
 2. **Crescimento espiritual** — jornadas, cursos, diário e memoriais
@@ -25,11 +28,56 @@ discipulado feminino, conectando quatro pilares:
 4. **Cuidado pastoral** — acompanhamento por líderes, células e igrejas
 
 ## Ecossistema
-Instagram → WhatsApp → App FILHA → Igreja/Células.
+Instagram → WhatsApp → App Abba Virtuosa → Igreja/Células.
 
 O site Virtuosas (PIBAM Espraiado) atua como canal de entrada/ponte desse
-ecossistema; o App FILHA é o produto de retenção, formação e cuidado
+ecossistema; o App Abba Virtuosa é o produto de retenção, formação e cuidado
 contínuo.
+
+## Identidade visual
+
+**Slogan:** "Todos os dias, um encontro com o Pai."
+
+O aplicativo deve transmitir paz. Cada tela deve fazer a usuária sentir que
+entrou em seu Lugar Secreto. Toda a experiência deve ser elegante,
+minimalista, sofisticada, feminina, cristã e premium — inspirada em
+referências como Bible App, Abide, Glorify, Soulspace, Calm, Headspace e
+Pinterest (flores, folhas, oliveiras, aquarela, luz dourada, muito espaço
+branco).
+
+**Princípios:** nada de gamificação competitiva — sem ranking, sem pontos,
+sem competição. O crescimento é espiritual. No lugar de "conquistas", os
+marcos chamam-se **Memoriais**: cada um representa algo que Deus fez.
+
+**Paleta de cores**
+
+| Uso | Cor | Hex |
+|---|---|---|
+| Fundo principal | Creme | `#F7F3EE` |
+| Secundária | Rosé | `#EBC9C5` |
+| Dourado | Dourado | `#C6A46A` |
+| Oliva | Verde oliva | `#A6B38E` |
+| Texto | Cinza-marrom escuro | `#3E3A36` |
+| Fundo de cards | Branco | `#FFFFFF` |
+
+Implementada em `app-filha/src/theme.ts`.
+
+**Tipografia**
+- Playfair Display — títulos de destaque
+- Cormorant Garamond — versículos e citações (itálico, delicado)
+- Poppins — botões e rótulos de interface
+- Inter — corpo de texto e leitura longa
+
+Implementada via `@expo-google-fonts/*` e carregada em `app-filha/App.tsx`;
+tokens em `app-filha/src/theme.ts` (`fontes`).
+
+**Estilo de tela:** bordas arredondadas, sombras suaves, cards grandes,
+ícones minimalistas, espaçamento amplo, microinterações discretas. Cada
+módulo idealmente tem um sticker exclusivo em aquarela (sem fundo, alta
+resolução, nunca repetido) — pendente: este protótipo ainda usa emojis como
+placeholder dos ícones de módulo, já que a produção de ilustrações originais
+exige um banco de assets próprio (ilustrador ou ferramenta de geração de
+imagem) que ainda não foi produzido para o projeto.
 
 ## Estrutura oficial — 18 módulos
 
@@ -177,8 +225,8 @@ igreja em semanas, não meses.
 6. **Comparação de traduções bíblicas**: depende de licenciamento de cada
    versão — verificar direitos antes de incluir mais de uma tradução
 7. **Relação com o repositório atual**: o site Virtuosas permanece como
-   canal de entrada e o App FILHA nasce como produto separado, ou tudo passa
-   a ser a mesma plataforma com uma área nova
+   canal de entrada e o App Abba Virtuosa nasce como produto separado, ou
+   tudo passa a ser a mesma plataforma com uma área nova
 
 ## PWA vs. App Nativo
 

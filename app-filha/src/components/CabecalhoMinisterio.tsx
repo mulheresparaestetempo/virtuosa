@@ -1,5 +1,5 @@
 import { Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { cores } from '../theme';
+import { cores, fontes } from '../theme';
 import { ministerio } from '../data/ministerio';
 
 export default function CabecalhoMinisterio() {
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
     opacity: 0.92,
   },
-  legenda: { fontSize: 12, color: cores.ouroEscuro, flexShrink: 1 },
+  legenda: { fontSize: 12, fontFamily: fontes.versiculo, color: cores.ouroEscuro, flexShrink: 1 },
   linhaLinks: { flexDirection: 'row', gap: 10 },
   botaoLink: {
     flex: 1,
@@ -53,5 +53,5 @@ const styles = StyleSheet.create({
   botaoWhatsapp: { backgroundColor: '#25D366' },
   botaoInstagram: { backgroundColor: '#C13584' },
   botaoLinkEmoji: { fontSize: 15 },
-  botaoLinkTexto: { color: '#fff', fontWeight: '700', fontSize: 12.5 },
+  botaoLinkTexto: { color: '#fff', fontFamily: fontes.rotulo, fontSize: 12.5 },
 });

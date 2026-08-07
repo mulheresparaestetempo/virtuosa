@@ -11,7 +11,7 @@ import {
   View,
 } from 'react-native';
 import { doc, updateDoc } from 'firebase/firestore';
-import { cores } from '../theme';
+import { cores, fontes } from '../theme';
 import { carregar, salvar } from '../storage';
 import CabecalhoMinisterio from '../components/CabecalhoMinisterio';
 import LouvorAberturaPlayer from '../components/LouvorAberturaPlayer';
@@ -289,12 +289,13 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   saudacao: {
-    fontSize: 22,
-    fontWeight: '700',
+    fontSize: 24,
+    fontFamily: fontes.titulo,
     color: cores.bordo,
   },
   data: {
     fontSize: 14,
+    fontFamily: fontes.texto,
     color: cores.ouroEscuro,
     marginTop: 4,
     marginBottom: 20,
@@ -316,30 +317,31 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     marginBottom: 10,
   },
-  badgeDiaTexto: { color: '#fff', fontWeight: '700', fontSize: 13 },
+  badgeDiaTexto: { color: '#fff', fontFamily: fontes.rotulo, fontSize: 13 },
   nomeMes: {
     fontSize: 11,
-    fontWeight: '700',
+    fontFamily: fontes.rotulo,
     color: cores.ouroEscuro,
     textTransform: 'uppercase',
     letterSpacing: 0.6,
     marginBottom: 6,
   },
   tituloDevocional: {
-    fontSize: 23,
-    fontWeight: '700',
+    fontSize: 24,
+    fontFamily: fontes.titulo,
     color: cores.bordo,
     marginBottom: 10,
   },
   versiculo: {
-    fontSize: 14,
-    fontStyle: 'italic',
+    fontSize: 16,
+    fontFamily: fontes.versiculo,
     color: cores.ouroEscuro,
     marginBottom: 12,
-    lineHeight: 20,
+    lineHeight: 22,
   },
   resumo: {
     fontSize: 15,
+    fontFamily: fontes.texto,
     color: cores.cinzaTexto,
     lineHeight: 22,
     marginBottom: 16,
@@ -352,7 +354,7 @@ const styles = StyleSheet.create({
   },
   botaoPrimarioTexto: {
     color: '#fff',
-    fontWeight: '700',
+    fontFamily: fontes.rotulo,
     fontSize: 15,
   },
   cardLouvor: {
@@ -370,19 +372,19 @@ const styles = StyleSheet.create({
   louvorEmoji: { fontSize: 26 },
   louvorLabel: {
     fontSize: 11,
-    fontWeight: '700',
+    fontFamily: fontes.rotulo,
     color: cores.ouroEscuro,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
-  louvorTitulo: { fontSize: 15, fontWeight: '700', color: cores.bordo, marginTop: 2 },
+  louvorTitulo: { fontSize: 15, fontFamily: fontes.textoForte, color: cores.bordo, marginTop: 2 },
   botaoOuvir: {
     backgroundColor: cores.bordo,
     paddingVertical: 8,
     paddingHorizontal: 14,
     borderRadius: 20,
   },
-  botaoOuvirTexto: { color: '#fff', fontWeight: '700', fontSize: 12.5 },
+  botaoOuvirTexto: { color: '#fff', fontFamily: fontes.rotulo, fontSize: 12.5 },
   secaoAcoesTitulo: { marginTop: 24, marginBottom: 10 },
   acoesLista: { gap: 12, marginBottom: 6 },
   card: {
@@ -404,8 +406,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   iconeTexto: { fontSize: 20 },
-  tituloAcao: { fontSize: 15, fontWeight: '700', color: cores.bordo },
-  subtituloAcao: { fontSize: 12, color: cores.cinzaClaro, marginTop: 2 },
+  tituloAcao: { fontSize: 15, fontFamily: fontes.textoForte, color: cores.bordo },
+  subtituloAcao: { fontSize: 12, fontFamily: fontes.texto, color: cores.cinzaClaro, marginTop: 2 },
   seta: { fontSize: 22, color: cores.ouroEscuro },
   grade: {
     flexDirection: 'row',
@@ -428,12 +430,13 @@ const styles = StyleSheet.create({
   },
   cardTitulo: {
     fontSize: 15,
-    fontWeight: '700',
+    fontFamily: fontes.textoForte,
     color: cores.bordo,
     marginBottom: 2,
   },
   cardSubtitulo: {
     fontSize: 12,
+    fontFamily: fontes.texto,
     color: cores.cinzaClaro,
   },
   secaoGaleriaCabecalho: {
@@ -444,12 +447,12 @@ const styles = StyleSheet.create({
   },
   secaoTitulo: {
     fontSize: 13,
-    fontWeight: '700',
+    fontFamily: fontes.rotulo,
     color: cores.ouroEscuro,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
-  linkAdicionar: { fontSize: 13, fontWeight: '700', color: cores.rosa },
+  linkAdicionar: { fontSize: 13, fontFamily: fontes.rotulo, color: cores.rosa },
   formFoto: {
     backgroundColor: cores.cremeCard,
     borderRadius: 14,
@@ -465,12 +468,13 @@ const styles = StyleSheet.create({
     borderColor: cores.borda,
     padding: 12,
     fontSize: 14,
+    fontFamily: fontes.texto,
     color: cores.cinzaTexto,
     marginBottom: 10,
   },
   botaoSalvarFoto: { backgroundColor: cores.rosa, paddingVertical: 12, borderRadius: 10, alignItems: 'center' },
-  botaoSalvarFotoTexto: { color: '#fff', fontWeight: '700', fontSize: 14 },
-  semFotos: { fontSize: 13, color: cores.cinzaClaro, marginBottom: 8 },
+  botaoSalvarFotoTexto: { color: '#fff', fontFamily: fontes.rotulo, fontSize: 14 },
+  semFotos: { fontSize: 13, fontFamily: fontes.texto, color: cores.cinzaClaro, marginBottom: 8 },
   galeria: { marginBottom: 4 },
   fotoCard: { width: 120, marginRight: 12 },
   foto: {
@@ -481,7 +485,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: cores.borda,
   },
-  fotoLegenda: { fontSize: 11, color: cores.cinzaTexto, marginTop: 4 },
+  fotoLegenda: { fontSize: 11, fontFamily: fontes.texto, color: cores.cinzaTexto, marginTop: 4 },
   rodapeControles: {
     marginTop: 22,
     gap: 10,
@@ -506,7 +510,7 @@ const styles = StyleSheet.create({
   },
   controleTexto: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: fontes.textoForte,
     color: cores.bordo,
   },
 });

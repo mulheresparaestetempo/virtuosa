@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { cores } from '../theme';
+import { cores, fontes } from '../theme';
 import { ministerio } from '../data/ministerio';
 import { useAuth } from '../context/AuthContext';
 
@@ -119,9 +119,10 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: cores.creme },
   container: { flexGrow: 1, padding: 24, alignItems: 'center', justifyContent: 'center' },
   logo: { width: 72, height: 72, marginBottom: 16 },
-  titulo: { fontSize: 22, fontWeight: '700', color: cores.bordo, textAlign: 'center' },
+  titulo: { fontSize: 26, fontFamily: fontes.titulo, color: cores.bordo, textAlign: 'center' },
   subtitulo: {
     fontSize: 13,
+    fontFamily: fontes.texto,
     color: cores.cinzaClaro,
     textAlign: 'center',
     marginTop: 6,
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
     color: cores.cinzaTexto,
     marginBottom: 12,
   },
-  erro: { color: cores.rosa, fontSize: 13, marginBottom: 12, textAlign: 'center' },
+  erro: { color: cores.rosa, fontFamily: fontes.texto, fontSize: 13, marginBottom: 12, textAlign: 'center' },
   botaoPrimario: {
     backgroundColor: cores.ouro,
     paddingVertical: 14,
@@ -154,6 +155,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   botaoDesabilitado: { opacity: 0.5 },
-  botaoPrimarioTexto: { color: '#fff', fontWeight: '700', fontSize: 15 },
-  link: { color: cores.bordo, fontWeight: '600', fontSize: 13, marginTop: 20, textAlign: 'center' },
+  botaoPrimarioTexto: { color: '#fff', fontFamily: fontes.rotulo, fontSize: 15 },
+  link: { color: cores.bordo, fontFamily: fontes.textoForte, fontSize: 13, marginTop: 20, textAlign: 'center' },
 });

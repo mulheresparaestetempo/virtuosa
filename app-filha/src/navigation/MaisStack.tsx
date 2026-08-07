@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { cores } from '../theme';
+import { cores, fontes } from '../theme';
 
 import MaisScreen from '../screens/MaisScreen';
 import MemoriaisScreen from '../screens/MemoriaisScreen';
@@ -41,6 +41,7 @@ export default function MaisStack() {
       screenOptions={{
         headerTintColor: cores.bordo,
         headerStyle: { backgroundColor: cores.creme },
+        headerTitleStyle: { fontFamily: fontes.titulo, fontSize: 19 },
         headerShadowVisible: false,
       }}
     >

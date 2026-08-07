@@ -1,7 +1,19 @@
+import { useCallback, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StatusBar } from 'expo-status-bar';
 import { ActivityIndicator, SafeAreaView, Text } from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
+import { useFonts } from 'expo-font';
+import {
+  PlayfairDisplay_600SemiBold,
+  PlayfairDisplay_700Bold,
+} from '@expo-google-fonts/playfair-display';
+import {
+  CormorantGaramond_600SemiBold_Italic,
+} from '@expo-google-fonts/cormorant-garamond';
+import { Poppins_500Medium, Poppins_600SemiBold } from '@expo-google-fonts/poppins';
+import { Inter_400Regular, Inter_600SemiBold } from '@expo-google-fonts/inter';
 
 import LugarSecretoScreen from './src/screens/LugarSecretoScreen';
 import BibliaScreen from './src/screens/BibliaScreen';
@@ -11,7 +23,9 @@ import MaisStack from './src/navigation/MaisStack';
 import AutenticacaoScreen from './src/screens/AutenticacaoScreen';
 import { AuthProvider, useAuth } from './src/context/AuthContext';
 import { firebaseConfigurado } from './src/firebase';
-import { cores } from './src/theme';
+import { cores, fontes } from './src/theme';
+
+SplashScreen.preventAutoHideAsync().catch(() => {});
 
 const Tab = createBottomTabNavigator();
 
@@ -23,6 +37,7 @@ function AppTabs() {
         tabBarActiveTintColor: cores.bordo,
         tabBarInactiveTintColor: cores.cinzaClaro,
         tabBarStyle: { backgroundColor: '#fff', borderTopColor: cores.borda },
+        tabBarLabelStyle: { fontFamily: fontes.rotuloMedio, fontSize: 11 },
       }}
     >
       <Tab.Screen
@@ -84,6 +99,26 @@ function Portao() {
 }
 
 export default function App() {
+  const [fontesCarregadas] = useFonts({
+    PlayfairDisplay_600SemiBold,
+    PlayfairDisplay_700Bold,
+    CormorantGaramond_600SemiBold_Italic,
+    Poppins_500Medium,
+    Poppins_600SemiBold,
+    Inter_400Regular,
+    Inter_600SemiBold,
+  });
+
+  const aoRenderizarLayout = useCallback(async () => {
+    if (fontesCarregadas) await SplashScreen.hideAsync();
+  }, [fontesCarregadas]);
+
+  useEffect(() => {
+    aoRenderizarLayout();
+  }, [aoRenderizarLayout]);
+
+  if (!fontesCarregadas) return null;
+
   return (
     <NavigationContainer>
       <StatusBar style="dark" />
