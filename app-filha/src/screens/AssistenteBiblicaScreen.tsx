@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -8,187 +8,421 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { cores, raios } from '../theme';
+import { cores, fontes, raios, sombra } from '../theme';
+import { carregar, salvar } from '../storage';
 
-type Resultado = {
-  versiculo: string;
-  referencia: string;
-  plano: string;
+const CHAVE_HISTORICO = 'assistente_historico';
+
+type Mensagem = {
+  id: string;
+  tipo: 'usuario' | 'assistente';
+  texto: string;
+  timestamp: string;
+  fonte?: string;
 };
 
-const baseDeConhecimento: { palavraChave: string[]; resultado: Resultado }[] = [
+type BaseConhecimento = {
+  palavrasChave: string[];
+  resposta: string;
+  fonte: string;
+  referencia?: string;
+};
+
+const baseDeConhecimento: BaseConhecimento[] = [
   {
-    palavraChave: ['ansiedade', 'ansiosa', 'preocupada', 'aflita', 'medo'],
-    resultado: {
-      versiculo:
-        'Não andeis ansiosos por coisa alguma; antes, as vossas petições sejam em tudo conhecidas diante de Deus, pela oração e súplica, com ação de graças.',
-      referencia: 'Filipenses 4:6',
-      plano: 'Plano de leitura: Salmos',
-    },
+    palavrasChave: ['ansiedade', 'ansiosa', 'preocupada', 'aflita', 'medo'],
+    resposta:
+      '"Não andeis ansiosos por coisa alguma; antes, as vossas petições sejam em tudo conhecidas diante de Deus, pela oração e súplica, com ação de graças. E a paz de Deus, que excede todo o entendimento, guardará os vossos corações e as vossas mentes em Cristo Jesus." (Filipenses 4:6-7)\n\nA Bíblia nos ensina que diante da ansiedade, devemos trazer tudo a Deus em oração. Recomendo o Plano de Leitura "Salmos de Conforto" para meditar diariamente.',
+    fonte: 'Bíblia',
+    referencia: 'Filipenses 4:6-7',
   },
   {
-    palavraChave: ['cansada', 'cansaço', 'exausta', 'sobrecarregada', 'descanso'],
-    resultado: {
-      versiculo: 'Vinde a mim, todos os que estais cansados e sobrecarregados, e eu vos aliviarei.',
-      referencia: 'Mateus 11:28',
-      plano: 'Plano de leitura: Evangelhos',
-    },
+    palavrasChave: ['joão', 'joão 3', 'nascimento de novo', 'renascer'],
+    resposta:
+      'João 3 fala sobre o nascimento de novo através de Jesus. O versículo mais conhecido é João 3:16: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna."\n\nEste capítulo apresenta o encontro de Jesus com Nicodemos, explicando o que significa nascer de novo espiritualmente.',
+    fonte: 'Bíblia',
+    referencia: 'João 3',
   },
   {
-    palavraChave: ['gratidão', 'grata', 'obrigada', 'agradecer'],
-    resultado: {
-      versiculo: 'Em tudo dai graças, porque esta é a vontade de Deus em Cristo Jesus para convosco.',
-      referencia: '1 Tessalonicenses 5:18',
-      plano: 'Plano de leitura: Temáticos — Gratidão',
-    },
+    palavrasChave: ['plano', 'leitura', 'plano de leitura', 'como ler a bíblia'],
+    resposta:
+      'Oferecemos vários Planos de Leitura Bíblica disponíveis em "Vida Devocional":\n\n📖 Bíblia em um ano\n📖 Salmos (30 dias)\n📖 Evangelhos (Mateus, Marcos, Lucas e João)\n📖 Cartas de Paulo\n📖 Provérbios (sabedoria diária)\n\nEscolha um que se encaixe em sua rotina e comece hoje!',
+    fonte: 'Materiais do ministério',
   },
   {
-    palavraChave: ['força', 'fraqueza', 'fraca', 'desânimo', 'desanimada'],
-    resultado: {
-      versiculo: 'Tudo posso naquele que me fortalece.',
-      referencia: 'Filipenses 4:13',
-      plano: 'Plano de leitura: Bíblia em um ano',
-    },
+    palavrasChave: ['oração', 'orar', 'faça uma oração', 'reze'],
+    resposta:
+      'Querida irmã,\n\nConvido você a orar comigo:\n\n"Senhor Jesus, venho a Ti com meu coração aberto. Obrigada por Teu amor infinito e por estar comigo em cada momento. Peço que guies meus passos, que acalmes meus medos e que me fortaleças para enfrentar os desafios deste dia. Coloco minha vida completamente nas Tuas mãos. Amém."\n\nVocê pode também registrar suas orações na seção "Minhas Orações" e acompanhar as respostas de Deus.',
+    fonte: 'Materiais do ministério',
   },
   {
-    palavraChave: ['decisão', 'direção', 'caminho', 'escolha', 'confusa'],
-    resultado: {
-      versiculo: 'Entrega o teu caminho ao Senhor; confia nele, e ele o fará.',
-      referencia: 'Salmos 37:5',
-      plano: 'Plano de leitura: Provérbios',
-    },
+    palavrasChave: ['cansada', 'cansaço', 'exausta', 'sobrecarregada', 'descanso'],
+    resposta:
+      '"Vinde a mim, todos os que estais cansados e sobrecarregados, e eu vos aliviarei. Tomai sobre vós o meu jugo, e aprendei de mim, porque sou manso e humilde de coração; e achareis descanso para a vossa alma." (Mateus 11:28-29)',
+    fonte: 'Bíblia',
+    referencia: 'Mateus 11:28-29',
   },
   {
-    palavraChave: ['família', 'filhos', 'casamento', 'marido'],
-    resultado: {
-      versiculo: 'Eu e a minha casa serviremos ao Senhor.',
-      referencia: 'Josué 24:15',
-      plano: 'Jornada: Família',
-    },
+    palavrasChave: ['gratidão', 'grata', 'obrigada', 'agradecer'],
+    resposta:
+      '"Em tudo dai graças, porque esta é a vontade de Deus em Cristo Jesus para convosco." (1 Tessalonicenses 5:18)\n\nO ministério Abba Virtuosa tem um espaço especial chamado "Gratidão" onde você pode cultivar a prática diária de registrar aquilo pelo qual é grata. Isso muda nossa perspectiva!',
+    fonte: 'Bíblia + Materiais do ministério',
+    referencia: '1 Tessalonicenses 5:18',
+  },
+  {
+    palavrasChave: ['força', 'fraqueza', 'fraca', 'desânimo'],
+    resposta:
+      '"Tudo posso naquele que me fortalece." (Filipenses 4:13)\n\nSua fraqueza não é motivo de vergonha—é uma oportunidade para que o poder de Deus se manifeste. Quando reconhecemos nossas limitações, Ele nos fortalece. Recomendo meditar neste versículo diariamente.',
+    fonte: 'Bíblia',
+    referencia: 'Filipenses 4:13',
+  },
+  {
+    palavrasChave: ['decisão', 'direção', 'caminho', 'escolha', 'confusa', 'confuso'],
+    resposta:
+      '"Entrega o teu caminho ao Senhor; confia nele, e ele o fará. Ele fará irromper a tua justiça como a luz, e o teu direito como o meio-dia." (Salmos 37:5-6)\n\nEm momentos de dúvida, busque orientação através da oração, consulte uma líder discipuladora ou explore nossos "Estudos Cadastrados" sobre sabedoria e direção divina.',
+    fonte: 'Bíblia',
+    referencia: 'Salmos 37:5-6',
+  },
+  {
+    palavrasChave: ['família', 'filhos', 'casamento', 'marido', 'relacionamento'],
+    resposta:
+      '"Eu e a minha casa serviremos ao Senhor." (Josué 24:15)\n\nTemos recursos especiais no ministério para fortalecer a família:\n\n👨‍👩‍👧 Jornada: Família\n👨‍👩‍👧 Estudos sobre casamento e paternidade\n👨‍👩‍👧 Grupo de oração para famílias\n\nSua família é importante para Deus e para nós também!',
+    fonte: 'Bíblia + Materiais do ministério',
+    referencia: 'Josué 24:15',
   },
 ];
 
-export default function AssistenteBiblicaScreen() {
-  const [pergunta, setPergunta] = useState('');
-  const [resultados, setResultados] = useState<Resultado[] | null>(null);
-  const [buscou, setBuscou] = useState(false);
+const perguntasRapidas = [
+  'O que a Bíblia fala sobre ansiedade?',
+  'Explique João 3.',
+  'Monte um plano de leitura.',
+  'Faça uma oração.',
+];
 
-  function buscar() {
-    const termo = pergunta.trim().toLowerCase();
-    setBuscou(true);
-    if (!termo) {
-      setResultados(null);
-      return;
+function buscarResposta(pergunta: string): Mensagem {
+  const termo = pergunta.toLowerCase();
+  const encontrado = baseDeConhecimento.find((item) =>
+    item.palavrasChave.some((k) => termo.includes(k) || k.includes(termo))
+  );
+
+  if (encontrado) {
+    return {
+      id: String(Date.now()),
+      tipo: 'assistente',
+      texto: encontrado.resposta,
+      timestamp: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+      fonte: encontrado.fonte,
+    };
+  }
+
+  return {
+    id: String(Date.now()),
+    tipo: 'assistente',
+    texto: 'Desculpe, não tenho uma resposta baseada na Bíblia e nos materiais do ministério para essa pergunta. Tente perguntar sobre: ansiedade, força, decisão, família, cansaço, ou peça uma oração. 🙏',
+    timestamp: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+    fonte: 'Assistente',
+  };
+}
+
+export default function AssistenteBiblicaScreen() {
+  const [mensagens, setMensagens] = useState<Mensagem[]>([]);
+  const [inputText, setInputText] = useState('');
+  const [carregado, setCarregado] = useState(false);
+
+  useEffect(() => {
+    carregar<Mensagem[]>(CHAVE_HISTORICO, []).then((salvos) => {
+      setMensagens(salvos);
+      setCarregado(true);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (carregado) {
+      salvar(CHAVE_HISTORICO, mensagens);
     }
-    const encontrados = baseDeConhecimento
-      .filter((item) => item.palavraChave.some((k) => termo.includes(k) || k.includes(termo)))
-      .map((item) => item.resultado);
-    setResultados(encontrados);
+  }, [mensagens, carregado]);
+
+  function enviarMensagem(texto: string) {
+    if (!texto.trim()) return;
+
+    const novaMensagemUsuario: Mensagem = {
+      id: String(Date.now()),
+      tipo: 'usuario',
+      texto: texto.trim(),
+      timestamp: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+    };
+
+    const respostaAssistente = buscarResposta(texto);
+
+    setMensagens([...mensagens, novaMensagemUsuario, respostaAssistente]);
+    setInputText('');
+  }
+
+  function limparHistorico() {
+    setMensagens([]);
   }
 
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.aviso}>
-          Busca por tema sobre a Bíblia e os materiais do ministério — respostas prontas, sem
-          geração livre de texto. Uma versão conversacional (IA) está prevista para uma fase
-          futura do app.
-        </Text>
+        {mensagens.length === 0 ? (
+          <>
+            <View style={styles.tituloContainer}>
+              <Text style={styles.tituloEmoji}>✨</Text>
+              <Text style={styles.titulo}>Assistente Bíblica</Text>
+              <Text style={styles.subtitulo}>
+                Faça perguntas baseadas na Bíblia e nos materiais do ministério
+              </Text>
+            </View>
 
+            <Text style={styles.secaoTitulo}>Perguntas rápidas</Text>
+            {perguntasRapidas.map((pergunta) => (
+              <TouchableOpacity
+                key={pergunta}
+                style={styles.perguntaRapidaCard}
+                onPress={() => enviarMensagem(pergunta)}
+              >
+                <Text style={styles.perguntaRapidaEmoji}>✨</Text>
+                <Text style={styles.perguntaRapidaTexto}>{pergunta}</Text>
+                <Text style={styles.seta}>›</Text>
+              </TouchableOpacity>
+            ))}
+
+            <View style={styles.avisoCard}>
+              <Text style={styles.avisoTitulo}>📖 Como funciono</Text>
+              <Text style={styles.avisoTexto}>
+                Respondo apenas com base em:
+                {'\n'}• Bíblia Sagrada
+                {'\n'}• Materiais do ministério
+                {'\n'}• Estudos cadastrados
+                {'\n\n'}Nunca invento doutrina. Se sua pergunta está além de meu conhecimento, sou honesta em dizer isso.
+              </Text>
+            </View>
+          </>
+        ) : (
+          <>
+            {mensagens.map((msg) => (
+              <View
+                key={msg.id}
+                style={[
+                  styles.mensagemContainer,
+                  msg.tipo === 'usuario' ? styles.mensagemUsuario : styles.mensagemAssistente,
+                ]}
+              >
+                <View
+                  style={[
+                    styles.mensagemBubble,
+                    msg.tipo === 'usuario'
+                      ? styles.mensagemBubbleUsuario
+                      : styles.mensagemBubbleAssistente,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.mensagemTexto,
+                      msg.tipo === 'usuario'
+                        ? styles.mensagemTextoUsuario
+                        : styles.mensagemTextoAssistente,
+                    ]}
+                  >
+                    {msg.texto}
+                  </Text>
+                  {msg.fonte && (
+                    <Text style={styles.mensagemFonte}>{msg.fonte}</Text>
+                  )}
+                  <Text
+                    style={[
+                      styles.mensagemTimestamp,
+                      msg.tipo === 'usuario'
+                        ? styles.mensagemTimestampUsuario
+                        : styles.mensagemTimestampAssistente,
+                    ]}
+                  >
+                    {msg.timestamp}
+                  </Text>
+                </View>
+              </View>
+            ))}
+          </>
+        )}
+      </ScrollView>
+
+      {/* Input */}
+      <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Como você está se sentindo hoje?"
+          placeholder="Faça uma pergunta..."
           placeholderTextColor={cores.cinzaClaro}
-          value={pergunta}
-          onChangeText={setPergunta}
-          onSubmitEditing={buscar}
+          value={inputText}
+          onChangeText={setInputText}
+          multiline
         />
-        <TouchableOpacity style={styles.botaoBuscar} onPress={buscar}>
-          <Text style={styles.botaoBuscarTexto}>Buscar na Palavra</Text>
+        <TouchableOpacity
+          style={styles.botaoEnviar}
+          onPress={() => enviarMensagem(inputText)}
+        >
+          <Text style={styles.botaoEnviarEmoji}>↑</Text>
         </TouchableOpacity>
+      </View>
 
-        <View style={styles.sugestoesLinha}>
-          {['ansiedade', 'cansaço', 'gratidão', 'decisão'].map((s) => (
-            <TouchableOpacity
-              key={s}
-              style={styles.sugestaoChip}
-              onPress={() => {
-                setPergunta(s);
-                setBuscou(true);
-                const encontrados = baseDeConhecimento
-                  .filter((item) => item.palavraChave.includes(s))
-                  .map((item) => item.resultado);
-                setResultados(encontrados);
-              }}
-            >
-              <Text style={styles.sugestaoChipTexto}>{s}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        {buscou && resultados && resultados.length === 0 && (
-          <Text style={styles.semResultado}>
-            Ainda não tenho uma resposta baseada no material do ministério para "{pergunta}".
-            Tente palavras como ansiedade, cansaço, gratidão, força, decisão ou família.
-          </Text>
-        )}
-
-        {resultados?.map((r) => (
-          <View key={r.referencia} style={styles.cardResultado}>
-            <Text style={styles.versiculoTexto}>"{r.versiculo}"</Text>
-            <Text style={styles.versiculoReferencia}>{r.referencia}</Text>
-            <View style={styles.planoTag}>
-              <Text style={styles.planoTagTexto}>{r.plano}</Text>
-            </View>
-          </View>
-        ))}
-      </ScrollView>
+      {mensagens.length > 0 && (
+        <TouchableOpacity style={styles.botaoLimpar} onPress={limparHistorico}>
+          <Text style={styles.botaoLimparTexto}>Limpar conversa</Text>
+        </TouchableOpacity>
+      )}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: cores.creme },
-  container: { padding: 20, paddingBottom: 40 },
-  aviso: { fontSize: 12, color: cores.cinzaClaro, marginBottom: 16, lineHeight: 17 },
+  container: { padding: 16, paddingBottom: 140 },
+  tituloContainer: { alignItems: 'center', marginBottom: 24 },
+  tituloEmoji: { fontSize: 48, marginBottom: 8 },
+  titulo: { fontSize: 24, fontFamily: fontes.titulo, color: cores.bordo, marginBottom: 8 },
+  subtitulo: {
+    fontSize: 13,
+    fontFamily: fontes.texto,
+    color: cores.cinzaClaro,
+    textAlign: 'center',
+  },
+  secaoTitulo: {
+    fontSize: 13,
+    fontFamily: fontes.rotulo,
+    color: cores.ouroEscuro,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: 12,
+    marginTop: 16,
+  },
+  perguntaRapidaCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: raios.card,
+    borderWidth: 1,
+    borderColor: cores.borda,
+    padding: 14,
+    marginBottom: 10,
+    gap: 12,
+    ...sombra,
+  },
+  perguntaRapidaEmoji: { fontSize: 18 },
+  perguntaRapidaTexto: {
+    flex: 1,
+    fontSize: 13,
+    fontFamily: fontes.texto,
+    color: cores.cinzaTexto,
+    lineHeight: 18,
+  },
+  seta: { fontSize: 20, color: cores.ouroEscuro },
+  avisoCard: {
+    backgroundColor: cores.cremeCard,
+    borderRadius: raios.card,
+    borderWidth: 1,
+    borderColor: cores.bordaCard,
+    padding: 16,
+    marginTop: 20,
+  },
+  avisoTitulo: {
+    fontSize: 13,
+    fontFamily: fontes.textoForte,
+    color: cores.bordo,
+    marginBottom: 8,
+  },
+  avisoTexto: {
+    fontSize: 12,
+    fontFamily: fontes.texto,
+    color: cores.cinzaTexto,
+    lineHeight: 18,
+  },
+  mensagemContainer: {
+    marginBottom: 12,
+    flexDirection: 'row',
+  },
+  mensagemUsuario: { justifyContent: 'flex-end' },
+  mensagemAssistente: { justifyContent: 'flex-start' },
+  mensagemBubble: {
+    maxWidth: '85%',
+    borderRadius: raios.card,
+    padding: 12,
+    ...sombra,
+  },
+  mensagemBubbleUsuario: {
+    backgroundColor: cores.dourado,
+  },
+  mensagemBubbleAssistente: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: cores.borda,
+  },
+  mensagemTexto: {
+    fontSize: 13,
+    fontFamily: fontes.texto,
+    lineHeight: 18,
+  },
+  mensagemTextoUsuario: {
+    color: '#fff',
+  },
+  mensagemTextoAssistente: {
+    color: cores.cinzaTexto,
+  },
+  mensagemFonte: {
+    fontSize: 10,
+    fontFamily: fontes.rotulo,
+    color: cores.ouroEscuro,
+    marginTop: 8,
+    fontWeight: '600',
+  },
+  mensagemTimestamp: {
+    fontSize: 10,
+    marginTop: 6,
+  },
+  mensagemTimestampUsuario: {
+    color: 'rgba(255,255,255,0.7)',
+  },
+  mensagemTimestampAssistente: {
+    color: cores.cinzaClaro,
+  },
+  inputContainer: {
+    position: 'absolute',
+    bottom: 40,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    paddingHorizontal: 16,
+    gap: 8,
+  },
   input: {
+    flex: 1,
     backgroundColor: '#fff',
     borderRadius: raios.campo,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 12,
     fontSize: 14,
+    fontFamily: fontes.texto,
     color: cores.cinzaTexto,
-    marginBottom: 10,
+    maxHeight: 80,
   },
-  botaoBuscar: { backgroundColor: cores.ouro, paddingVertical: 12, borderRadius: raios.botao, alignItems: 'center' },
-  botaoBuscarTexto: { color: '#fff', fontWeight: '700', fontSize: 15 },
-  sugestoesLinha: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 14, marginBottom: 18 },
-  sugestaoChip: {
-    borderWidth: 1,
-    borderColor: cores.borda,
+  botaoEnviar: {
+    width: 40,
+    height: 40,
     borderRadius: 20,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
+    backgroundColor: cores.dourado,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...sombra,
   },
-  sugestaoChipTexto: { fontSize: 12, color: cores.bordo, fontWeight: '600' },
-  semResultado: { fontSize: 13, color: cores.cinzaClaro, lineHeight: 19, textAlign: 'center', marginTop: 10 },
-  cardResultado: {
-    backgroundColor: cores.cremeCard,
-    borderRadius: raios.card,
-    borderWidth: 1,
-    borderColor: cores.bordaCard,
-    padding: 16,
-    marginBottom: 12,
+  botaoEnviarEmoji: { fontSize: 20, fontWeight: '700', color: '#fff' },
+  botaoLimpar: {
+    alignItems: 'center',
+    paddingVertical: 8,
   },
-  versiculoTexto: { fontSize: 15, fontStyle: 'italic', color: cores.cinzaTexto, lineHeight: 21, marginBottom: 8 },
-  versiculoReferencia: { fontSize: 13, fontWeight: '700', color: cores.ouroEscuro, marginBottom: 10 },
-  planoTag: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    paddingVertical: 4,
-    paddingHorizontal: 10,
+  botaoLimparTexto: {
+    fontSize: 12,
+    fontFamily: fontes.rotulo,
+    color: cores.cinzaClaro,
   },
-  planoTagTexto: { fontSize: 11, fontWeight: '700', color: cores.olivaEscuro },
 });
