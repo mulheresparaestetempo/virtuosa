@@ -8,25 +8,37 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { cores, fontes, raios } from '../theme';
+import { cores, fontes, raios, sombra } from '../theme';
 import { carregar, salvar } from '../storage';
 
 const CHAVE_POSTS = 'comunidade_posts';
 
-type TipoPost = 'pedido_oracao' | 'testemunho';
+type TipoPost = 'pedido_oracao' | 'testemunho' | 'evento' | 'desafio';
+type FiltroFeed = 'todas' | 'minha_igreja' | 'amigas';
 
 type Post = {
-  id: string; // Number(id) é o timestamp de criação — reaproveitado pela linha do tempo em Minha Caminhada
+  id: string;
   tipo: TipoPost;
   autora: string;
   texto: string;
   data: string;
-  oracoes: number;
+  curtidas: number;
+  comentarios: number;
+  curtidaPorMim: boolean;
+  filtro: FiltroFeed;
 };
 
 const tipos: { valor: TipoPost; label: string; emoji: string }[] = [
   { valor: 'pedido_oracao', label: 'Pedido de oração', emoji: '🙏' },
   { valor: 'testemunho', label: 'Testemunho', emoji: '✨' },
+  { valor: 'evento', label: 'Evento', emoji: '📅' },
+  { valor: 'desafio', label: 'Desafio', emoji: '💪' },
+];
+
+const filtros: { valor: FiltroFeed; label: string }[] = [
+  { valor: 'todas', label: 'Todas' },
+  { valor: 'minha_igreja', label: 'Minha Igreja' },
+  { valor: 'amigas', label: 'Minhas Amigas' },
 ];
 
 const UM_DIA_MS = 86400000;
@@ -36,17 +48,45 @@ const postsIniciais: Post[] = [
     id: String(Date.now() - 1 * UM_DIA_MS),
     tipo: 'pedido_oracao',
     autora: 'Mariana',
-    texto: 'Peço oração pela saúde da minha mãe, que está internada.',
+    texto: 'Peço oração pela saúde da minha mãe, que está internada. Qualquer palavra é bem-vinda.',
     data: '04 de agosto',
-    oracoes: 12,
+    curtidas: 12,
+    comentarios: 3,
+    curtidaPorMim: false,
+    filtro: 'minha_igreja',
+  },
+  {
+    id: String(Date.now() - 2 * UM_DIA_MS),
+    tipo: 'testemunho',
+    autora: 'Camila',
+    texto: 'Deus respondeu! Consegui o novo emprego que tanto orei. Sua fidelidade é incomparável!',
+    data: '03 de agosto',
+    curtidas: 28,
+    comentarios: 7,
+    curtidaPorMim: false,
+    filtro: 'amigas',
   },
   {
     id: String(Date.now() - 3 * UM_DIA_MS),
-    tipo: 'testemunho',
-    autora: 'Camila',
-    texto: 'Deus respondeu! Consegui o novo emprego que tanto orei.',
+    tipo: 'evento',
+    autora: 'Líder Ana',
+    texto: 'Convite: Culto de mulheres no próximo sábado às 19h na sala principal. Traga uma amiga!',
     data: '02 de agosto',
-    oracoes: 8,
+    curtidas: 15,
+    comentarios: 5,
+    curtidaPorMim: false,
+    filtro: 'minha_igreja',
+  },
+  {
+    id: String(Date.now() - 4 * UM_DIA_MS),
+    tipo: 'desafio',
+    autora: 'Comunidade',
+    texto: '7 Dias de Gratidão: Compartilhe uma coisa que você é grata HOJE nos comentários!',
+    data: '01 de agosto',
+    curtidas: 34,
+    comentarios: 12,
+    curtidaPorMim: false,
+    filtro: 'todas',
   },
 ];
 
@@ -58,6 +98,7 @@ export default function ComunidadeScreen() {
   const [posts, setPosts] = useState<Post[]>(postsIniciais);
   const [carregado, setCarregado] = useState(false);
   const [tipoSelecionado, setTipoSelecionado] = useState<TipoPost>('pedido_oracao');
+  const [filtroSelecionado, setFiltroSelecionado] = useState<FiltroFeed>('todas');
   const [texto, setTexto] = useState('');
 
   useEffect(() => {
@@ -79,21 +120,72 @@ export default function ComunidadeScreen() {
       autora: 'Você',
       texto: texto.trim(),
       data: hojeFormatado(),
-      oracoes: 0,
+      curtidas: 0,
+      comentarios: 0,
+      curtidaPorMim: false,
+      filtro: 'minha_igreja',
     };
     setPosts([novo, ...posts]);
     setTexto('');
   }
 
-  function orarPor(id: string) {
-    setPosts(posts.map((p) => (p.id === id ? { ...p, oracoes: p.oracoes + 1 } : p)));
+  function curtir(id: string) {
+    setPosts(
+      posts.map((p) => {
+        if (p.id === id) {
+          return {
+            ...p,
+            curtidas: p.curtidaPorMim ? p.curtidas - 1 : p.curtidas + 1,
+            curtidaPorMim: !p.curtidaPorMim,
+          };
+        }
+        return p;
+      })
+    );
   }
+
+  function comentar(id: string) {
+    setPosts(
+      posts.map((p) => (p.id === id ? { ...p, comentarios: p.comentarios + 1 } : p))
+    );
+  }
+
+  const postsExibidos = posts.filter((p) => {
+    if (filtroSelecionado === 'todas') return true;
+    return p.filtro === filtroSelecionado;
+  });
 
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.tituloAba}>Comunidade ❤️</Text>
+        <Text style={styles.titulo}>Comunidade ❤️</Text>
+
+        {/* Filtro */}
+        <View style={styles.filtrosContainer}>
+          {filtros.map((filtro) => (
+            <TouchableOpacity
+              key={filtro.valor}
+              style={[
+                styles.filtroChip,
+                filtroSelecionado === filtro.valor && styles.filtroChipAtivo,
+              ]}
+              onPress={() => setFiltroSelecionado(filtro.valor)}
+            >
+              <Text
+                style={[
+                  styles.filtroChipTexto,
+                  filtroSelecionado === filtro.valor && styles.filtroChipTextoAtivo,
+                ]}
+              >
+                {filtro.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* Card Novo Post */}
         <View style={styles.cardNovo}>
+          <Text style={styles.cardNovoLabel}>Compartilhe com a comunidade</Text>
           <View style={styles.tiposLinha}>
             {tipos.map((t) => (
               <TouchableOpacity
@@ -102,14 +194,15 @@ export default function ComunidadeScreen() {
                 onPress={() => setTipoSelecionado(t.valor)}
               >
                 <Text style={styles.tipoChipTexto}>
-                  {t.emoji} {t.label}
+                  {t.emoji}
                 </Text>
+                <Text style={styles.tipoChipLabel}>{t.label}</Text>
               </TouchableOpacity>
             ))}
           </View>
           <TextInput
             style={styles.input}
-            placeholder="Compartilhe com a comunidade..."
+            placeholder="O que está em seu coração hoje?"
             placeholderTextColor={cores.cinzaClaro}
             value={texto}
             onChangeText={setTexto}
@@ -120,24 +213,60 @@ export default function ComunidadeScreen() {
           </TouchableOpacity>
         </View>
 
-        {posts.map((post) => {
-          const tipoInfo = tipos.find((t) => t.valor === post.tipo);
-          return (
-            <View key={post.id} style={styles.cardPost}>
-              <View style={styles.cardCabecalho}>
-                <Text style={styles.postTipo}>
-                  {tipoInfo ? `${tipoInfo.emoji} ${tipoInfo.label}` : post.tipo}
-                </Text>
-                <Text style={styles.postData}>{post.data}</Text>
+        {/* Feed */}
+        {postsExibidos.length === 0 ? (
+          <View style={styles.vazio}>
+            <Text style={styles.vazioTexto}>Nenhum post neste filtro</Text>
+          </View>
+        ) : (
+          postsExibidos.map((post) => {
+            const tipoInfo = tipos.find((t) => t.valor === post.tipo);
+            return (
+              <View key={post.id} style={styles.cardPost}>
+                {/* Cabeçalho */}
+                <View style={styles.cardCabecalho}>
+                  <View style={styles.autoraInfo}>
+                    <View style={styles.avatar} />
+                    <View>
+                      <Text style={styles.postAutora}>{post.autora}</Text>
+                      <Text style={styles.postData}>{post.data}</Text>
+                    </View>
+                  </View>
+                  <Text style={styles.postTipo}>{tipoInfo?.emoji}</Text>
+                </View>
+
+                {/* Conteúdo */}
+                <Text style={styles.postTexto}>{post.texto}</Text>
+
+                {/* Ações */}
+                <View style={styles.acoesContainer}>
+                  <TouchableOpacity
+                    style={styles.acao}
+                    onPress={() => curtir(post.id)}
+                  >
+                    <Text style={styles.acaoEmoji}>{post.curtidaPorMim ? '❤️' : '🤍'}</Text>
+                    <Text style={[styles.acaoTexto, post.curtidaPorMim && styles.acaoTextoAtivo]}>
+                      {post.curtidas}
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.acao}
+                    onPress={() => comentar(post.id)}
+                  >
+                    <Text style={styles.acaoEmoji}>💬</Text>
+                    <Text style={styles.acaoTexto}>{post.comentarios}</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.acao}>
+                    <Text style={styles.acaoEmoji}>↗️</Text>
+                    <Text style={styles.acaoTexto}>Compartilhar</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-              <Text style={styles.postAutora}>{post.autora}</Text>
-              <Text style={styles.postTexto}>{post.texto}</Text>
-              <TouchableOpacity style={styles.botaoOrar} onPress={() => orarPor(post.id)}>
-                <Text style={styles.botaoOrarTexto}>🙏 Orando ({post.oracoes})</Text>
-              </TouchableOpacity>
-            </View>
-          );
-        })}
+            );
+          })
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -146,59 +275,187 @@ export default function ComunidadeScreen() {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: cores.creme },
   container: { padding: 20, paddingBottom: 40 },
-  tituloAba: { fontSize: 26, fontFamily: fontes.titulo, color: cores.bordo, marginBottom: 16 },
+  titulo: { fontSize: 26, fontFamily: fontes.titulo, color: cores.bordo, marginBottom: 16 },
+  filtrosContainer: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 20,
+  },
+  filtroChip: {
+    backgroundColor: '#fff',
+    borderRadius: raios.botao,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderWidth: 1,
+    borderColor: cores.borda,
+  },
+  filtroChipAtivo: {
+    backgroundColor: cores.rosa,
+    borderColor: cores.rosa,
+  },
+  filtroChipTexto: {
+    fontSize: 12,
+    fontFamily: fontes.rotulo,
+    color: cores.bordo,
+  },
+  filtroChipTextoAtivo: {
+    color: cores.olivaEscuro,
+    fontWeight: '600',
+  },
   cardNovo: {
     backgroundColor: cores.cremeCard,
     borderRadius: raios.card,
     padding: 18,
     borderWidth: 1,
     borderColor: cores.bordaCard,
-    marginBottom: 20,
+    marginBottom: 24,
+    ...sombra,
   },
-  tiposLinha: { flexDirection: 'row', gap: 8, marginBottom: 12 },
+  cardNovoLabel: {
+    fontSize: 13,
+    fontFamily: fontes.rotulo,
+    color: cores.ouroEscuro,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: 12,
+  },
+  tiposLinha: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 12,
+  },
   tipoChip: {
+    flex: 1,
     borderWidth: 1,
     borderColor: cores.borda,
     backgroundColor: '#fff',
-    borderRadius: 20,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
+    borderRadius: raios.botao,
+    paddingVertical: 8,
+    paddingHorizontal: 6,
+    alignItems: 'center',
+    gap: 4,
   },
-  tipoChipSelecionado: { backgroundColor: cores.rosa, borderColor: cores.rosa },
-  tipoChipTexto: { fontSize: 12, fontWeight: '600', color: cores.bordo },
+  tipoChipSelecionado: {
+    backgroundColor: cores.rosa,
+    borderColor: cores.rosa,
+  },
+  tipoChipTexto: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  tipoChipLabel: {
+    fontSize: 10,
+    fontWeight: '600',
+    color: cores.bordo,
+  },
   input: {
     backgroundColor: '#fff',
     borderRadius: raios.campo,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 12,
-    minHeight: 60,
+    minHeight: 80,
     fontSize: 14,
+    fontFamily: fontes.texto,
     color: cores.cinzaTexto,
     textAlignVertical: 'top',
     marginBottom: 12,
   },
-  botaoPublicar: { backgroundColor: cores.rosa, paddingVertical: 12, borderRadius: raios.botao, alignItems: 'center' },
-  botaoPublicarTexto: { color: cores.olivaEscuro, fontWeight: '700', fontSize: 15 },
+  botaoPublicar: {
+    backgroundColor: cores.dourado,
+    paddingVertical: 12,
+    borderRadius: raios.botao,
+    alignItems: 'center',
+  },
+  botaoPublicarTexto: {
+    color: '#fff',
+    fontFamily: fontes.rotulo,
+    fontWeight: '700',
+    fontSize: 15,
+  },
+  vazio: {
+    backgroundColor: cores.cremeCard,
+    borderRadius: raios.card,
+    padding: 40,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: cores.bordaCard,
+  },
+  vazioTexto: {
+    fontSize: 13,
+    fontFamily: fontes.texto,
+    color: cores.cinzaClaro,
+  },
   cardPost: {
     backgroundColor: '#fff',
     borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
-    padding: 14,
+    padding: 16,
+    marginBottom: 12,
+    ...sombra,
+  },
+  cardCabecalho: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
     marginBottom: 12,
   },
-  cardCabecalho: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
-  postTipo: { fontSize: 12, fontWeight: '700', color: cores.ouroEscuro },
-  postData: { fontSize: 12, color: cores.cinzaClaro },
-  postAutora: { fontSize: 13, fontWeight: '700', color: cores.bordo, marginBottom: 4 },
-  postTexto: { fontSize: 14, color: cores.cinzaTexto, lineHeight: 20, marginBottom: 10 },
-  botaoOrar: {
-    alignSelf: 'flex-start',
-    backgroundColor: cores.cremeCard,
-    borderRadius: raios.botao,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
+  autoraInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    gap: 10,
   },
-  botaoOrarTexto: { fontSize: 12, fontWeight: '600', color: cores.ouroEscuro },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: cores.rosa,
+  },
+  postAutora: {
+    fontSize: 13,
+    fontFamily: fontes.rotulo,
+    color: cores.bordo,
+  },
+  postData: {
+    fontSize: 11,
+    fontFamily: fontes.texto,
+    color: cores.cinzaClaro,
+    marginTop: 2,
+  },
+  postTipo: {
+    fontSize: 18,
+  },
+  postTexto: {
+    fontSize: 14,
+    fontFamily: fontes.texto,
+    color: cores.cinzaTexto,
+    lineHeight: 20,
+    marginBottom: 12,
+  },
+  acoesContainer: {
+    flexDirection: 'row',
+    gap: 16,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: cores.borda,
+  },
+  acao: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  acaoEmoji: {
+    fontSize: 16,
+  },
+  acaoTexto: {
+    fontSize: 12,
+    fontFamily: fontes.texto,
+    color: cores.cinzaClaro,
+  },
+  acaoTextoAtivo: {
+    color: cores.rosa,
+    fontWeight: '600',
+  },
 });
