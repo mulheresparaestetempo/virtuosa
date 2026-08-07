@@ -31,7 +31,7 @@ const itens: Item[] = [
   { id: '4', categoria: 'Pregações', titulo: 'A vida no Espírito', duracao: '45 min' },
   { id: '5', categoria: 'Estudos', titulo: 'Mulheres da Bíblia — Rute', duracao: '6 aulas' },
   { id: '6', categoria: 'E-books', titulo: 'Jejum: um guia prático', duracao: '48 páginas' },
-  { id: '7', categoria: 'Conferências', titulo: 'Conferência FILHA 2025', duracao: '3 dias' },
+  { id: '7', categoria: 'Conferências', titulo: 'Conferência Abba Virtuosa 2025', duracao: '3 dias' },
   { id: '8', categoria: 'Áudios', titulo: 'Música ambiente — Adoração', duracao: '52 min' },
 ];
 

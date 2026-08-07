@@ -1,6 +1,6 @@
-# App FILHA
+# Abba Virtuosa
 
-Protótipo do app FILHA (Plataforma de Discipulado Feminino), construído com
+Protótipo do app Abba Virtuosa (Plataforma de Discipulado Feminino), construído com
 [Expo](https://expo.dev) + React Native — um único código-fonte que gera
 apps instaláveis para **Android** e **iOS**.
 

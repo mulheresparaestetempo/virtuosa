@@ -12,9 +12,9 @@ Site do ministério feminino Virtuosas, da PIBAM Espraiado:
 - `logo-virtuosas.png`, `musica-boa-parte.mp3`, `a-boa-parte.mp3` — mídia
   usada pelo site
 
-## 2. App FILHA (pasta `app-filha/`)
+## 2. App Abba Virtuosa (pasta `app-filha/`)
 
-Protótipo do App FILHA, a plataforma de discipulado feminino, construído com
+Protótipo do App Abba Virtuosa, a plataforma de discipulado feminino, construído com
 Expo + React Native (Android e iOS a partir do mesmo código).
 
 - Plano completo do produto (18 módulos, priorização, modelo de dados):

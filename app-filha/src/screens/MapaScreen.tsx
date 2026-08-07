@@ -12,7 +12,7 @@ const locais: Local[] = [
   { tipo: 'Célula', nome: 'Célula Vinho Novo', endereco: 'Casa da Ana Paula — quintas, 20h' },
   { tipo: 'Célula', nome: 'Célula Águas Vivas', endereco: 'Casa da Mariana — terças, 19h30' },
   { tipo: 'Culto no lar', nome: 'Culto no lar da Beatriz', endereco: 'Confirmar endereço com a líder' },
-  { tipo: 'Conferência', nome: 'Congresso FILHA 2026', endereco: 'Centro de Convenções' },
+  { tipo: 'Conferência', nome: 'Congresso Abba Virtuosa 2026', endereco: 'Centro de Convenções' },
 ];
 
 function abrirNoMapa(endereco: string) {

@@ -17,7 +17,7 @@ const eventos: Evento[] = [
   { id: '1', titulo: 'Vigília de oração', tipo: 'Vigília', data: '08 de agosto, 22h', local: 'Igreja sede' },
   { id: '2', titulo: 'Jejum coletivo das mulheres', tipo: 'Jejum coletivo', data: '11 a 13 de agosto', local: 'Cada uma em sua casa' },
   { id: '3', titulo: 'Santa Ceia', tipo: 'Santa Ceia', data: '17 de agosto, 19h', local: 'Igreja sede' },
-  { id: '4', titulo: 'Congresso FILHA 2026', tipo: 'Congresso', data: '05 a 07 de setembro', local: 'Centro de Convenções' },
+  { id: '4', titulo: 'Congresso Abba Virtuosa 2026', tipo: 'Congresso', data: '05 a 07 de setembro', local: 'Centro de Convenções' },
   { id: '5', titulo: 'Campanha de oração pelas famílias', tipo: 'Campanha', data: '01 a 30 de setembro', local: 'Todas as células' },
 ];
 
