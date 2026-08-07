@@ -1,0 +1,34 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - claude/new-session-au1ezt
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies (painel_lider)
+        run: cd apps/painel_lider && npm install
+
+      - name: Build Next.js app
+        run: cd apps/painel_lider && npm run build
+
+      - name: Export static site
+        run: cd apps/painel_lider && npm run export || true
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./apps/painel_lider/out
+          cname: virtuosa.mulheresparaestetempo.dev
