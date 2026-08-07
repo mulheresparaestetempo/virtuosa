@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { cores, fontes } from '../theme';
+import { cores, fontes, raios } from '../theme';
 import { ministerio } from '../data/ministerio';
 import { useAuth } from '../context/AuthContext';
 
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: cores.creme },
   container: { flexGrow: 1, padding: 24, alignItems: 'center', justifyContent: 'center' },
   logo: { width: 72, height: 72, marginBottom: 16 },
-  titulo: { fontSize: 26, fontFamily: fontes.titulo, color: cores.bordo, textAlign: 'center' },
+  titulo: { fontSize: 32, fontFamily: fontes.tituloPrincipal, color: cores.bordo, textAlign: 'center' },
   subtitulo: {
     fontSize: 13,
     fontFamily: fontes.texto,
@@ -132,26 +132,27 @@ const styles = StyleSheet.create({
   cartao: {
     width: '100%',
     backgroundColor: cores.cremeCard,
-    borderRadius: 18,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.bordaCard,
-    padding: 20,
+    padding: 22,
   },
   input: {
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: raios.campo,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 14,
     fontSize: 15,
+    fontFamily: fontes.texto,
     color: cores.cinzaTexto,
     marginBottom: 12,
   },
-  erro: { color: cores.rosa, fontFamily: fontes.texto, fontSize: 13, marginBottom: 12, textAlign: 'center' },
+  erro: { color: cores.erro, fontFamily: fontes.texto, fontSize: 13, marginBottom: 12, textAlign: 'center' },
   botaoPrimario: {
     backgroundColor: cores.ouro,
     paddingVertical: 14,
-    borderRadius: 10,
+    borderRadius: raios.botao,
     alignItems: 'center',
   },
   botaoDesabilitado: { opacity: 0.5 },

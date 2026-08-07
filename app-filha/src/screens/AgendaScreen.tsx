@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { cores } from '../theme';
+import { cores, raios } from '../theme';
 import { carregar, salvar } from '../storage';
 
 const CHAVE_CONFIRMACOES = 'agenda_confirmacoes';
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   container: { padding: 20, paddingBottom: 40 },
   cardEvento: {
     backgroundColor: '#fff',
-    borderRadius: 14,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 16,
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderWidth: 1,
     borderColor: cores.ouro,
-    borderRadius: 10,
+    borderRadius: raios.botao,
     paddingVertical: 9,
     alignItems: 'center',
   },

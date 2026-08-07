@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { cores } from '../theme';
+import { cores, raios } from '../theme';
 import { carregar, salvar } from '../storage';
 
 const CHAVE_ENTRADAS = 'diario_entradas';
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   cardNovaEntrada: {
     backgroundColor: cores.cremeCard,
-    borderRadius: 16,
+    borderRadius: raios.card,
     padding: 18,
     borderWidth: 1,
     borderColor: cores.bordaCard,
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: raios.campo,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 12,
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   botaoSalvar: {
     backgroundColor: cores.ouro,
     paddingVertical: 12,
-    borderRadius: 10,
+    borderRadius: raios.botao,
     alignItems: 'center',
   },
   botaoSalvarTexto: {
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
   },
   cardEntrada: {
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 14,

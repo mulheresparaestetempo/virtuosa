@@ -1,5 +1,5 @@
 import { Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { cores, fontes } from '../theme';
+import { cores, fontes, raios } from '../theme';
 import { ministerio } from '../data/ministerio';
 
 export default function CabecalhoMinisterio() {
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 12,
+    borderRadius: raios.botao,
     paddingVertical: 10,
     gap: 6,
   },

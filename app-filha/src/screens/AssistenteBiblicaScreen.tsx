@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { cores } from '../theme';
+import { cores, raios } from '../theme';
 
 type Resultado = {
   versiculo: string;
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   aviso: { fontSize: 12, color: cores.cinzaClaro, marginBottom: 16, lineHeight: 17 },
   input: {
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: raios.campo,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 12,
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     color: cores.cinzaTexto,
     marginBottom: 10,
   },
-  botaoBuscar: { backgroundColor: cores.ouro, paddingVertical: 12, borderRadius: 10, alignItems: 'center' },
+  botaoBuscar: { backgroundColor: cores.ouro, paddingVertical: 12, borderRadius: raios.botao, alignItems: 'center' },
   botaoBuscarTexto: { color: '#fff', fontWeight: '700', fontSize: 15 },
   sugestoesLinha: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 14, marginBottom: 18 },
   sugestaoChip: {
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
   semResultado: { fontSize: 13, color: cores.cinzaClaro, lineHeight: 19, textAlign: 'center', marginTop: 10 },
   cardResultado: {
     backgroundColor: cores.cremeCard,
-    borderRadius: 14,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.bordaCard,
     padding: 16,
@@ -190,5 +190,5 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     paddingHorizontal: 10,
   },
-  planoTagTexto: { fontSize: 11, fontWeight: '700', color: cores.rosa },
+  planoTagTexto: { fontSize: 11, fontWeight: '700', color: cores.olivaEscuro },
 });

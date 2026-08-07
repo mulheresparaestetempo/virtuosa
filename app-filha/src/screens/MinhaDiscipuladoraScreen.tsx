@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { cores } from '../theme';
+import { cores, raios } from '../theme';
 import { carregar, salvar } from '../storage';
 
 const CHAVE_METAS = 'discipuladora_metas';
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   container: { padding: 20, paddingBottom: 40 },
   cardPerfil: {
     backgroundColor: cores.cremeCard,
-    borderRadius: 16,
+    borderRadius: raios.card,
     padding: 20,
     borderWidth: 1,
     borderColor: cores.bordaCard,
@@ -107,13 +107,13 @@ const styles = StyleSheet.create({
   perfilFuncao: { fontSize: 13, color: cores.ouroEscuro, marginTop: 2 },
   cardEncontro: {
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.rosa,
     padding: 16,
     marginBottom: 20,
   },
-  encontroLabel: { fontSize: 12, fontWeight: '700', color: cores.rosa, marginBottom: 4 },
+  encontroLabel: { fontSize: 12, fontWeight: '700', color: cores.olivaEscuro, marginBottom: 4 },
   encontroValor: { fontSize: 15, fontWeight: '600', color: cores.bordo },
   secaoTitulo: {
     fontSize: 13,
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 12,
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   metaTextoConcluida: { textDecorationLine: 'line-through', color: cores.cinzaClaro },
   cardConversa: {
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 12,

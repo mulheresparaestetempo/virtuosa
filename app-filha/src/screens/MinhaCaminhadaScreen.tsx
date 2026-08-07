@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { cores } from '../theme';
+import { cores, raios } from '../theme';
 import { carregar } from '../storage';
 import { trilhas } from '../data/trilhas';
 
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   stat: {
     flex: 1,
     backgroundColor: cores.cremeCard,
-    borderRadius: 14,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.bordaCard,
     padding: 14,
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   cardEvento: {
     flexDirection: 'row',
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 14,

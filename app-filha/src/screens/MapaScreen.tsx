@@ -1,5 +1,5 @@
 import { Linking, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { cores } from '../theme';
+import { cores, raios } from '../theme';
 
 type Local = {
   tipo: 'Igreja' | 'Célula' | 'Culto no lar' | 'Conferência';
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   aviso: { fontSize: 12, color: cores.cinzaClaro, marginBottom: 18, lineHeight: 17 },
   card: {
     backgroundColor: '#fff',
-    borderRadius: 14,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 16,
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   botao: {
     alignSelf: 'flex-start',
     backgroundColor: cores.cremeCard,
-    borderRadius: 10,
+    borderRadius: raios.botao,
     paddingVertical: 8,
     paddingHorizontal: 14,
   },

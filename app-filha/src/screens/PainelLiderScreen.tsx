@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { collection, onSnapshot } from 'firebase/firestore';
-import { cores } from '../theme';
+import { cores, raios } from '../theme';
 import { carregar, salvar } from '../storage';
 import { db, firebaseConfigurado } from '../firebase';
 import { CHAVE_PLANO_DEVOCIONAL, planoPadrao, type DiaDevocional, type PlanoDevocional } from '../data/devocional';
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
   aviso: { fontSize: 12, color: cores.cinzaClaro, marginBottom: 18, lineHeight: 17 },
   cardDevocional: {
     backgroundColor: cores.cremeCard,
-    borderRadius: 16,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.bordaCard,
     padding: 18,
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
     paddingVertical: 10,
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
   ajudaTexto: { fontSize: 12, color: cores.cinzaClaro, lineHeight: 16, marginBottom: 8, marginTop: -4 },
   input: {
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: raios.campo,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 12,
@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   inputMultilinha: { minHeight: 90, textAlignVertical: 'top' },
-  botaoPublicar: { backgroundColor: cores.ouro, paddingVertical: 12, borderRadius: 10, alignItems: 'center' },
+  botaoPublicar: { backgroundColor: cores.ouro, paddingVertical: 12, borderRadius: raios.botao, alignItems: 'center' },
   botaoPublicarTexto: { color: '#fff', fontWeight: '700', fontSize: 15 },
   listaDias: { marginTop: 16 },
   diaLinha: {
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
     paddingVertical: 8,
@@ -320,10 +320,10 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   diaLinhaTexto: { flex: 1, fontSize: 13, color: cores.cinzaTexto },
-  diaLinhaRemover: { fontSize: 12, fontWeight: '700', color: cores.rosa },
+  diaLinhaRemover: { fontSize: 12, fontWeight: '700', color: cores.erro },
   card: {
     backgroundColor: '#fff',
-    borderRadius: 14,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 16,

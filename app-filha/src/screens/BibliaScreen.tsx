@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { cores } from '../theme';
+import { cores, raios } from '../theme';
 import { carregar, salvar } from '../storage';
 
 const CHAVE_FAVORITOS = 'biblia_favoritos';
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   },
   cardVersiculo: {
     backgroundColor: cores.cremeCard,
-    borderRadius: 16,
+    borderRadius: raios.card,
     padding: 18,
     borderWidth: 1,
     borderColor: cores.bordaCard,
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
   },
   busca: {
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: raios.campo,
     borderWidth: 1,
     borderColor: cores.borda,
     paddingHorizontal: 14,
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   },
   cardLivroAberto: {
     backgroundColor: '#fff',
-    borderRadius: 14,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.rosa,
     padding: 16,
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
     paddingVertical: 12,

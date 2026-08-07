@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { cores } from '../theme';
+import { cores, fontes, raios } from '../theme';
 import { carregar, salvar } from '../storage';
 
 const CHAVE_POSTS = 'comunidade_posts';
@@ -92,6 +92,7 @@ export default function ComunidadeScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.tituloAba}>Comunidade ❤️</Text>
         <View style={styles.cardNovo}>
           <View style={styles.tiposLinha}>
             {tipos.map((t) => (
@@ -145,9 +146,10 @@ export default function ComunidadeScreen() {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: cores.creme },
   container: { padding: 20, paddingBottom: 40 },
+  tituloAba: { fontSize: 26, fontFamily: fontes.titulo, color: cores.bordo, marginBottom: 16 },
   cardNovo: {
     backgroundColor: cores.cremeCard,
-    borderRadius: 16,
+    borderRadius: raios.card,
     padding: 18,
     borderWidth: 1,
     borderColor: cores.bordaCard,
@@ -166,7 +168,7 @@ const styles = StyleSheet.create({
   tipoChipTexto: { fontSize: 12, fontWeight: '600', color: cores.bordo },
   input: {
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: raios.campo,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 12,
@@ -176,11 +178,11 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
     marginBottom: 12,
   },
-  botaoPublicar: { backgroundColor: cores.rosa, paddingVertical: 12, borderRadius: 10, alignItems: 'center' },
-  botaoPublicarTexto: { color: '#fff', fontWeight: '700', fontSize: 15 },
+  botaoPublicar: { backgroundColor: cores.rosa, paddingVertical: 12, borderRadius: raios.botao, alignItems: 'center' },
+  botaoPublicarTexto: { color: cores.olivaEscuro, fontWeight: '700', fontSize: 15 },
   cardPost: {
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 14,
@@ -194,7 +196,7 @@ const styles = StyleSheet.create({
   botaoOrar: {
     alignSelf: 'flex-start',
     backgroundColor: cores.cremeCard,
-    borderRadius: 16,
+    borderRadius: raios.botao,
     paddingVertical: 6,
     paddingHorizontal: 12,
   },

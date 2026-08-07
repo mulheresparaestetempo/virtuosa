@@ -11,7 +11,8 @@ import {
   View,
 } from 'react-native';
 import { doc, updateDoc } from 'firebase/firestore';
-import { cores, fontes } from '../theme';
+import { LinearGradient } from 'expo-linear-gradient';
+import { cores, fontes, raios, sombra as sombraTema } from '../theme';
 import { carregar, salvar } from '../storage';
 import CabecalhoMinisterio from '../components/CabecalhoMinisterio';
 import LouvorAberturaPlayer from '../components/LouvorAberturaPlayer';
@@ -107,8 +108,15 @@ export default function LugarSecretoScreen() {
           <Text style={styles.tituloDevocional}>{conteudoDia.titulo}</Text>
           <Text style={styles.versiculo}>{conteudoDia.versiculo}</Text>
           <Text style={styles.resumo}>{conteudoDia.resumo}</Text>
-          <TouchableOpacity style={styles.botaoPrimario}>
-            <Text style={styles.botaoPrimarioTexto}>Ler devocional completo</Text>
+          <TouchableOpacity activeOpacity={0.88} style={styles.botaoEspiritualSombra}>
+            <LinearGradient
+              colors={[cores.dourado, cores.douradoEscuro]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.botaoPrimario}
+            >
+              <Text style={styles.botaoPrimarioTexto}>Ler devocional completo</Text>
+            </LinearGradient>
           </TouchableOpacity>
         </View>
 
@@ -271,13 +279,7 @@ export default function LugarSecretoScreen() {
   );
 }
 
-const sombra = {
-  shadowColor: '#3a2a1a',
-  shadowOpacity: 0.08,
-  shadowRadius: 10,
-  shadowOffset: { width: 0, height: 4 },
-  elevation: 2,
-};
+const sombra = sombraTema;
 
 const styles = StyleSheet.create({
   safe: {
@@ -289,8 +291,9 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   saudacao: {
-    fontSize: 24,
-    fontFamily: fontes.titulo,
+    fontSize: 34,
+    lineHeight: 40,
+    fontFamily: fontes.tituloPrincipal,
     color: cores.bordo,
   },
   data: {
@@ -303,8 +306,8 @@ const styles = StyleSheet.create({
   },
   cardPrincipal: {
     backgroundColor: cores.cremeCard,
-    borderRadius: 18,
-    padding: 22,
+    borderRadius: raios.card,
+    padding: 24,
     borderWidth: 1,
     borderColor: cores.bordaCard,
     ...sombra,
@@ -346,10 +349,17 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     marginBottom: 16,
   },
+  botaoEspiritualSombra: {
+    borderRadius: raios.botao,
+    shadowColor: cores.dourado,
+    shadowOpacity: 0.35,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
+  },
   botaoPrimario: {
-    backgroundColor: cores.ouro,
-    paddingVertical: 12,
-    borderRadius: 10,
+    paddingVertical: 14,
+    borderRadius: raios.botao,
     alignItems: 'center',
   },
   botaoPrimarioTexto: {
@@ -361,10 +371,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderRadius: 16,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
-    padding: 16,
+    padding: 18,
     marginTop: 14,
     gap: 12,
     ...sombra,
@@ -382,7 +392,7 @@ const styles = StyleSheet.create({
     backgroundColor: cores.bordo,
     paddingVertical: 8,
     paddingHorizontal: 14,
-    borderRadius: 20,
+    borderRadius: raios.botao,
   },
   botaoOuvirTexto: { color: '#fff', fontFamily: fontes.rotulo, fontSize: 12.5 },
   secaoAcoesTitulo: { marginTop: 24, marginBottom: 10 },
@@ -391,10 +401,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderRadius: 16,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
-    padding: 14,
+    padding: 16,
     gap: 12,
     ...sombra,
   },
@@ -418,8 +428,8 @@ const styles = StyleSheet.create({
   cardSecao: {
     width: '48%',
     backgroundColor: '#fff',
-    borderRadius: 14,
-    padding: 16,
+    borderRadius: raios.card,
+    padding: 18,
     marginBottom: 14,
     borderWidth: 1,
     borderColor: cores.borda,
@@ -452,28 +462,33 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
-  linkAdicionar: { fontSize: 13, fontFamily: fontes.rotulo, color: cores.rosa },
+  linkAdicionar: { fontSize: 13, fontFamily: fontes.rotulo, color: cores.olivaEscuro },
   formFoto: {
     backgroundColor: cores.cremeCard,
-    borderRadius: 14,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.bordaCard,
-    padding: 14,
+    padding: 16,
     marginBottom: 14,
   },
   input: {
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: raios.campo,
     borderWidth: 1,
     borderColor: cores.borda,
-    padding: 12,
+    padding: 14,
     fontSize: 14,
     fontFamily: fontes.texto,
     color: cores.cinzaTexto,
     marginBottom: 10,
   },
-  botaoSalvarFoto: { backgroundColor: cores.rosa, paddingVertical: 12, borderRadius: 10, alignItems: 'center' },
-  botaoSalvarFotoTexto: { color: '#fff', fontFamily: fontes.rotulo, fontSize: 14 },
+  botaoSalvarFoto: {
+    backgroundColor: cores.rosa,
+    paddingVertical: 12,
+    borderRadius: raios.botao,
+    alignItems: 'center',
+  },
+  botaoSalvarFotoTexto: { color: cores.olivaEscuro, fontFamily: fontes.rotulo, fontSize: 14 },
   semFotos: { fontSize: 13, fontFamily: fontes.texto, color: cores.cinzaClaro, marginBottom: 8 },
   galeria: { marginBottom: 4 },
   fotoCard: { width: 120, marginRight: 12 },
@@ -494,7 +509,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: raios.botao,
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1,

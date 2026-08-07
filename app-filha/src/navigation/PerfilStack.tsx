@@ -1,41 +1,33 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { cores, fontes } from '../theme';
 
-import MaisScreen from '../screens/MaisScreen';
-import MemoriaisScreen from '../screens/MemoriaisScreen';
-import ComunidadeScreen from '../screens/ComunidadeScreen';
-import AcolhimentoScreen from '../screens/AcolhimentoScreen';
-import MinhaDiscipuladoraScreen from '../screens/MinhaDiscipuladoraScreen';
-import MinhaCaminhadaScreen from '../screens/MinhaCaminhadaScreen';
-import BibliotecaScreen from '../screens/BibliotecaScreen';
-import AgendaScreen from '../screens/AgendaScreen';
-import AssistenteBiblicaScreen from '../screens/AssistenteBiblicaScreen';
 import PerfilScreen from '../screens/PerfilScreen';
+import MinhaCaminhadaScreen from '../screens/MinhaCaminhadaScreen';
+import MemoriaisScreen from '../screens/MemoriaisScreen';
+import MinhaDiscipuladoraScreen from '../screens/MinhaDiscipuladoraScreen';
+import AcolhimentoScreen from '../screens/AcolhimentoScreen';
+import AgendaScreen from '../screens/AgendaScreen';
 import PainelLiderScreen from '../screens/PainelLiderScreen';
 import PainelIgrejaScreen from '../screens/PainelIgrejaScreen';
 import MapaScreen from '../screens/MapaScreen';
 import MissoesScreen from '../screens/MissoesScreen';
 
-export type MaisStackParamList = {
-  MaisHub: undefined;
-  Memoriais: undefined;
-  Comunidade: undefined;
-  Acolhimento: undefined;
-  MinhaDiscipuladora: undefined;
-  MinhaCaminhada: undefined;
-  Biblioteca: undefined;
-  Agenda: undefined;
-  AssistenteBiblica: undefined;
+export type PerfilStackParamList = {
   Perfil: undefined;
+  MinhaCaminhada: undefined;
+  Memoriais: undefined;
+  MinhaDiscipuladora: undefined;
+  Acolhimento: undefined;
+  Agenda: undefined;
   PainelLider: undefined;
   PainelIgreja: undefined;
   Mapa: undefined;
   Missoes: undefined;
 };
 
-const Stack = createNativeStackNavigator<MaisStackParamList>();
+const Stack = createNativeStackNavigator<PerfilStackParamList>();
 
-export default function MaisStack() {
+export default function PerfilStack() {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -45,28 +37,16 @@ export default function MaisStack() {
         headerShadowVisible: false,
       }}
     >
-      <Stack.Screen name="MaisHub" component={MaisScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Perfil" component={PerfilScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="MinhaCaminhada" component={MinhaCaminhadaScreen} options={{ title: 'Minha Caminhada' }} />
       <Stack.Screen name="Memoriais" component={MemoriaisScreen} options={{ title: 'Memoriais' }} />
-      <Stack.Screen name="Comunidade" component={ComunidadeScreen} options={{ title: 'Comunidade' }} />
-      <Stack.Screen name="Acolhimento" component={AcolhimentoScreen} options={{ title: 'Acolhimento' }} />
       <Stack.Screen
         name="MinhaDiscipuladora"
         component={MinhaDiscipuladoraScreen}
         options={{ title: 'Minha Discipuladora' }}
       />
-      <Stack.Screen
-        name="MinhaCaminhada"
-        component={MinhaCaminhadaScreen}
-        options={{ title: 'Minha Caminhada' }}
-      />
-      <Stack.Screen name="Biblioteca" component={BibliotecaScreen} options={{ title: 'Biblioteca' }} />
+      <Stack.Screen name="Acolhimento" component={AcolhimentoScreen} options={{ title: 'Acolhimento' }} />
       <Stack.Screen name="Agenda" component={AgendaScreen} options={{ title: 'Agenda' }} />
-      <Stack.Screen
-        name="AssistenteBiblica"
-        component={AssistenteBiblicaScreen}
-        options={{ title: 'Assistente Bíblica' }}
-      />
-      <Stack.Screen name="Perfil" component={PerfilScreen} options={{ title: 'Perfil da Filha' }} />
       <Stack.Screen name="PainelLider" component={PainelLiderScreen} options={{ title: 'Painel da Líder' }} />
       <Stack.Screen name="PainelIgreja" component={PainelIgrejaScreen} options={{ title: 'Painel da Igreja' }} />
       <Stack.Screen name="Mapa" component={MapaScreen} options={{ title: 'Mapa' }} />

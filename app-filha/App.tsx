@@ -11,15 +11,20 @@ import {
 } from '@expo-google-fonts/playfair-display';
 import {
   CormorantGaramond_600SemiBold_Italic,
+  CormorantGaramond_700Bold,
 } from '@expo-google-fonts/cormorant-garamond';
-import { Poppins_500Medium, Poppins_600SemiBold } from '@expo-google-fonts/poppins';
+import {
+  Poppins_400Regular,
+  Poppins_500Medium,
+  Poppins_600SemiBold,
+} from '@expo-google-fonts/poppins';
 import { Inter_400Regular, Inter_600SemiBold } from '@expo-google-fonts/inter';
 
 import LugarSecretoScreen from './src/screens/LugarSecretoScreen';
-import BibliaScreen from './src/screens/BibliaScreen';
-import DiarioScreen from './src/screens/DiarioScreen';
-import JornadasScreen from './src/screens/JornadasScreen';
-import MaisStack from './src/navigation/MaisStack';
+import ComunidadeScreen from './src/screens/ComunidadeScreen';
+import BibliotecaScreen from './src/screens/BibliotecaScreen';
+import VidaDevocionalStack from './src/navigation/VidaDevocionalStack';
+import PerfilStack from './src/navigation/PerfilStack';
 import AutenticacaoScreen from './src/screens/AutenticacaoScreen';
 import { AuthProvider, useAuth } from './src/context/AuthContext';
 import { firebaseConfigurado } from './src/firebase';
@@ -41,43 +46,43 @@ function AppTabs() {
       }}
     >
       <Tab.Screen
-        name="LugarSecreto"
+        name="Home"
         component={LugarSecretoScreen}
         options={{
-          title: 'Lugar Secreto',
+          title: 'Home',
           tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🕊️</Text>,
         }}
       />
       <Tab.Screen
-        name="Biblia"
-        component={BibliaScreen}
+        name="VidaDevocional"
+        component={VidaDevocionalStack}
         options={{
-          title: 'Bíblia',
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📖</Text>,
+          title: 'Vida Devocional',
+          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🙏</Text>,
         }}
       />
       <Tab.Screen
-        name="Diario"
-        component={DiarioScreen}
+        name="Comunidade"
+        component={ComunidadeScreen}
         options={{
-          title: 'Diário',
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📔</Text>,
+          title: 'Comunidade',
+          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>❤️</Text>,
         }}
       />
       <Tab.Screen
-        name="Jornadas"
-        component={JornadasScreen}
+        name="Biblioteca"
+        component={BibliotecaScreen}
         options={{
-          title: 'Jornadas',
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🌱</Text>,
+          title: 'Biblioteca',
+          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🎧</Text>,
         }}
       />
       <Tab.Screen
-        name="Mais"
-        component={MaisStack}
+        name="Perfil"
+        component={PerfilStack}
         options={{
-          title: 'Mais',
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🌷</Text>,
+          title: 'Perfil',
+          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🌺</Text>,
         }}
       />
     </Tab.Navigator>
@@ -103,6 +108,8 @@ export default function App() {
     PlayfairDisplay_600SemiBold,
     PlayfairDisplay_700Bold,
     CormorantGaramond_600SemiBold_Italic,
+    CormorantGaramond_700Bold,
+    Poppins_400Regular,
     Poppins_500Medium,
     Poppins_600SemiBold,
     Inter_400Regular,

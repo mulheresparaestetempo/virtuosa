@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { cores } from '../theme';
+import { cores, raios } from '../theme';
 import { carregar, salvar } from '../storage';
 
 const CHAVE_MEMORIAIS = 'memoriais';
@@ -152,15 +152,15 @@ const styles = StyleSheet.create({
   sugestoesLinha: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 16 },
   sugestaoChip: {
     borderWidth: 1,
-    borderColor: cores.rosa,
+    borderColor: cores.olivaEscuro,
     borderRadius: 20,
     paddingVertical: 6,
     paddingHorizontal: 12,
   },
-  sugestaoChipTexto: { fontSize: 12, fontWeight: '600', color: cores.rosa },
+  sugestaoChipTexto: { fontSize: 12, fontWeight: '600', color: cores.olivaEscuro },
   cardNovo: {
     backgroundColor: cores.cremeCard,
-    borderRadius: 16,
+    borderRadius: raios.card,
     padding: 18,
     borderWidth: 1,
     borderColor: cores.bordaCard,
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   novoLabel: { fontSize: 14, fontWeight: '700', color: cores.bordo, marginBottom: 10 },
   input: {
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: raios.campo,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 12,
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   inputMultilinha: { minHeight: 60, textAlignVertical: 'top' },
-  botaoSalvar: { backgroundColor: cores.ouro, paddingVertical: 12, borderRadius: 10, alignItems: 'center' },
+  botaoSalvar: { backgroundColor: cores.ouro, paddingVertical: 12, borderRadius: raios.botao, alignItems: 'center' },
   botaoSalvarTexto: { color: '#fff', fontWeight: '700', fontSize: 15 },
   secaoTitulo: {
     fontSize: 13,
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   cardMemorial: {
     flexDirection: 'row',
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 14,

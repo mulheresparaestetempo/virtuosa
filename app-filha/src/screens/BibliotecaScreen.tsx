@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { cores } from '../theme';
+import { cores, fontes, raios } from '../theme';
 import { carregar, salvar } from '../storage';
 
 const CHAVE_FAVORITOS = 'biblioteca_favoritos';
@@ -59,6 +59,7 @@ export default function BibliotecaScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.tituloAba}>Biblioteca 🎧</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipsLinha}>
           <TouchableOpacity
             style={[styles.chip, categoriaAtiva === 'Todas' && styles.chipAtivo]}
@@ -101,6 +102,7 @@ export default function BibliotecaScreen() {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: cores.creme },
   container: { padding: 20, paddingBottom: 40 },
+  tituloAba: { fontSize: 26, fontFamily: fontes.titulo, color: cores.bordo, marginBottom: 16 },
   chipsLinha: { marginBottom: 16 },
   chip: {
     borderWidth: 1,
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 14,

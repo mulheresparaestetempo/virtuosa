@@ -19,6 +19,8 @@ Expo + React Native (Android e iOS a partir do mesmo código).
 
 - Plano completo do produto (18 módulos, priorização, modelo de dados):
   [`docs/app-filha-plano.md`](docs/app-filha-plano.md)
+- Design system (paleta, tipografia, raios, botões, espaçamento):
+  [`docs/app-filha-design-system.md`](docs/app-filha-design-system.md)
 - Como rodar em desenvolvimento e gerar o `.apk` instalável:
   [`app-filha/README.md`](app-filha/README.md)
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { cores } from '../theme';
+import { cores, raios } from '../theme';
 import { carregar, salvar } from '../storage';
 
 const CHAVE_PEDIDOS = 'acolhimento_pedidos';
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
   cardTipo: {
     width: '48%',
     backgroundColor: '#fff',
-    borderRadius: 14,
+    borderRadius: raios.card,
     padding: 14,
     marginBottom: 12,
     borderWidth: 1,
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 14,
