@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/widgets/exports.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -71,24 +72,55 @@ class HomeScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 32),
 
+            // Verso do Dia
+            Text(
+              'Verso do Dia',
+              style: AppTextStyles.heading3,
+            ),
+            const SizedBox(height: 16),
+            FadeInAnimation(
+              child: VerseCard(
+                reference: 'Salmos 23:1',
+                text: 'O Senhor é meu pastor e nada me faltará.',
+                translation: 'English: The Lord is my shepherd, and I lack nothing.',
+                isFavorite: false,
+                onFavoriteTap: () {},
+                onShareTap: () {},
+              ),
+            ),
+            const SizedBox(height: 32),
+
             // Community Highlights
             Text(
               'Destaques da Comunidade',
               style: AppTextStyles.heading3,
             ),
             const SizedBox(height: 16),
-            _buildCommunityCard(
-              emoji: '✨',
-              autor: 'Mariana Silva',
-              texto: 'Deus respondeu minha oração!',
-              data: 'Hoje',
+            SlideInAnimation(
+              direction: SlideDirection.fromLeft,
+              child: CommunityCard(
+                author: 'Mariana Silva',
+                authorImage: '👩',
+                content: 'Deus respondeu minha oração! Ele é fiel em tudo!',
+                timestamp: 'Hoje',
+                likes: 24,
+                comments: 5,
+                hasLiked: false,
+                onLikeTap: () {},
+              ),
             ),
             const SizedBox(height: 12),
-            _buildCommunityCard(
-              emoji: '🙏',
-              autor: 'Ana Paula',
-              texto: 'Peço oração pela saúde de minha filha',
-              data: 'Ontem',
+            SlideInAnimation(
+              direction: SlideDirection.fromRight,
+              child: CommunityCard(
+                author: 'Ana Paula',
+                authorImage: '👵',
+                content: 'Peço oração pela saúde de minha filha. Obrigada!',
+                timestamp: 'Ontem',
+                likes: 18,
+                comments: 8,
+                hasLiked: false,
+              ),
             ),
           ],
         ),
