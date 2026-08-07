@@ -8,28 +8,33 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { cores, raios } from '../theme';
+import { cores, fontes, raios, sombra } from '../theme';
 import { carregar, salvar } from '../storage';
 
 const CHAVE_MEMORIAIS = 'memoriais';
 
 type Memorial = {
-  id: string; // Number(id) é o timestamp de criação — reaproveitado pela linha do tempo em Minha Caminhada
+  id: string;
   titulo: string;
   descricao: string;
   data: string;
+  versiculo?: string;
+  reflexao?: string;
+  testemunho?: string;
+  foto?: string;
 };
 
 const sugestoes = [
   'Primeiro devocional',
   'Primeiro jejum',
-  'Primeira oração registrada',
+  'Primeira oração respondida',
   'Primeira jornada concluída',
   'Primeiro culto no lar',
   'Primeira visita recebida',
   'Primeiro testemunho',
   'Um ano caminhando com Deus',
   'Tornou-se discipuladora',
+  'Batismo',
 ];
 
 const UM_DIA_MS = 86400000;
@@ -40,6 +45,8 @@ const memoriaisIniciais: Memorial[] = [
     titulo: 'Primeiro devocional',
     descricao: 'Comecei minha caminhada diária no Lugar Secreto.',
     data: '15 de julho',
+    versiculo: 'Mateus 6:6',
+    reflexao: 'Que privilégio ter um lugar só meu e de Deus.',
   },
 ];
 
@@ -85,8 +92,9 @@ export default function MemoriaisScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.titulo}>🌸 Memoriais</Text>
         <Text style={styles.subtitulo}>
-          Lembranças da fidelidade de Deus na sua caminhada — não conquistas, marcos.
+          Lembranças da fidelidade de Deus na sua caminhada — não conquistas, marcos dourados.
         </Text>
 
         {sugestoesDisponiveis.length > 0 && (
@@ -148,6 +156,7 @@ export default function MemoriaisScreen() {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: cores.creme },
   container: { padding: 20, paddingBottom: 40 },
+  titulo: { fontSize: 26, fontFamily: fontes.titulo, color: cores.bordo, marginBottom: 4 },
   subtitulo: { fontSize: 13, color: cores.cinzaClaro, marginBottom: 16, lineHeight: 18 },
   sugestoesLinha: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 16 },
   sugestaoChip: {

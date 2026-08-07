@@ -11,6 +11,8 @@ import GratidaoScreen from '../screens/GratidaoScreen';
 import CartinhaPaiScreen from '../screens/CartinhaPaiScreen';
 import VersiculoDiaScreen from '../screens/VersiculoDiaScreen';
 import LugarSecretoDetailScreen from '../screens/LugarSecretoDetailScreen';
+import JejumScreen from '../screens/JejumScreen';
+import JejumAcompanhamentoScreen from '../screens/JejumAcompanhamentoScreen';
 
 export type VidaDevocionalStackParamList = {
   VidaDevocionalHub: undefined;
@@ -23,6 +25,8 @@ export type VidaDevocionalStackParamList = {
   CartinhaPai: undefined;
   VersiculoDia: undefined;
   LugarSecretoDetail: undefined;
+  Jejum: undefined;
+  JejumAcompanhamento: undefined;
 };
 
 const Stack = createNativeStackNavigator<VidaDevocionalStackParamList>();
@@ -54,6 +58,12 @@ export default function VidaDevocionalStack() {
         name="LugarSecretoDetail"
         component={LugarSecretoDetailScreen}
         options={{ title: 'Seu Lugar Secreto' }}
+      />
+      <Stack.Screen name="Jejum" component={JejumScreen} options={{ title: 'Iniciar um Jejum' }} />
+      <Stack.Screen
+        name="JejumAcompanhamento"
+        component={JejumAcompanhamentoScreen}
+        options={{ title: 'Seu Jejum em Andamento' }}
       />
     </Stack.Navigator>
   );
