@@ -6,8 +6,13 @@ import type { VidaDevocionalStackParamList } from '../navigation/VidaDevocionalS
 type Props = NativeStackScreenProps<VidaDevocionalStackParamList, 'VidaDevocionalHub'>;
 
 const itens: { rota: keyof VidaDevocionalStackParamList; titulo: string; emoji: string; descricao: string }[] = [
+  { rota: 'LugarSecretoDetail', titulo: 'Seu Lugar Secreto', emoji: '🕊️', descricao: 'Espaço de meditação e reflexão' },
+  { rota: 'VersiculoDia', titulo: 'Versículo do Dia', emoji: '✝️', descricao: 'Reflexão e aplicação prática' },
+  { rota: 'CartinhaPai', titulo: 'Cartinha do Pai', emoji: '💌', descricao: 'Uma palavra de amor especial' },
+  { rota: 'Oracao', titulo: 'Minhas Orações', emoji: '🙏', descricao: 'Pedidos, categorias e respostas' },
+  { rota: 'Gratidao', titulo: 'Gratidão', emoji: '🌸', descricao: 'Cultive flores de gratidão' },
   { rota: 'Biblia', titulo: 'Bíblia', emoji: '📖', descricao: 'Leitura, pesquisa, marcações e favoritos' },
-  { rota: 'Diario', titulo: 'Diário Espiritual', emoji: '📔', descricao: 'O que Deus falou, sonhos e gratidão' },
+  { rota: 'Diario', titulo: 'Diário Espiritual', emoji: '📔', descricao: 'O que Deus falou, sonhos e insights' },
   { rota: 'Jornadas', titulo: 'Jornadas', emoji: '🌱', descricao: 'Trilhas de crescimento espiritual' },
   { rota: 'AssistenteBiblica', titulo: 'Assistente Bíblica', emoji: '🤖', descricao: 'Busca por tema na Palavra' },
 ];
