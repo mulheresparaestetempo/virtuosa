@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StatusBar } from 'expo-status-bar';
-import { ActivityIndicator, SafeAreaView, Text } from 'react-native';
+import { ActivityIndicator, SafeAreaView, Text, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import {
@@ -28,37 +28,79 @@ import PerfilStack from './src/navigation/PerfilStack';
 import AutenticacaoScreen from './src/screens/AutenticacaoScreen';
 import { AuthProvider, useAuth } from './src/context/AuthContext';
 import { firebaseConfigurado } from './src/firebase';
-import { cores, fontes } from './src/theme';
+import { cores, fontes, raios } from './src/theme';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
 const Tab = createBottomTabNavigator();
+
+const itensNavegacao = [
+  { nome: 'Home', titulo: 'Início', simbolo: '⌂' },
+  { nome: 'VidaDevocional', titulo: 'Devocional', simbolo: '✦' },
+  { nome: 'Comunidade', titulo: 'Comunidade', simbolo: '♡' },
+  { nome: 'Biblioteca', titulo: 'Biblioteca', simbolo: '▤' },
+  { nome: 'Perfil', titulo: 'Minha caminhada', simbolo: '◌' },
+];
+
+function IconeNavegacao({ simbolo, color, focused }: { simbolo: string; color: string; focused: boolean }) {
+  return (
+    <View
+      style={{
+        minWidth: 38,
+        height: 30,
+        borderRadius: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: focused ? cores.roseClaro : 'transparent',
+      }}
+    >
+      <Text style={{ fontSize: focused ? 19 : 18, lineHeight: 21, color, fontFamily: fontes.rotulo }}>{simbolo}</Text>
+    </View>
+  );
+}
 
 function AppTabs() {
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: cores.bordo,
+        tabBarActiveTintColor: cores.douradoEscuro,
         tabBarInactiveTintColor: cores.cinzaClaro,
-        tabBarStyle: { backgroundColor: '#fff', borderTopColor: cores.borda },
-        tabBarLabelStyle: { fontFamily: fontes.rotuloMedio, fontSize: 11 },
+        tabBarStyle: {
+          backgroundColor: 'rgba(255,255,255,0.98)',
+          borderTopColor: cores.borda,
+          borderTopWidth: 1,
+          height: 72,
+          paddingTop: 7,
+          paddingBottom: 7,
+          elevation: 0,
+          shadowOpacity: 0,
+        },
+        tabBarLabelStyle: {
+          fontFamily: fontes.rotuloMedio,
+          fontSize: 9.5,
+          marginTop: 1,
+        },
+        tabBarItemStyle: {
+          borderRadius: raios.botao,
+          marginHorizontal: 2,
+        },
       }}
     >
       <Tab.Screen
         name="Home"
         component={LugarSecretoScreen}
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🕊️</Text>,
+          title: 'Início',
+          tabBarIcon: ({ color, focused }) => <IconeNavegacao simbolo={itensNavegacao[0].simbolo} color={color} focused={focused} />,
         }}
       />
       <Tab.Screen
         name="VidaDevocional"
         component={VidaDevocionalStack}
         options={{
-          title: 'Vida Devocional',
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🙏</Text>,
+          title: 'Devocional',
+          tabBarIcon: ({ color, focused }) => <IconeNavegacao simbolo={itensNavegacao[1].simbolo} color={color} focused={focused} />,
         }}
       />
       <Tab.Screen
@@ -66,7 +108,7 @@ function AppTabs() {
         component={ComunidadeScreen}
         options={{
           title: 'Comunidade',
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>❤️</Text>,
+          tabBarIcon: ({ color, focused }) => <IconeNavegacao simbolo={itensNavegacao[2].simbolo} color={color} focused={focused} />,
         }}
       />
       <Tab.Screen
@@ -74,15 +116,15 @@ function AppTabs() {
         component={BibliotecaScreen}
         options={{
           title: 'Biblioteca',
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🎧</Text>,
+          tabBarIcon: ({ color, focused }) => <IconeNavegacao simbolo={itensNavegacao[3].simbolo} color={color} focused={focused} />,
         }}
       />
       <Tab.Screen
         name="Perfil"
         component={PerfilStack}
         options={{
-          title: 'Perfil',
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🌺</Text>,
+          title: 'Minha caminhada',
+          tabBarIcon: ({ color, focused }) => <IconeNavegacao simbolo={itensNavegacao[4].simbolo} color={color} focused={focused} />,
         }}
       />
     </Tab.Navigator>
@@ -95,7 +137,7 @@ function Portao() {
   if (carregando) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: cores.creme, alignItems: 'center', justifyContent: 'center' }}>
-        <ActivityIndicator color={cores.bordo} />
+        <ActivityIndicator color={cores.douradoEscuro} />
       </SafeAreaView>
     );
   }
@@ -117,8 +159,6 @@ export default function App() {
   });
 
   const aoRenderizarLayout = useCallback(async () => {
-    // Fontes são progressivas: o aplicativo não pode ficar em branco caso
-    // uma fonte externa demore ou falhe no navegador/GitHub Pages.
     await SplashScreen.hideAsync().catch(() => {});
   }, []);
 
@@ -126,9 +166,6 @@ export default function App() {
     aoRenderizarLayout();
   }, [aoRenderizarLayout]);
 
-  // Não bloqueamos a interface esperando fontes. Quando elas carregarem,
-  // os componentes que usam os nomes das fontes passam a utilizá-las;
-  // enquanto isso, o navegador usa a fonte de fallback.
   void fontesCarregadas;
 
   return (
