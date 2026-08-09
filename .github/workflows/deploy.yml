@@ -55,6 +55,18 @@ jobs:
           mkdir -p /tmp/public/app
           rsync -a app-filha/dist/ /tmp/public/app/
 
+          # Add a clear, independent entry point to the App FILHA in the institutional site.
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('/tmp/public/index.html')
+          html = p.read_text(encoding='utf-8')
+          marker = '<ul class="nav-links">'
+          button = '''<li><a href="/virtuosa/app/" class="highlight-btn" aria-label="Entrar no App FILHA">Entrar no App</a></li>'''
+          if marker in html and 'aria-label="Entrar no App FILHA"' not in html:
+              html = html.replace(marker, marker + '\n                ' + button, 1)
+          p.write_text(html, encoding='utf-8')
+          PY
+
           touch /tmp/public/.nojekyll
 
       - name: Publish to GitHub Pages
