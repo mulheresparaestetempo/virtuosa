@@ -1,80 +1,49 @@
 import { useState } from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { cores, fontes, raios, sombra } from '../theme';
+import { diaDoPlano, planoPadrao } from '../data/devocional';
 
 export default function LugarSecretoDetailScreen() {
-  const [devocionalFinalizado, setDevocionalFinalizado] = useState(false);
-  const [mostrarFlores, setMostrarFlores] = useState(false);
+  const [finalizado, setFinalizado] = useState(false);
   const [reflexao, setReflexao] = useState('');
-
-  function finalizarDevocional() {
-    setDevocionalFinalizado(true);
-    setMostrarFlores(true);
-    setTimeout(() => setMostrarFlores(false), 3000);
-  }
+  const devocional = diaDoPlano(planoPadrao);
 
   return (
     <SafeAreaView style={styles.safe}>
-      <ScrollView contentContainerStyle={styles.container}>
-        {/* Grande Ilustração */}
-        <View style={styles.ilustracaoContainer}>
-          <View style={styles.ilustracao}>
-            <Text style={styles.ilustracaoTexto}>Ilustração em aquarela:</Text>
-            <Text style={styles.ilustracaoEmoji}>👩‍🦰</Text>
-            <Text style={styles.ilustracaoDescricao}>Jesus sentado ao lado de uma mulher lendo a Bíblia</Text>
-          </View>
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+        <View style={styles.capa}>
+          <Text style={styles.capaMarca}>FILHA · LUGAR SECRETO</Text>
+          <Text style={styles.capaTitulo}>{devocional.titulo}</Text>
+          <Text style={styles.capaSubtitulo}>Um momento para desacelerar e permanecer na presença de Deus.</Text>
+          <View style={styles.capaLinha} />
+          <Text style={styles.capaReferencia}>{devocional.versiculo}</Text>
         </View>
 
-        <Text style={styles.titulo}>Seu Lugar Secreto</Text>
-        <Text style={styles.subtitulo}>Um espaço só para você e Deus</Text>
-
-        {/* Cards de Ações */}
-        <View style={styles.cardsContainer}>
-          <TouchableOpacity style={styles.actionCard}>
-            <Text style={styles.actionEmoji}>📖</Text>
-            <Text style={styles.actionLabel}>Devocional</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.actionCard}>
-            <Text style={styles.actionEmoji}>🙏</Text>
-            <Text style={styles.actionLabel}>Oração</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.actionCard}>
-            <Text style={styles.actionEmoji}>🎧</Text>
-            <Text style={styles.actionLabel}>Áudio</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.actionCard}>
-            <Text style={styles.actionEmoji}>💭</Text>
-            <Text style={styles.actionLabel}>Reflexão</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.actionCard}>
-            <Text style={styles.actionEmoji}>✝️</Text>
-            <Text style={styles.actionLabel}>Versículo</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.actionCard}>
-            <Text style={styles.actionEmoji}>✍️</Text>
-            <Text style={styles.actionLabel}>Escrever</Text>
-          </TouchableOpacity>
+        <View style={styles.intro}>
+          <Text style={styles.eyebrow}>HOJE</Text>
+          <Text style={styles.titulo}>Descanse antes de continuar.</Text>
+          <Text style={styles.texto}>{devocional.resumo}</Text>
         </View>
 
-        {/* Espaço para Escrever */}
-        <View style={styles.cardEscrever}>
-          <Text style={styles.cardLabel}>Espaço para escrever</Text>
+        <View style={styles.cardLeitura}>
+          <Text style={styles.cardLabel}>UMA PAUSA COM DEUS</Text>
+          <Text style={styles.leitura}>
+            Feche os olhos por alguns segundos. Respire com calma. Não tente resolver tudo agora. Apenas reconheça que Deus está presente e entregue a Ele aquilo que pesa no seu coração.
+          </Text>
+          <Text style={styles.leituraDestaque}>Você não precisa carregar tudo sozinha.</Text>
+        </View>
+
+        <View style={styles.acoes}>
+          <View style={styles.acao}><Text style={styles.acaoIcone}>✦</Text><Text style={styles.acaoTitulo}>Palavra</Text><Text style={styles.acaoTexto}>Leia novamente o versículo.</Text></View>
+          <View style={styles.acao}><Text style={styles.acaoIcone}>♡</Text><Text style={styles.acaoTitulo}>Oração</Text><Text style={styles.acaoTexto}>Converse com Abba.</Text></View>
+          <View style={styles.acao}><Text style={styles.acaoIcone}>✎</Text><Text style={styles.acaoTitulo}>Reflexão</Text><Text style={styles.acaoTexto}>Escreva o que sentiu.</Text></View>
+        </View>
+
+        <View style={styles.escrever}>
+          <Text style={styles.cardLabel}>O QUE DEUS FALOU AO SEU CORAÇÃO?</Text>
           <TextInput
             style={styles.textarea}
-            placeholder="Compartilhe seus pensamentos, orações ou o que Deus disse ao seu coração..."
+            placeholder="Escreva livremente. Este é o seu espaço..."
             placeholderTextColor={cores.cinzaClaro}
             value={reflexao}
             onChangeText={setReflexao}
@@ -82,42 +51,25 @@ export default function LugarSecretoDetailScreen() {
           />
         </View>
 
-        {/* Versículo do Lugar Secreto */}
-        <View style={styles.cardVersiculo}>
-          <Text style={styles.versiculoTexto}>
-            "Mas tu, quando orares, entra em teu quarto, e, fechada a porta, ora a teu Pai que está em secreto;
-            e teu Pai, que vê em secreto, te recompensará."
-          </Text>
-          <Text style={styles.versiculoReferencia}>Mateus 6:6</Text>
+        <View style={styles.versiculoCard}>
+          <Text style={styles.versiculo}>“Vinde a mim, todos os que estais cansados e sobrecarregados, e eu vos aliviarei.”</Text>
+          <Text style={styles.referencia}>Mateus 11:28</Text>
         </View>
 
-        {/* Botão Finalizar */}
-        {!devocionalFinalizado && (
-          <TouchableOpacity style={styles.botaoFinalizar} onPress={finalizarDevocional}>
-            <Text style={styles.botaoFinalizarTexto}>Finalizar Devocional</Text>
+        {!finalizado ? (
+          <TouchableOpacity style={styles.botao} activeOpacity={0.86} onPress={() => setFinalizado(true)}>
+            <Text style={styles.botaoTexto}>Concluir meu momento com Deus</Text>
+            <Text style={styles.botaoSeta}>→</Text>
           </TouchableOpacity>
-        )}
-
-        {/* Mensagem ao Finalizar */}
-        {devocionalFinalizado && (
-          <View style={styles.mensagemSucesso}>
-            <Text style={styles.mensagemSucessoTexto}>✓ Devocional finalizado!</Text>
-            <Text style={styles.mensagemSucessoSubtexto}>
-              "Que Deus fortaleça sua caminhada hoje."
-            </Text>
+        ) : (
+          <View style={styles.sucesso}>
+            <Text style={styles.sucessoIcone}>♡</Text>
+            <Text style={styles.sucessoTitulo}>Seu momento foi concluído.</Text>
+            <Text style={styles.sucessoTexto}>Guarde no coração aquilo que Deus ministrou a você hoje.</Text>
           </View>
         )}
 
-        {/* Flores Animadas */}
-        {mostrarFlores && (
-          <View style={styles.floresAnimacao}>
-            {[...Array(8)].map((_, i) => (
-              <Text key={i} style={[styles.florAnimada, { left: `${i * 12}%` }]}>
-                🌸
-              </Text>
-            ))}
-          </View>
-        )}
+        <Text style={styles.rodape}>Todos os dias, um encontro com Abba.</Text>
       </ScrollView>
     </SafeAreaView>
   );
@@ -125,154 +77,37 @@ export default function LugarSecretoDetailScreen() {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: cores.creme },
-  container: { padding: 20, paddingBottom: 40 },
-  ilustracaoContainer: {
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  ilustracao: {
-    width: '100%',
-    height: 280,
-    backgroundColor: cores.cremeCard,
-    borderRadius: raios.card,
-    borderWidth: 1,
-    borderColor: cores.bordaCard,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...sombra,
-  },
-  ilustracaoTexto: {
-    fontSize: 12,
-    fontFamily: fontes.texto,
-    color: cores.cinzaClaro,
-    marginBottom: 12,
-  },
-  ilustracaoEmoji: { fontSize: 80, marginBottom: 12 },
-  ilustracaoDescricao: {
-    fontSize: 13,
-    fontFamily: fontes.texto,
-    color: cores.cinzaClaro,
-    textAlign: 'center',
-  },
-  titulo: {
-    fontSize: 28,
-    fontFamily: fontes.titulo,
-    color: cores.bordo,
-    marginBottom: 8,
-  },
-  subtitulo: {
-    fontSize: 14,
-    fontFamily: fontes.texto,
-    color: cores.cinzaClaro,
-    marginBottom: 20,
-  },
-  cardsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-    marginBottom: 24,
-  },
-  actionCard: {
-    width: '31%',
-    backgroundColor: '#fff',
-    borderRadius: raios.card,
-    padding: 14,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: cores.borda,
-    ...sombra,
-  },
-  actionEmoji: { fontSize: 24, marginBottom: 6 },
-  actionLabel: {
-    fontSize: 11,
-    fontFamily: fontes.rotulo,
-    color: cores.bordo,
-    textAlign: 'center',
-  },
-  cardEscrever: {
-    backgroundColor: cores.cremeCard,
-    borderRadius: raios.card,
-    padding: 18,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: cores.bordaCard,
-  },
-  cardLabel: {
-    fontSize: 14,
-    fontFamily: fontes.rotulo,
-    color: cores.bordo,
-    marginBottom: 12,
-  },
-  textarea: {
-    backgroundColor: '#fff',
-    borderRadius: raios.campo,
-    borderWidth: 1,
-    borderColor: cores.borda,
-    padding: 12,
-    fontSize: 14,
-    fontFamily: fontes.texto,
-    color: cores.cinzaTexto,
-    minHeight: 100,
-    textAlignVertical: 'top',
-  },
-  cardVersiculo: {
-    backgroundColor: cores.dourado,
-    borderRadius: raios.card,
-    padding: 20,
-    marginBottom: 24,
-    ...sombra,
-  },
-  versiculoTexto: {
-    fontSize: 16,
-    fontFamily: fontes.versiculo,
-    color: '#fff',
-    lineHeight: 26,
-    marginBottom: 12,
-    fontStyle: 'italic',
-  },
-  versiculoReferencia: {
-    fontSize: 13,
-    fontFamily: fontes.rotulo,
-    color: '#fff',
-    textAlign: 'right',
-  },
-  botaoFinalizar: {
-    backgroundColor: cores.rosa,
-    paddingVertical: 14,
-    borderRadius: raios.botao,
-    alignItems: 'center',
-  },
-  botaoFinalizarTexto: {
-    color: cores.olivaEscuro,
-    fontFamily: fontes.rotulo,
-    fontSize: 15,
-  },
-  mensagemSucesso: {
-    backgroundColor: '#E8F5E9',
-    borderRadius: raios.card,
-    padding: 20,
-    alignItems: 'center',
-  },
-  mensagemSucessoTexto: {
-    fontSize: 16,
-    fontFamily: fontes.rotulo,
-    color: '#2E7D32',
-    marginBottom: 8,
-  },
-  mensagemSucessoSubtexto: {
-    fontSize: 14,
-    fontFamily: fontes.texto,
-    color: '#2E7D32',
-    fontStyle: 'italic',
-  },
-  floresAnimacao: {
-    marginTop: 20,
-    height: 60,
-    position: 'relative',
-  },
-  florAnimada: {
-    position: 'absolute',
-    fontSize: 28,
-    top: 0,
-  },
+  container: { padding: 20, paddingBottom: 46 },
+  capa: { backgroundColor: cores.bordo, borderRadius: 26, padding: 24, marginBottom: 24, ...sombra },
+  capaMarca: { fontSize: 9, letterSpacing: 2, fontFamily: fontes.rotuloMedio, color: cores.dourado, marginBottom: 28 },
+  capaTitulo: { fontSize: 31, lineHeight: 38, fontFamily: fontes.titulo, color: '#fff', marginBottom: 9 },
+  capaSubtitulo: { fontSize: 13, lineHeight: 20, fontFamily: fontes.texto, color: '#F7EEE8' },
+  capaLinha: { height: 1, backgroundColor: 'rgba(255,255,255,0.25)', marginVertical: 20 },
+  capaReferencia: { fontSize: 13, lineHeight: 20, fontFamily: fontes.versiculo, fontStyle: 'italic', color: '#F5DDB5' },
+  intro: { marginBottom: 20 },
+  eyebrow: { fontSize: 10, letterSpacing: 2, fontFamily: fontes.rotuloMedio, color: cores.ouroEscuro, marginBottom: 7 },
+  titulo: { fontSize: 24, lineHeight: 30, fontFamily: fontes.titulo, color: cores.bordo, marginBottom: 8 },
+  texto: { fontSize: 14, lineHeight: 22, fontFamily: fontes.texto, color: cores.cinzaTexto },
+  cardLeitura: { backgroundColor: cores.cremeCard, borderRadius: raios.card, borderWidth: 1, borderColor: cores.bordaCard, padding: 20, marginBottom: 14 },
+  cardLabel: { fontSize: 9, letterSpacing: 1.5, fontFamily: fontes.rotuloMedio, color: cores.ouroEscuro, marginBottom: 11 },
+  leitura: { fontSize: 14, lineHeight: 22, fontFamily: fontes.texto, color: cores.cinzaTexto, marginBottom: 13 },
+  leituraDestaque: { fontSize: 15, lineHeight: 22, fontFamily: fontes.versiculo, fontStyle: 'italic', color: cores.bordo },
+  acoes: { flexDirection: 'row', gap: 9, marginBottom: 16 },
+  acao: { flex: 1, minHeight: 112, backgroundColor: '#fff', borderRadius: raios.card, borderWidth: 1, borderColor: cores.borda, padding: 12, ...sombra },
+  acaoIcone: { fontSize: 19, color: cores.ouroEscuro, marginBottom: 6 },
+  acaoTitulo: { fontSize: 12, fontFamily: fontes.textoForte, color: cores.bordo, marginBottom: 4 },
+  acaoTexto: { fontSize: 10.5, lineHeight: 15, fontFamily: fontes.texto, color: cores.cinzaClaro },
+  escrever: { backgroundColor: '#fff', borderRadius: raios.card, borderWidth: 1, borderColor: cores.borda, padding: 18, marginBottom: 15 },
+  textarea: { minHeight: 125, borderRadius: raios.campo, borderWidth: 1, borderColor: cores.bordaCard, backgroundColor: cores.creme, padding: 13, fontSize: 13, lineHeight: 20, fontFamily: fontes.texto, color: cores.cinzaTexto, textAlignVertical: 'top' },
+  versiculoCard: { backgroundColor: cores.rosa, borderRadius: raios.card, padding: 20, marginBottom: 18 },
+  versiculo: { fontSize: 17, lineHeight: 26, fontFamily: fontes.versiculo, fontStyle: 'italic', color: cores.olivaEscuro, marginBottom: 10 },
+  referencia: { fontSize: 11, fontFamily: fontes.rotuloMedio, color: cores.olivaEscuro },
+  botao: { minHeight: 50, backgroundColor: cores.bordo, borderRadius: raios.botao, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10, paddingHorizontal: 16 },
+  botaoTexto: { color: '#fff', fontSize: 13, fontFamily: fontes.rotuloMedio },
+  botaoSeta: { color: cores.dourado, fontSize: 18 },
+  sucesso: { backgroundColor: cores.cremeCard, borderRadius: raios.card, borderWidth: 1, borderColor: cores.bordaCard, padding: 22, alignItems: 'center' },
+  sucessoIcone: { fontSize: 25, color: cores.ouroEscuro, marginBottom: 7 },
+  sucessoTitulo: { fontSize: 16, fontFamily: fontes.titulo, color: cores.bordo, marginBottom: 6 },
+  sucessoTexto: { fontSize: 12, lineHeight: 18, textAlign: 'center', fontFamily: fontes.texto, color: cores.cinzaTexto },
+  rodape: { textAlign: 'center', marginTop: 22, fontSize: 10, fontFamily: fontes.rotulo, color: cores.cinzaClaro },
 });
