@@ -12,7 +12,6 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,11 +33,10 @@ jobs:
 
       - name: Assemble GitHub Pages site
         run: |
-          rm -rf /tmp/public
-          mkdir -p /tmp/public
+          rm -rf public
+          mkdir -p public/app
 
-          # Keep the existing institutional site at the repository root.
-          rsync -a ./ /tmp/public/ \
+          rsync -a ./ public/ \
             --exclude='.git/' \
             --exclude='.github/' \
             --exclude='app-filha/' \
@@ -49,29 +47,32 @@ jobs:
             --exclude='node_modules/' \
             --exclude='.env*' \
             --exclude='*.md' \
-            --exclude='.vercelignore'
+            --exclude='.vercelignore' \
+            --exclude='public/'
 
-          # Publish the independent App FILHA under /virtuosa/app/.
-          mkdir -p /tmp/public/app
-          rsync -a app-filha/dist/ /tmp/public/app/
+          rsync -a app-filha/dist/ public/app/
 
-          # Add a clear, independent entry point to the App FILHA in the institutional site.
+          touch public/.nojekyll
+          touch public/app/.nojekyll
+
           python3 - <<'PY'
           from pathlib import Path
-          p = Path('/tmp/public/index.html')
+          p = Path('public/index.html')
           html = p.read_text(encoding='utf-8')
           marker = '<ul class="nav-links">'
-          button = '''<li><a href="/virtuosa/app/" class="highlight-btn" aria-label="Entrar no App FILHA">Entrar no App</a></li>'''
+          button = '<li><a href="/virtuosa/app/" class="highlight-btn" aria-label="Entrar no App FILHA">Entrar no App</a></li>'
           if marker in html and 'aria-label="Entrar no App FILHA"' not in html:
               html = html.replace(marker, marker + '\n                ' + button, 1)
           p.write_text(html, encoding='utf-8')
           PY
 
-          touch /tmp/public/.nojekyll
+          echo 'Checking Pages files...'
+          test -f public/index.html
+          test -f public/app/index.html
 
       - name: Publish to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: /tmp/public
+          publish_dir: public
           force_orphan: true
