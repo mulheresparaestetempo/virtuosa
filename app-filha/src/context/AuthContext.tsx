@@ -22,8 +22,8 @@ type AuthContextValor = {
   usuario: User | null;
   perfil: PerfilUsuaria | null;
   erro: string | null;
-  cadastrar: (nome: string, email: string, codigo: string) => Promise<void>;
-  entrar: (email: string, codigo: string) => Promise<void>;
+  cadastrar: (nome: string, email: string, senha: string) => Promise<void>;
+  entrar: (email: string, senha: string) => Promise<void>;
   sair: () => Promise<void>;
 };
 
@@ -36,11 +36,11 @@ function traduzErro(codigo: string): string {
     case 'auth/invalid-email':
       return 'E-mail inválido.';
     case 'auth/weak-password':
-      return 'O código de acesso precisa ter pelo menos 6 números.';
+      return 'A senha precisa ter pelo menos 6 caracteres.';
     case 'auth/invalid-credential':
     case 'auth/wrong-password':
     case 'auth/user-not-found':
-      return 'E-mail ou código de acesso incorretos.';
+      return 'E-mail ou senha incorretos.';
     default:
       return 'Não foi possível completar. Tente novamente.';
   }
@@ -69,10 +69,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return unsub;
   }, []);
 
-  async function cadastrar(nome: string, email: string, codigo: string) {
+  async function cadastrar(nome: string, email: string, senha: string) {
     setErro(null);
     try {
-      const cred = await createUserWithEmailAndPassword(auth, email.trim(), codigo);
+      const cred = await createUserWithEmailAndPassword(auth, email.trim(), senha);
       await setDoc(doc(db, 'usuarias', cred.user.uid), {
         nome: nome.trim(),
         papel: 'membro',
@@ -85,10 +85,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  async function entrar(email: string, codigo: string) {
+  async function entrar(email: string, senha: string) {
     setErro(null);
     try {
-      await signInWithEmailAndPassword(auth, email.trim(), codigo);
+      await signInWithEmailAndPassword(auth, email.trim(), senha);
     } catch (e) {
       setErro(traduzErro((e as { code?: string })?.code ?? ''));
       throw e;
@@ -116,8 +116,6 @@ const valorSemFirebase: AuthContextValor = {
   sair: async () => {},
 };
 
-// Fora de <AuthProvider> (app sem Firebase configurado) devolve um valor neutro,
-// para as telas poderem chamar useAuth() sem precisar checar se há provider.
 export function useAuth() {
   const ctx = useContext(AuthContext);
   return ctx ?? valorSemFirebase;
