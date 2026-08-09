@@ -291,9 +291,10 @@
             color: white;
             padding: 10px 20px;
             border-radius: 25px;
-            font-weight: 600;
-            border: 1px solid var(--dourado);
-            box-shadow: 0 3px 15px rgba(184, 92, 92, 0.2);
+            font-weight: 700;
+            border: 1px solid rgba(212, 175, 55, 0.75);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 6px 18px rgba(184, 92, 92, 0.32);
         }
 
         .nav-links a.highlight-btn::after {
@@ -303,7 +304,8 @@
         .nav-links a.highlight-btn:hover {
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(184, 92, 92, 0.3);
+            box-shadow: 0 8px 24px rgba(184, 92, 92, 0.4),
+                        0 0 14px rgba(212, 175, 55, 0.24);
         }
 
         .mobile-menu-btn {
@@ -539,7 +541,8 @@
 
         .btn-elegant:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(184, 92, 92, 0.4);
+            box-shadow: 0 14px 34px rgba(184, 92, 92, 0.45),
+                        0 0 16px rgba(212, 175, 55, 0.2);
         }
 
         .scroll-indicator {
@@ -572,7 +575,7 @@
 
         /* Main Event Section - Elegant Gold Diamond Pattern */
         .main-event-section {
-            padding: 5rem 2rem;
+            padding: 5.5rem 2rem;
             background: linear-gradient(135deg, #c9a227 0%, #d4af37 50%, #c9a227 100%);
             position: relative;
             overflow: hidden;
@@ -665,6 +668,7 @@
         .btn-event {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
             font-family: 'Quicksand', sans-serif;
             font-size: 0.82rem;
@@ -676,14 +680,86 @@
             padding: 15px 38px;
             border-radius: 50px;
             text-decoration: none;
+            text-align: center;
+            white-space: normal;
             transition: all 0.4s ease;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(212, 175, 55, 0.78);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 26px rgba(184, 92, 92, 0.34);
         }
 
         .btn-event:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-            background: #fffdf8;
+            box-shadow: 0 14px 34px rgba(184, 92, 92, 0.45),
+                        0 0 16px rgba(212, 175, 55, 0.23);
+        }
+
+        /* Countdown Section */
+        .countdown-section {
+            padding: 4.8rem 2rem;
+            background: linear-gradient(180deg, var(--ivory) 0%, var(--champagne) 100%);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .countdown-container {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .countdown-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 500;
+            color: var(--rosa-dark);
+            letter-spacing: 3px;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .countdown-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: var(--text-soft);
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(100px, 1fr));
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 6px;
+            padding: 1.1rem 0.5rem;
+            box-shadow: 0 5px 20px rgba(184, 92, 92, 0.08);
+        }
+
+        .countdown-value {
+            display: block;
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            color: var(--rosa);
+            letter-spacing: 2px;
+            line-height: 1.1;
+        }
+
+        .countdown-label {
+            display: block;
+            margin-top: 0.4rem;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1.8px;
+            color: var(--text-soft);
+            text-transform: uppercase;
         }
 
         /* Countdown Section */
@@ -756,7 +832,7 @@
 
         /* Evangelistic Section */
         .evangelistic {
-            padding: 6rem 2rem;
+            padding: 6.5rem 2rem;
             background: linear-gradient(180deg, var(--rosa-soft) 0%, var(--cream) 100%);
             text-align: center;
             position: relative;
@@ -826,43 +902,46 @@
             border-radius: 50px;
             text-decoration: none;
             transition: all 0.4s ease;
-            border: 1px solid var(--rosa-soft);
-            box-shadow: 0 5px 20px rgba(184, 92, 92, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.75);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 8px 24px rgba(184, 92, 92, 0.28);
             margin-top: 1rem;
         }
 
         .btn-light-elegant:hover {
-            background: var(--rosa);
             color: white;
             transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(184, 92, 92, 0.4),
+                        0 0 14px rgba(212, 175, 55, 0.2);
         }
 
         /* About Section */
         .about {
-            padding: 6rem 2rem;
+            padding: 6.5rem 2rem;
             background: var(--cream);
         }
 
         .section-header {
             text-align: center;
-            max-width: 600px;
-            margin: 0 auto 4rem;
+            max-width: 680px;
+            margin: 0 auto 4.6rem;
         }
 
         .section-header h2 {
             font-family: 'Cinzel', serif;
-            font-size: clamp(1.6rem, 3vw, 2rem);
+            font-size: clamp(1.75rem, 3.2vw, 2.2rem);
             font-weight: 600;
-            color: var(--rosa);
-            letter-spacing: 6px;
-            margin-bottom: 0.5rem;
+            color: var(--rosa-dark);
+            letter-spacing: 4px;
+            margin-bottom: 0.8rem;
         }
 
         .section-header p {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
+            font-size: 1.18rem;
             color: var(--text-soft);
             font-style: italic;
+            line-height: 1.75;
         }
 
         .about-container {
@@ -951,7 +1030,7 @@
 
         /* Pillars Section */
         .pillars {
-            padding: 6rem 2rem;
+            padding: 6.5rem 2rem;
             background: linear-gradient(180deg, var(--champagne) 0%, var(--cream) 100%);
         }
 
@@ -1204,7 +1283,7 @@
 
         /* Lares Section */
         .lares-section {
-            padding: 6rem 2rem;
+            padding: 6.5rem 2rem;
             background: linear-gradient(180deg, var(--rosa-soft) 0%, var(--cream) 100%);
         }
 
@@ -1278,8 +1357,9 @@
             border-radius: 50px;
             text-decoration: none;
             transition: all 0.4s ease;
-            box-shadow: 0 10px 35px rgba(184, 92, 92, 0.35);
+            box-shadow: 0 10px 35px rgba(184, 92, 92, 0.4);
             border: 2px solid var(--dourado);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
         }
 
         .btn-form-cta svg {
@@ -1289,7 +1369,8 @@
 
         .btn-form-cta:hover {
             transform: translateY(-4px);
-            box-shadow: 0 15px 45px rgba(184, 92, 92, 0.45);
+            box-shadow: 0 15px 45px rgba(184, 92, 92, 0.5),
+                        0 0 16px rgba(212, 175, 55, 0.22);
         }
 
         .btn-dates-cta {
@@ -1301,14 +1382,15 @@
             font-weight: 600;
             letter-spacing: 1px;
             text-transform: uppercase;
-            color: var(--rosa);
-            background: white;
+            color: white;
+            background: linear-gradient(135deg, var(--rosa), var(--rosa-dark));
             padding: 15px 30px;
             border-radius: 50px;
             text-decoration: none;
             transition: all 0.4s ease;
-            box-shadow: 0 5px 20px rgba(184, 92, 92, 0.1);
-            border: 1px solid var(--rosa-soft);
+            box-shadow: 0 7px 22px rgba(184, 92, 92, 0.28);
+            border: 1px solid rgba(212, 175, 55, 0.72);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
             cursor: pointer;
         }
 
@@ -1318,9 +1400,9 @@
         }
 
         .btn-dates-cta:hover {
-            background: var(--rosa);
-            color: white;
             transform: translateY(-2px);
+            box-shadow: 0 11px 30px rgba(184, 92, 92, 0.42),
+                        0 0 14px rgba(212, 175, 55, 0.2);
         }
 
         /* Modal de Datas Disponíveis */
@@ -1580,7 +1662,7 @@
 
         /* CTA Section */
         .cta-section {
-            padding: 5rem 2rem;
+            padding: 5.5rem 2rem;
             background: linear-gradient(135deg, var(--rosa) 0%, var(--rosa-dark) 100%);
             text-align: center;
             position: relative;
@@ -1640,13 +1722,15 @@
             font-weight: 600;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(--rosa);
-            background: white;
+            color: white;
+            background: linear-gradient(135deg, var(--rosa), var(--rosa-dark));
             padding: 16px 35px;
             border-radius: 50px;
             text-decoration: none;
             transition: all 0.4s ease;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.78);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(184, 92, 92, 0.38);
         }
 
         .whatsapp-btn svg {
@@ -1656,7 +1740,8 @@
 
         .whatsapp-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 14px 38px rgba(184, 92, 92, 0.5),
+                        0 0 16px rgba(212, 175, 55, 0.24);
         }
 
         /* Footer */
@@ -1873,6 +1958,28 @@
                 line-height: 1.1;
                 font-size: clamp(3rem, 14vw, 4.6rem);
                 margin-bottom: 0.85rem;
+            }
+
+            .section-header {
+                margin-bottom: 3rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.55rem;
+                letter-spacing: 2.5px;
+            }
+
+            .section-header p {
+                font-size: 1.1rem;
+                line-height: 1.75;
+            }
+
+            .btn-event {
+                width: min(100%, 360px);
+                padding: 16px 20px;
+                font-size: 0.82rem;
+                letter-spacing: 1.2px;
+                line-height: 1.35;
             }
 
             .verse-container {
@@ -2104,7 +2211,7 @@
             
             <div class="event-cta">
                 <a href="https://wa.me/5521977356086?text=Olá!%20Quero%20participar%20do%20Culto%20de%20Abertura%20do%20VIRTUOSAS%20no%20dia%2009%20de%20Maio!" class="btn-event" target="_blank">
-                    Quero Participar
+                    QUERO PARTICIPAR DO ENCONTRO
                 </a>
             </div>
         </div>
