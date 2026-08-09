@@ -1,4 +1,4 @@
-name: Deploy Site + App FILHA
+name: Build App FILHA for GitHub Pages
 
 on:
   push:
@@ -13,8 +13,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout development branch
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -31,48 +33,49 @@ jobs:
         working-directory: app-filha
         run: npx expo export -p web
 
-      - name: Assemble GitHub Pages site
+      - name: Checkout main branch used by GitHub Pages
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: pages-main
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish App FILHA into main/app
         run: |
-          rm -rf public
-          mkdir -p public/app
+          rm -rf pages-main/app
+          mkdir -p pages-main/app
+          rsync -a app-filha/dist/ pages-main/app/
 
-          rsync -a ./ public/ \
-            --exclude='.git/' \
-            --exclude='.github/' \
-            --exclude='app-filha/' \
-            --exclude='app-flutter/' \
-            --exclude='apps/' \
-            --exclude='packages/' \
-            --exclude='docs/' \
-            --exclude='node_modules/' \
-            --exclude='.env*' \
-            --exclude='*.md' \
-            --exclude='.vercelignore' \
-            --exclude='public/'
-
-          rsync -a app-filha/dist/ public/app/
-
-          touch public/.nojekyll
-          touch public/app/.nojekyll
+          touch pages-main/.nojekyll
+          touch pages-main/app/.nojekyll
 
           python3 - <<'PY'
           from pathlib import Path
-          p = Path('public/index.html')
+          p = Path('pages-main/index.html')
           html = p.read_text(encoding='utf-8')
-          marker = '<ul class="nav-links">'
           button = '<li><a href="/virtuosa/app/" class="highlight-btn" aria-label="Entrar no App FILHA">Entrar no App</a></li>'
-          if marker in html and 'aria-label="Entrar no App FILHA"' not in html:
-              html = html.replace(marker, marker + '\n                ' + button, 1)
+          if 'aria-label="Entrar no App FILHA"' not in html:
+              marker = '<ul class="nav-links">'
+              if marker in html:
+                  html = html.replace(marker, marker + '\n                ' + button, 1)
+              else:
+                  html = html.replace('</body>', button + '</body>', 1)
           p.write_text(html, encoding='utf-8')
           PY
 
-          echo 'Checking Pages files...'
-          test -f public/index.html
-          test -f public/app/index.html
+          test -f pages-main/index.html
+          test -f pages-main/app/index.html
 
-      - name: Publish to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: public
-          force_orphan: true
+      - name: Commit App FILHA to main
+        working-directory: pages-main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app .nojekyll index.html
+          if git diff --cached --quiet; then
+            echo "No changes to publish."
+          else
+            git commit -m "deploy: publish App FILHA under /virtuosa/app"
+            git push origin HEAD:main
+          fi
