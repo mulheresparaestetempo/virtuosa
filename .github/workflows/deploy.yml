@@ -1,4 +1,4 @@
-name: Build App FILHA for GitHub Pages
+name: Build and publish Site + App FILHA
 
 on:
   push:
@@ -33,26 +33,31 @@ jobs:
         working-directory: app-filha
         run: npx expo export -p web
 
-      - name: Checkout main branch used by GitHub Pages
-        uses: actions/checkout@v4
-        with:
-          ref: main
-          path: pages-main
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Publish App FILHA into main/app
+      - name: Assemble GitHub Pages publication
         run: |
-          rm -rf pages-main/app
-          mkdir -p pages-main/app
-          rsync -a app-filha/dist/ pages-main/app/
+          rm -rf public
+          mkdir -p public
 
-          touch pages-main/.nojekyll
-          touch pages-main/app/.nojekyll
+          # Preserve the institutional site from the development branch.
+          rsync -a ./ public/ \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='app-filha/' \
+            --exclude='apps/' \
+            --exclude='packages/' \
+            --exclude='docs/' \
+            --exclude='node_modules/' \
+            --exclude='.env*' \
+            --exclude='*.md'
 
+          # Publish the App FILHA independently at /virtuosa/app/.
+          mkdir -p public/app
+          rsync -a app-filha/dist/ public/app/
+
+          # Add a clear entry point from the institutional site to the app.
           python3 - <<'PY'
           from pathlib import Path
-          p = Path('pages-main/index.html')
+          p = Path('public/index.html')
           html = p.read_text(encoding='utf-8')
           button = '<li><a href="/virtuosa/app/" class="highlight-btn" aria-label="Entrar no App FILHA">Entrar no App</a></li>'
           if 'aria-label="Entrar no App FILHA"' not in html:
@@ -64,18 +69,15 @@ jobs:
           p.write_text(html, encoding='utf-8')
           PY
 
-          test -f pages-main/index.html
-          test -f pages-main/app/index.html
+          touch public/.nojekyll
+          touch public/app/.nojekyll
+          test -f public/index.html
+          test -f public/app/index.html
 
-      - name: Commit App FILHA to main
-        working-directory: pages-main
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add app .nojekyll index.html
-          if git diff --cached --quiet; then
-            echo "No changes to publish."
-          else
-            git commit -m "deploy: publish App FILHA under /virtuosa/app"
-            git push origin HEAD:main
-          fi
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: public
+          publish_branch: gh-pages
+          force_orphan: true
