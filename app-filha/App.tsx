@@ -117,14 +117,19 @@ export default function App() {
   });
 
   const aoRenderizarLayout = useCallback(async () => {
-    if (fontesCarregadas) await SplashScreen.hideAsync();
-  }, [fontesCarregadas]);
+    // Fontes são progressivas: o aplicativo não pode ficar em branco caso
+    // uma fonte externa demore ou falhe no navegador/GitHub Pages.
+    await SplashScreen.hideAsync().catch(() => {});
+  }, []);
 
   useEffect(() => {
     aoRenderizarLayout();
   }, [aoRenderizarLayout]);
 
-  if (!fontesCarregadas) return null;
+  // Não bloqueamos a interface esperando fontes. Quando elas carregarem,
+  // os componentes que usam os nomes das fontes passam a utilizá-las;
+  // enquanto isso, o navegador usa a fonte de fallback.
+  void fontesCarregadas;
 
   return (
     <NavigationContainer>
