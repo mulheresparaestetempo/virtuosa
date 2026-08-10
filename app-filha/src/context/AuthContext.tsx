@@ -14,6 +14,9 @@ export type Papel = 'membro' | 'lider';
 export type PerfilUsuaria = {
   nome: string;
   papel: Papel;
+  discipuladoraId?: string;
+  igrejaId?: string;
+  liderId?: string;
   ultimoDiaDevocionalLido?: number;
 };
 
@@ -76,6 +79,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await setDoc(doc(db, 'usuarias', cred.user.uid), {
         nome: nome.trim(),
         papel: 'membro',
+        discipuladoraId: null,
+        igrejaId: null,
+        liderId: null,
         criadoEm: serverTimestamp(),
         ultimoAcesso: serverTimestamp(),
       });
