@@ -1,0 +1,32 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function myProfile() {
+      return get(/databases/$(database)/documents/usuarias/$(request.auth.uid)).data;
+    }
+
+    function isLeader() {
+      return signedIn() && myProfile().papel == 'lider';
+    }
+
+    function isMe(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    match /usuarias/{uid} {
+      allow create: if isMe(uid);
+      allow read: if isMe(uid) || isLeader();
+      allow update: if isMe(uid) || isLeader();
+      allow delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
