@@ -1,0 +1,31 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body { background: #f8f4ed; color: #3f2630; font-family: Arial, Helvetica, sans-serif; }
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+.page { min-height: 100vh; }
+.header { background: #fffaf3; border-bottom: 1px solid #e7d9c9; padding: 18px 28px; display:flex; justify-content:space-between; align-items:center; gap:20px; }
+.brand { font-family: Georgia, serif; font-size: 24px; color:#6f3045; }
+.header small { color:#8b7770; }
+.main { max-width: 1180px; margin:0 auto; padding:32px 22px 60px; }
+.hero { background:linear-gradient(135deg,#fffaf3,#f2e6d6); border:1px solid #e6d7c6; border-radius:24px; padding:30px; margin-bottom:24px; }
+.kicker { text-transform:uppercase; letter-spacing:.12em; font-size:11px; color:#9b7540; font-weight:700; }
+h1 { font-family:Georgia,serif; font-weight:500; margin:8px 0; font-size:34px; }
+.hero p { margin:0; color:#74635e; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; }
+.card { background:#fff; border:1px solid #eadfd4; border-radius:18px; padding:20px; box-shadow:0 8px 30px rgba(80,50,40,.06); }
+.card h2 { margin:0 0 8px; font-size:18px; }
+.metric { font-size:32px; color:#6f3045; font-family:Georgia,serif; }
+.toolbar { display:flex; flex-wrap:wrap; gap:10px; margin:22px 0; }
+.input, .select { border:1px solid #d9cabb; background:#fff; border-radius:10px; padding:11px 13px; min-width:220px; }
+.btn { border:0; border-radius:10px; padding:11px 16px; background:#6f3045; color:#fff; }
+.btn.secondary { background:#eee4d9; color:#563743; }
+.list { display:grid; gap:10px; }
+.row { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:15px; border:1px solid #eee3d9; border-radius:14px; background:#fffaf7; }
+.name { font-weight:700; }
+.meta { color:#897671; font-size:12px; margin-top:4px; }
+.notice { margin-top:16px; padding:12px 14px; border-radius:10px; background:#f5eadc; color:#6b5148; }
+.login { max-width:430px; margin:12vh auto; padding:30px; background:#fff; border:1px solid #eadfd4; border-radius:22px; box-shadow:0 15px 50px rgba(80,50,40,.08); }
+.form { display:grid; gap:12px; margin-top:20px; }
+.error { color:#a33c3c; font-size:13px; }
+@media(max-width:640px){ .header{padding:15px 18px;} .main{padding:22px 14px;} h1{font-size:28px;} .row{align-items:flex-start; flex-direction:column;} }
