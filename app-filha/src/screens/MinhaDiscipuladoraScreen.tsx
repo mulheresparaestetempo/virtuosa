@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { cores, fontes, raios, sombra } from '../theme';
 import { carregar, salvar } from '../storage';
+import { doc, getDoc } from 'firebase/firestore';
+import { db, firebaseConfigurado } from '../firebase';
+import { useAuth } from '../context/AuthContext';
 
 const CHAVE_METAS = 'discipuladora_metas';
 const CHAVE_PEDIDOS = 'discipuladora_pedidos';
@@ -10,15 +13,18 @@ const CHAVE_JEJUNS = 'discipuladora_jejuns';
 type Meta = { id: string; descricao: string; concluida: boolean };
 type PedidoCompartilhado = { id: string; descricao: string; data: string };
 type JejumCompartilhado = { id: string; tipo: string; data: string; status: 'em_andamento' | 'concluido' };
+type DadosDiscipuladora = { nome?: string; email?: string; igreja?: string };
 
 const metasVazias: Meta[] = [];
 const pedidosVazios: PedidoCompartilhado[] = [];
 const jejunsVazios: JejumCompartilhado[] = [];
 
 export default function MinhaDiscipuladoraScreen() {
+  const { perfil } = useAuth();
   const [metas, setMetas] = useState<Meta[]>(metasVazias);
   const [pedidos, setPedidos] = useState<PedidoCompartilhado[]>(pedidosVazios);
   const [jejuns, setJejuns] = useState<JejumCompartilhado[]>(jejunsVazios);
+  const [discipuladora, setDiscipuladora] = useState<DadosDiscipuladora | null>(null);
   const [carregado, setCarregado] = useState(false);
 
   useEffect(() => {
@@ -42,9 +48,26 @@ export default function MinhaDiscipuladoraScreen() {
     }
   }, [metas, pedidos, jejuns, carregado]);
 
+  useEffect(() => {
+    let ativo = true;
+    async function carregarVinculo() {
+      const id = perfil?.discipuladoraId;
+      if (!firebaseConfigurado || !id) {
+        if (ativo) setDiscipuladora(null);
+        return;
+      }
+      const snap = await getDoc(doc(db, 'usuarias', id)).catch(() => null);
+      if (ativo && snap?.exists()) setDiscipuladora(snap.data() as DadosDiscipuladora);
+    }
+    carregarVinculo();
+    return () => { ativo = false; };
+  }, [perfil?.discipuladoraId]);
+
   function alternarMeta(id: string) {
     setMetas((atuais) => atuais.map((m) => (m.id === id ? { ...m, concluida: !m.concluida } : m)));
   }
+
+  const temVinculo = Boolean(perfil?.discipuladoraId && discipuladora);
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -52,13 +75,23 @@ export default function MinhaDiscipuladoraScreen() {
         <View style={styles.hero}>
           <Text style={styles.emoji}>🤍</Text>
           <Text style={styles.titulo}>Minha Discipuladora</Text>
-          <Text style={styles.subtitulo}>Este espaço será preenchido quando sua discipuladora estiver vinculada à sua conta.</Text>
+          <Text style={styles.subtitulo}>{temVinculo ? 'Sua caminhada de discipulado em um só lugar.' : 'Este espaço será preenchido quando sua discipuladora estiver vinculada à sua conta.'}</Text>
         </View>
 
         <View style={styles.cardInfo}>
           <Text style={styles.label}>Vínculo de discipulado</Text>
-          <Text style={styles.info}>Ainda não há uma discipuladora vinculada.</Text>
-          <Text style={styles.ajuda}>Quando a liderança realizar o vínculo, os dados e os encontros aparecerão aqui.</Text>
+          {temVinculo ? (
+            <>
+              <Text style={styles.info}>{discipuladora?.nome ?? 'Discipuladora vinculada'}</Text>
+              {!!discipuladora?.igreja && <Text style={styles.ajuda}>{discipuladora.igreja}</Text>}
+              {!!discipuladora?.email && <Text style={styles.ajuda}>{discipuladora.email}</Text>}
+            </>
+          ) : (
+            <>
+              <Text style={styles.info}>Ainda não há uma discipuladora vinculada.</Text>
+              <Text style={styles.ajuda}>Quando a liderança realizar o vínculo, os dados e os encontros aparecerão aqui.</Text>
+            </>
+          )}
         </View>
 
         <Text style={styles.secaoTitulo}>Metas em acompanhamento</Text>
