@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Dashboard for spiritual leaders",
   "private": true,
+  "bin": "server.js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
