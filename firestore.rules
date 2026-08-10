@@ -19,12 +19,37 @@ service cloud.firestore {
     }
 
     match /usuarias/{uid} {
-      allow create: if isMe(uid);
+      // A new authenticated user may create only her own member profile.
+      allow create: if isMe(uid)
+        && request.resource.data.papel == 'membro'
+        && request.resource.data.discipuladoraId == null
+        && request.resource.data.igrejaId == null
+        && request.resource.data.liderId == null;
+
       allow read: if isMe(uid) || isLeader();
-      allow update: if isMe(uid) || isLeader();
+
+      // Members cannot promote themselves or change their leadership relationship.
+      allow update: if isMe(uid)
+        && request.resource.data.papel == resource.data.papel
+        && request.resource.data.discipuladoraId == resource.data.discipuladoraId
+        && request.resource.data.igrejaId == resource.data.igrejaId
+        && request.resource.data.liderId == resource.data.liderId
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['nome', 'ultimoAcesso', 'ultimoDiaDevocionalLido']);
+
+      // Leaders may create the discipleship relationship without rewriting
+      // unrelated member profile fields or promoting another member.
+      allow update: if isLeader()
+        && resource.data.papel == 'membro'
+        && request.resource.data.papel == resource.data.papel
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['discipuladoraId', 'ultimoVinculoEm']);
+
       allow delete: if false;
     }
 
+    // Other collections stay closed until their data model and permissions
+    // are implemented explicitly.
     match /{document=**} {
       allow read, write: if false;
     }
