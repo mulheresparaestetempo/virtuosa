@@ -20,6 +20,7 @@ export const cores = {
   oliva: '#A6B48D', // oliva claro
   olivaEscuro: '#7E8C6F',
   roseClaro: '#F5E5E4',
+  rosaMuitoClaro: '#FAF2F1', // rosé muito claro
   rosa: '#E8C8C6', // rosé médio
 
   // texto

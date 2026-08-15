@@ -3,6 +3,7 @@ import { Linking, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, 
 import { cores, fontes, raios, sombra } from '../theme';
 import { ministerio } from '../data/ministerio';
 import { diaDoPlano, planoPadrao } from '../data/devocional';
+import LouvorAberturaPlayer from '../components/LouvorAberturaPlayer';
 
 const hoje = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
 
@@ -34,6 +35,8 @@ export default function HomePremiumScreen() {
             <Text style={styles.chevron}>›</Text>
           </TouchableOpacity>
         </View>
+
+        <LouvorAberturaPlayer />
 
         <Text style={styles.tituloSecao}>Hoje com Abba</Text>
         <View style={styles.grade}>

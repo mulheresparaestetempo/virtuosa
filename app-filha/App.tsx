@@ -46,7 +46,7 @@ function Portao() {
 export default function App() {
   const [fontesCarregadas] = useFonts({ PlayfairDisplay_600SemiBold, PlayfairDisplay_700Bold, CormorantGaramond_600SemiBold_Italic, CormorantGaramond_700Bold, Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold, Inter_400Regular, Inter_600SemiBold });
   const aoRenderizarLayout = useCallback(async () => { await SplashScreen.hideAsync().catch(() => {}); }, []);
-  useEffect(() => { aoRenderizarLayout(); }, [aoRenderizarLayout]);
-  void fontesCarregadas;
+  useEffect(() => { if (fontesCarregadas) aoRenderizarLayout(); }, [fontesCarregadas, aoRenderizarLayout]);
+  if (!fontesCarregadas) return <SafeAreaView style={{ flex: 1, backgroundColor: cores.creme, alignItems: 'center', justifyContent: 'center' }}><ActivityIndicator color={cores.douradoEscuro} /></SafeAreaView>;
   return <NavigationContainer><StatusBar style="dark" />{firebaseConfigurado ? <AuthProvider><Portao /></AuthProvider> : <AppTabs />}</NavigationContainer>;
 }
