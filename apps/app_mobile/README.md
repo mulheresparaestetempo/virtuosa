@@ -1,282 +1,162 @@
-# FILHA - Aplicativo Espiritual para Mulheres Cristãs
+# FILHA — MVP completo
 
-Versão Flutter com arquitetura limpa, DDD e MVVM.
+> Mulheres para este tempo. Filhas de Abba para a eternidade.
 
-## 📋 Requisitos
+> Todos os dias, um encontro com Abba.
 
-- **Flutter**: 3.35+
-- **Dart**: 3.0+
-- **Android SDK**: Android 5.0 (API 21) ou superior
-- **iOS**: iOS 11.0 ou superior
+## Criadora
 
-## 🚀 Setup Local
+Daiane Feliciano
 
-### 1. Clonar e instalar dependências
+## Ministério
+
+Ministério Virtuosa
+
+## Igreja
+
+Primeira Igreja Batista em Maricá
+
+## Identificação
+
+pibam
+
+## Escopo concluído
+
+- Splash e onboarding
+- Login visual
+- Home / Lugar Secreto
+- Vida devocional
+- Oração persistente
+- Diário persistente
+- Gratidão persistente
+- Memoriais pessoais
+- Acompanhamento de jejum com período, horários propostos, propósito e versículo
+- Acolhimento
+- Culto no Lar
+- Minha Discipuladora
+- Jornadas com progresso
+- Comunidade
+- Biblioteca
+- Minha Caminhada
+- Assistente Bíblica inicial
+- Navegação principal
+- Arquitetura repository/local storage
+- Preparação para sincronização em nuvem
+
+## Executar
 
 ```bash
-cd app-flutter
 flutter pub get
+flutter run
 ```
 
-### 2. Gerar código (Freezed, JsonSerializable, etc)
+## Testar
 
 ```bash
-flutter pub run build_runner build --delete-conflicting-outputs
-```
-
-### 3. Configurar Firebase
-
-1. Acesse [Firebase Console](https://console.firebase.google.com/)
-2. Crie um projeto ou use um existente
-3. Adicione os aplicativos Android e iOS
-4. Execute:
-
-```bash
-flutterfire configure
-```
-
-Isso atualizará automaticamente `lib/firebase_options.dart`.
-
-### 4. Executar a aplicação
-
-```bash
-# Para Android
-flutter run -d android
-
-# Para iOS
-flutter run -d ios
-
-# Para Web
-flutter run -d chrome
-```
-
-## 📁 Estrutura do Projeto
-
-```
-lib/
-├── core/                      # Código compartilhado
-│   ├── config/               # Configurações (constants, env, etc)
-│   ├── theme/                # Design System (cores, tipografia)
-│   ├── router/               # GoRouter configuration
-│   ├── services/             # Serviços de aplicação
-│   ├── network/              # Cliente HTTP e configuração
-│   ├── storage/              # Local storage (Hive, Drift)
-│   ├── analytics/            # Firebase Analytics
-│   ├── notifications/        # Push notifications
-│   ├── extensions/           # Extensões de Dart
-│   ├── helpers/              # Funções auxiliares
-│   ├── errors/               # Tratamento de erros
-│   ├── widgets/
-│   │   ├── components/       # Componentes reutilizáveis
-│   │   ├── animations/       # Animações
-│   │   └── shared/           # Widgets compartilhados
-│
-├── data/                      # Camada de dados
-│   ├── datasources/          # Acesso a dados (API, Local)
-│   ├── models/               # DTOs (json_serializable)
-│   └── repositories/         # Implementação dos repositórios
-│
-├── domain/                    # Camada de negócios (Pure Dart)
-│   ├── entities/             # Modelos de domínio
-│   ├── repositories/         # Interfaces dos repositórios
-│   └── usecases/             # Casos de uso
-│
-├── presentation/             # Camada de apresentação
-│   ├── screens/              # Telas principais
-│   ├── controllers/          # Riverpod Controllers
-│   ├── providers/            # Riverpod Providers
-│   └── widgets/              # Widgets específicos de features
-│
-└── features/                 # Features específicas (Feature First)
-    ├── auth/
-    │   ├── data/
-    │   ├── domain/
-    │   └── presentation/
-    │
-    ├── home/
-    │   ├── data/
-    │   ├── domain/
-    │   └── presentation/
-    │
-    ├── devotional/
-    │   ├── data/
-    │   ├── domain/
-    │   └── presentation/
-    │
-    ├── prayer/
-    ├── fasting/
-    ├── journal/
-    ├── memorials/
-    ├── community/
-    ├── leader/
-    ├── church/
-    ├── events/
-    ├── courses/
-    ├── library/
-    ├── ai/
-    ├── profile/
-    ├── settings/
-    ├── notifications/
-    ├── discipleship/
-    ├── hospitality/
-    ├── cell_groups/
-    ├── missions/
-    └── bible/
-```
-
-## 🏗️ Arquitetura
-
-### Princípios
-
-- **Feature First**: Cada feature é independente e modular
-- **Clean Architecture**: Separação clara de responsabilidades
-- **DDD**: Domain-Driven Design para lógica de negócios
-- **SOLID**: Princípios SOLID aplicados
-- **MVVM**: Model-View-ViewModel com Riverpod
-
-### Fluxo de Dados
-
-```
-Presentation (UI) 
-    ↓
-Controllers/Providers (Riverpod)
-    ↓
-Domain (Usecases)
-    ↓
-Data (Repositories)
-    ↓
-Datasources (API/Local)
-```
-
-## 🛠️ Stack Tecnológico
-
-### UI & Design
-- **Material Design 3**
-- **Google Fonts** (PlayfairDisplay, CormorantGaramond, Poppins, Inter)
-
-### State Management
-- **Riverpod** (Provider, StateNotifier, AsyncValue)
-
-### Routing
-- **GoRouter** (Routing declarativo e type-safe)
-
-### Backend & Database
-- **Firebase Core**
-- **Cloud Firestore** (Database em tempo real)
-- **Firebase Auth** (Autenticação)
-- **Firebase Storage** (Armazenamento de arquivos)
-- **Firebase Messaging** (Push notifications)
-- **Firebase Analytics**
-- **Firebase Crashlytics**
-- **Cloud Functions** (Lógica backend)
-
-### Local Storage
-- **Hive** (Cache local rápido)
-- **Drift** (SQLite type-safe)
-- **SharedPreferences** (Preferências simples)
-
-### Network & Serialization
-- **Dio** (HTTP client com interceptadores)
-- **Freezed** (Imutabilidade, copyWith, fromJson)
-- **JsonSerializable** (Serialização de JSON)
-
-### Integrações
-- **Google Maps** (Mapas e localização)
-- **Geolocator** (GPS)
-- **Geocoding** (Endereço ↔ Coordenadas)
-- **OpenAI API** (Assistente com IA)
-
-### Utils
-- **Get_it** (Service Locator/DI)
-- **Intl** (Internacionalização)
-- **Logger** (Logging estruturado)
-
-## 📦 Dependências Principais
-
-Veja `pubspec.yaml` para lista completa e versões.
-
-## 🎨 Design System
-
-### Cores (Abba Virtuosa ADL v1.0)
-- **Primária**: #C41E3A (Bordo)
-- **Secundária**: #F0C674 (Dourado)
-- **Terciária**: #D4A5A5 (Rosé)
-- **Background**: #FEF8F4 (Creme)
-
-### Tipografia
-- **Headings**: PlayfairDisplay (elegant, serif)
-- **Subtítulos**: CormorantGaramond (classic, serif)
-- **Body**: Poppins (modern, sans-serif)
-- **Labels**: Inter (clean, sans-serif)
-
-## 🔑 Configurações Importantes
-
-### Firebase Configuration
-Atualize `lib/firebase_options.dart` com suas credenciais do Firebase após executar `flutterfire configure`.
-
-### Environment Variables
-Crie `.env` na raiz do projeto:
-
-```env
-FIREBASE_PROJECT_ID=seu-projeto-id
-OPENAI_API_KEY=sua-chave-openai
-```
-
-## 🧪 Testes
-
-```bash
-# Executar testes unitários
 flutter test
-
-# Executar testes com coverage
-flutter test --coverage
 ```
 
-## 📱 Build para Produção
+## Firebase — etapa de produção
 
-### Android
+A integração em nuvem deve ser feita somente depois de criar/configurar o projeto Firebase da igreja/ministério.
+
+Com Firebase CLI e FlutterFire CLI instalados:
 
 ```bash
-flutter build apk --release
-# ou
-flutter build appbundle --release
+firebase login
+dart pub global activate flutterfire_cli
+flutterfire configure
+flutter pub add firebase_core
+flutter pub add firebase_auth
+flutter pub add cloud_firestore
 ```
 
-### iOS
+Depois, inicialize o Firebase no ponto de entrada e substitua a implementação local do repository pela implementação Firestore.
 
-```bash
-flutter build ios --release
+O `flutterfire configure` gera `firebase_options.dart`; não coloque credenciais privadas ou chaves de servidor no repositório.
+
+Ative no Console do Firebase apenas os provedores de autenticação necessários. Para o primeiro lançamento, e-mail/senha é suficiente; Google pode ser habilitado depois.
+
+## Modelo de dados Firestore
+
+```text
+users/{uid}
+  displayName
+  email
+  role
+  churchId
+  createdAt
+
+users/{uid}/prayers/{id}
+users/{uid}/journals/{id}
+users/{uid}/gratitude/{id}
+users/{uid}/memorials/{id}
+users/{uid}/fastingPlans/{id}
+users/{uid}/journeys/{journeyId}
+
+careRequests/{id}
+  uid
+  type
+  status
+  preferredDate
+  note
+  createdAt
+
+houseWorshipRequests/{id}
+  uid
+  preferredDate
+  status
+  note
+  createdAt
+
+discipleships/{id}
+  discipleUid
+  leaderUid
+  status
+  createdAt
+
+content/{id}
+  type
+  title
+  body
+  published
+  createdAt
 ```
 
-### Web
+## Regras de negócio
 
-```bash
-flutter build web --release
-```
+1. Memoriais são pessoais e não têm ranking.
+2. Selos representam marcos pessoais, não competição.
+3. O jejum registra o propósito escolhido pela mulher; o app não prescreve restrições alimentares.
+4. Pedidos de acolhimento são privados por padrão.
+5. A discipuladora só recebe dados explicitamente compartilhados ou necessários para o cuidado autorizado.
+6. Dados pessoais devem ficar vinculados ao UID autenticado.
+7. Conteúdo público deve ser separado dos dados privados.
+8. A IA não deve se apresentar como autoridade pastoral, médica ou psicológica.
+9. Solicitações de acolhimento devem ter status e histórico para evitar perda de acompanhamento.
+10. O app deve continuar funcional offline para registros pessoais quando possível.
 
-## 📚 Documentação Adicional
+## Checklist de lançamento
 
-- [Flutter Documentation](https://flutter.dev/docs)
-- [Riverpod Guide](https://riverpod.dev)
-- [GoRouter Documentation](https://pub.dev/packages/go_router)
-- [Firebase Flutter](https://firebase.flutter.dev)
-- [Clean Architecture](https://resocoder.com/clean-code-tdd)
+- [ ] Criar projeto Firebase
+- [ ] Configurar Android/iOS/Web
+- [ ] Executar `flutterfire configure`
+- [ ] Ativar Authentication
+- [ ] Criar Firestore
+- [ ] Publicar Security Rules
+- [ ] Implementar repository Firestore
+- [ ] Configurar notificações
+- [ ] Configurar política de privacidade
+- [ ] Testar fluxos de acolhimento
+- [ ] Testar permissões de líder/discípula
+- [ ] Testar recuperação de senha
+- [ ] Testar backup/sincronização
+- [ ] Testar Android
+- [ ] Testar iOS
+- [ ] Gerar versão de produção
 
-## 👥 Contribuindo
+## Observação
 
-1. Crie uma branch para sua feature: `git checkout -b feature/sua-feature`
-2. Commit suas mudanças: `git commit -am 'Add nova feature'`
-3. Push para a branch: `git push origin feature/sua-feature`
-4. Abra um Pull Request
+A parte que depende de uma conta/projeto externo não pode ser ativada automaticamente neste ambiente: Firebase, credenciais, publicação nas lojas e configurações de notificações precisam ser vinculados pela responsável pelo projeto.
 
-## 📄 Licença
-
-Projeto privado da comunidade Abba Virtuosa.
-
-## 📧 Contato
-
-Para dúvidas ou sugestões, entre em contato com a equipe de desenvolvimento.
-
----
-
-**Status**: Em desenvolvimento 🚀
+A base do aplicativo, entretanto, está organizada para receber essas integrações sem reconstruir a interface.
