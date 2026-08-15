@@ -1,4 +1,4 @@
-name: Publish Abba Virtuosa (Expo Go)
+name: Publish App FILHA (Expo Go)
 
 on:
   workflow_dispatch: {}
