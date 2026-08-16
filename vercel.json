@@ -18,5 +18,7 @@
     "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET": "@firebase_storage_bucket",
     "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID": "@firebase_messaging_sender_id",
     "NEXT_PUBLIC_FIREBASE_APP_ID": "@firebase_app_id"
-  }
+  },
+  "buildCommand": "cd apps/painel_lider && npm install && npm run build",
+  "outputDirectory": "apps/painel_lider/.next"
 }
