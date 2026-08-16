@@ -8,3 +8,4 @@ dist/
 build/
 .firebaserc
 .netlify/
+*.tsbuildinfo
