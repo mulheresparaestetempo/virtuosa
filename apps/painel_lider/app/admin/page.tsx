@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { onAuthStateChanged, signOut, type User } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
-import { storage, auth, db } from '../lib/firebase';
+import { storage, auth, db } from '../../lib/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 type Perfil = { nome?: string; papel?: 'membro' | 'lider' | 'admin'; igrejaId?: string | null };
