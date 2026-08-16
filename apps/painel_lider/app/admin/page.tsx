@@ -16,41 +16,49 @@ export default function AdminPage() {
         </div>
 
         <div className="grid">
-          <div className="card">
-            <div className="kicker">📄 PDFs</div>
-            <h2>Biblioteca de Recursos</h2>
-            <p>Upload de guias, apostilas e documentos em PDF para o app.</p>
-            <button className="btn" style={{ marginTop: '1rem' }}>
-              Gerenciar PDFs
-            </button>
-          </div>
+          <a href="/admin/pdf-manager">
+            <div className="card">
+              <div className="kicker">📄 PDFs</div>
+              <h2>Biblioteca de Recursos</h2>
+              <p>Upload de guias, apostilas e documentos em PDF para o app.</p>
+              <button className="btn" style={{ marginTop: '1rem' }}>
+                Gerenciar PDFs
+              </button>
+            </div>
+          </a>
 
-          <div className="card">
-            <div className="kicker">📅 Calendário</div>
-            <h2>Eventos e Datas</h2>
-            <p>Publique retiros, cultos, encontros e eventos do ministério.</p>
-            <button className="btn" style={{ marginTop: '1rem' }}>
-              Gerenciar Eventos
-            </button>
-          </div>
+          <a href="/admin/calendar">
+            <div className="card">
+              <div className="kicker">📅 Calendário</div>
+              <h2>Eventos e Datas</h2>
+              <p>Publique retiros, cultos, encontros e eventos do ministério.</p>
+              <button className="btn" style={{ marginTop: '1rem' }}>
+                Gerenciar Eventos
+              </button>
+            </div>
+          </a>
 
-          <div className="card">
-            <div className="kicker">✦ Devocional</div>
-            <h2>Meditações Diárias</h2>
-            <p>Escreva e publique devocionais para as filhas todos os dias.</p>
-            <button className="btn" style={{ marginTop: '1rem' }}>
-              Publicar Devocional
-            </button>
-          </div>
+          <a href="/admin/devocional">
+            <div className="card">
+              <div className="kicker">✦ Devocional</div>
+              <h2>Meditações Diárias</h2>
+              <p>Escreva e publique devocionais para as filhas todos os dias.</p>
+              <button className="btn" style={{ marginTop: '1rem' }}>
+                Publicar Devocional
+              </button>
+            </div>
+          </a>
 
-          <div className="card">
-            <div className="kicker">📢 Avisos</div>
-            <h2>Notificações</h2>
-            <p>Envie comunicados importantes para todas as usuárias do app.</p>
-            <button className="btn" style={{ marginTop: '1rem' }}>
-              Enviar Aviso
-            </button>
-          </div>
+          <a href="/admin/avisos">
+            <div className="card">
+              <div className="kicker">📢 Avisos</div>
+              <h2>Notificações</h2>
+              <p>Envie comunicados importantes para todas as usuárias do app.</p>
+              <button className="btn" style={{ marginTop: '1rem' }}>
+                Enviar Aviso
+              </button>
+            </div>
+          </a>
         </div>
 
         <div className="card">
