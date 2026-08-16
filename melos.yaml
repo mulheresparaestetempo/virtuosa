@@ -1,0 +1,80 @@
+name: abba_virtuosa
+
+repository: https://github.com/mulheresparaestetempo/virtuosa
+
+packages:
+  - apps/**
+  - packages/**
+
+command:
+  bootstrap:
+    usePubspecOverrides: true
+
+scripts:
+  setup:
+    run: melos bootstrap
+    description: Setup monorepo and install all dependencies
+
+  analyze:
+    run: melos exec -- flutter analyze
+    description: Analyze all packages
+
+  test:
+    run: melos exec -- flutter test
+    description: Run tests for all packages
+
+  test:coverage:
+    run: melos exec -- flutter test --coverage
+    description: Run tests with coverage
+
+  format:
+    run: melos exec -- dart format .
+    description: Format all Dart files
+
+  lint:
+    run: melos exec -- dart fix --apply
+    description: Run linter on all packages
+
+  get:
+    run: melos get
+    description: Get dependencies
+
+  clean:
+    run: melos clean
+    description: Clean all packages
+
+  pub:upgrade:
+    run: melos exec -- flutter pub upgrade
+    description: Upgrade all dependencies
+
+  app:mobile:dev:
+    run: |
+      cd apps/app_mobile && flutter run
+    description: Run mobile app in debug mode
+
+  app:mobile:release:
+    run: |
+      cd apps/app_mobile && flutter build apk --release && flutter build ios --release
+    description: Build mobile app for release
+
+  app:mobile:build:apk:
+    run: |
+      cd apps/app_mobile && flutter build apk --release
+    description: Build APK for Android
+
+  app:mobile:build:ios:
+    run: |
+      cd apps/app_mobile && flutter build ios --release
+    description: Build IPA for iOS
+
+  app:mobile:build:web:
+    run: |
+      cd apps/app_mobile && flutter build web --release
+    description: Build web version
+
+  check:all:
+    run: |
+      melos analyze &&
+      melos format &&
+      melos test
+    description: Run all checks (analyze, format, test)

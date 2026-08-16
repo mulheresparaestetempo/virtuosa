@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: abba-virtuosa
+    runtime: node
+    buildCommand: "cd apps/painel_lider && npm install --legacy-peer-deps && npm run build"
+    startCommand: "cd apps/painel_lider && npm start"
+    envVars:
+      - key: NODE_ENV
+        value: production

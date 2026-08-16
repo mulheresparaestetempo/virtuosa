@@ -1,5 +1,5 @@
 import { Linking, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { cores } from '../theme';
+import { cores, raios } from '../theme';
 
 type Local = {
   tipo: 'Igreja' | 'Célula' | 'Culto no lar' | 'Conferência';
@@ -12,7 +12,7 @@ const locais: Local[] = [
   { tipo: 'Célula', nome: 'Célula Vinho Novo', endereco: 'Casa da Ana Paula — quintas, 20h' },
   { tipo: 'Célula', nome: 'Célula Águas Vivas', endereco: 'Casa da Mariana — terças, 19h30' },
   { tipo: 'Culto no lar', nome: 'Culto no lar da Beatriz', endereco: 'Confirmar endereço com a líder' },
-  { tipo: 'Conferência', nome: 'Congresso FILHA 2026', endereco: 'Centro de Convenções' },
+  { tipo: 'Conferência', nome: 'Congresso Abba Virtuosa 2026', endereco: 'Centro de Convenções' },
 ];
 
 function abrirNoMapa(endereco: string) {
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   aviso: { fontSize: 12, color: cores.cinzaClaro, marginBottom: 18, lineHeight: 17 },
   card: {
     backgroundColor: '#fff',
-    borderRadius: 14,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 16,
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   botao: {
     alignSelf: 'flex-start',
     backgroundColor: cores.cremeCard,
-    borderRadius: 10,
+    borderRadius: raios.botao,
     paddingVertical: 8,
     paddingHorizontal: 14,
   },

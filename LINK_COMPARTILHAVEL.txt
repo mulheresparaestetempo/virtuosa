@@ -1,0 +1,94 @@
+================================================================================
+🎯 LINK PRONTO PARA COMPARTILHAR COM CESAAR
+================================================================================
+
+COPIE E COMPARTILHE ESTE LINK:
+
+📱 OPÇÃO 1: LINK PERMANENTE ONLINE (RECOMENDADO)
+================================================================================
+
+Abra este link no navegador:
+https://replit.com/auth/login
+
+Depois:
+1. Faça login com GitHub
+2. Clique "Create" → "Import from GitHub"
+3. Cole: https://github.com/mulheresparaestetempo/virtuosa
+4. Clique "Run"
+5. ✅ PRONTO! Link automático gerado!
+
+Tempo: 2 minutos
+Resultado: URL permanente para compartilhar
+
+================================================================================
+📱 OPÇÃO 2: LINK LOCAL (SEU COMPUTADOR)
+================================================================================
+
+No seu computador, abra Terminal/PowerShell e execute:
+
+cd C:\caminho\para\virtuosa\apps\painel_lider
+npm run dev
+
+Depois acesse:
+http://localhost:3000
+
+Para compartilhar na mesma WiFi:
+1. Abra: https://ipconfig.co (descobre seu IP público)
+2. Ou no terminal: ipconfig (Windows) ou ifconfig (Mac/Linux)
+3. Compartilhe: http://SEU_IP:3000
+
+================================================================================
+📱 OPÇÃO 3: ENVIANDO ARQUIVO (BACKUP)
+================================================================================
+
+Se nada funcionar:
+1. Clique aqui: https://github.com/mulheresparaestetempo/virtuosa
+2. Clique "Code" → "Download ZIP"
+3. Extraia em seu PC
+4. Siga a OPÇÃO 2 acima
+
+================================================================================
+✅ PARA CESAAR
+================================================================================
+
+Mande este texto:
+
+---
+
+Oi Cesaar! 👋
+
+Acesse o app Abba Virtuosa aqui:
+
+🔗 OPÇÃO 1 (Online - Mais Fácil):
+https://replit.com → Import from GitHub →
+https://github.com/mulheresparaestetempo/virtuosa → Run
+(Em 2 min gera um link!)
+
+🔗 OPÇÃO 2 (Local):
+http://localhost:3000
+(depois rodar: npm run dev)
+
+📝 Funcionalidades:
+✅ Devocionais
+✅ Orações
+✅ Diário
+✅ Comunidade
+✅ Louvores
+
+Qualquer dúvida, me chama! 🙏
+
+---
+
+================================================================================
+🎯 RESUMO
+================================================================================
+
+A FORMA MAIS FÁCIL: Replit (clique e pronto em 2 min!)
+
+Vantagens:
+✅ Funciona em qualquer navegador
+✅ Não precisa instalar nada
+✅ Link permanente
+✅ Compartilhável
+
+================================================================================

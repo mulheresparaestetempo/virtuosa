@@ -1,6 +1,6 @@
-# App FILHA
+# Abba Virtuosa
 
-Protótipo do app FILHA (Plataforma de Discipulado Feminino), construído com
+Protótipo do app Abba Virtuosa (Plataforma de Discipulado Feminino), construído com
 [Expo](https://expo.dev) + React Native — um único código-fonte que gera
 apps instaláveis para **Android** e **iOS**.
 
@@ -67,7 +67,7 @@ repositório. Passo a passo:
    - Nome: `EXPO_TOKEN`
    - Valor: cole o token copiado no passo anterior
 4. **Rodar o workflow**: na aba *Actions* do GitHub, escolha
-   "Build App FILHA (Android APK)" → *Run workflow*.
+   "Build Abba Virtuosa (Android APK)" → *Run workflow*.
 5. Aguarde ~10–15 min. O log da Action mostra o link de download do `.apk`
    ao final (o comando espera o build terminar antes de encerrar). Esse link
    também fica disponível no painel da Expo, em *Builds*.

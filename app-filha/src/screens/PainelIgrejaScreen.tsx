@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { cores } from '../theme';
+import { cores, raios } from '../theme';
 import { carregar, salvar } from '../storage';
 
 const CHAVE_CELULAS = 'painel_igreja_celulas';
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   stat: {
     flex: 1,
     backgroundColor: cores.cremeCard,
-    borderRadius: 14,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.bordaCard,
     padding: 14,
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   },
   cardCelula: {
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 14,
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   celulaInfo: { fontSize: 13, color: cores.cinzaTexto },
   cardNova: {
     backgroundColor: cores.cremeCard,
-    borderRadius: 16,
+    borderRadius: raios.card,
     padding: 18,
     borderWidth: 1,
     borderColor: cores.bordaCard,
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   novaLabel: { fontSize: 14, fontWeight: '700', color: cores.bordo, marginBottom: 10 },
   input: {
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: raios.campo,
     borderWidth: 1,
     borderColor: cores.borda,
     padding: 12,
@@ -171,6 +171,6 @@ const styles = StyleSheet.create({
     color: cores.cinzaTexto,
     marginBottom: 10,
   },
-  botaoSalvar: { backgroundColor: cores.ouro, paddingVertical: 12, borderRadius: 10, alignItems: 'center' },
+  botaoSalvar: { backgroundColor: cores.ouro, paddingVertical: 12, borderRadius: raios.botao, alignItems: 'center' },
   botaoSalvarTexto: { color: '#fff', fontWeight: '700', fontSize: 15 },
 });

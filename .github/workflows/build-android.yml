@@ -1,4 +1,4 @@
-name: Build App FILHA (Android APK)
+name: Build Abba Virtuosa (Android APK)
 
 on:
   workflow_dispatch: {}

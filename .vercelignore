@@ -1,0 +1,23 @@
+.git
+.gitignore
+.github
+.vscode
+.DS_Store
+node_modules
+*.log
+.env
+.env.local
+.env.*.local
+pnpm-lock.yaml
+yarn.lock
+
+# Apps to ignore
+apps/app_mobile
+apps/painel_admin
+
+# Documentation
+docs
+assets
+
+# Backend
+backend

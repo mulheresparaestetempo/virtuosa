@@ -1,13 +1,30 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
+  Image,
+  Linking,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import { cores } from '../theme';
+import { doc, updateDoc } from 'firebase/firestore';
+import { LinearGradient } from 'expo-linear-gradient';
+import { cores, fontes, raios, sombra as sombraTema } from '../theme';
+import { carregar, salvar } from '../storage';
+import CabecalhoMinisterio from '../components/CabecalhoMinisterio';
+import LouvorAberturaPlayer from '../components/LouvorAberturaPlayer';
+import { CHAVE_PLANO_DEVOCIONAL, diaDoPlano, planoPadrao, type PlanoDevocional } from '../data/devocional';
+import { db, firebaseConfigurado } from '../firebase';
+import { useAuth } from '../context/AuthContext';
+
+const CHAVE_GALERIA = 'galeria_fotos';
+const CHAVE_PEDIDOS_ACOLHIMENTO = 'acolhimento_pedidos';
+
+type Foto = { id: string; url: string; legenda: string };
+type PedidoAcolhimento = { id: string; tipo: string; data: string; status: 'aberto' };
 
 const hoje = new Date().toLocaleDateString('pt-BR', {
   weekday: 'long',
@@ -15,36 +32,165 @@ const hoje = new Date().toLocaleDateString('pt-BR', {
   month: 'long',
 });
 
-const devocionalDoDia = {
-  titulo: 'Descanso na Presença',
-  versiculo: '"Vinde a mim, todos os que estais cansados e sobrecarregados, e eu vos aliviarei." — Mateus 11:28',
-  resumo:
-    'Hoje o Pai te convida para um lugar secreto de descanso. Antes de correr para as tarefas do dia, pare, respire e entregue o seu cansaço a Ele.',
-};
+function hojeCurto() {
+  return new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long' });
+}
 
 const secoes = [
-  { emoji: '🎧', titulo: 'Áudio devocional', subtitulo: '8 min · narrado' },
   { emoji: '🙏', titulo: 'Oração guiada', subtitulo: '5 min · com a discipuladora Ana' },
   { emoji: '🌱', titulo: 'Desafio do dia', subtitulo: 'Escreva 3 motivos de gratidão' },
   { emoji: '💌', titulo: 'Cartinha do Pai', subtitulo: 'Uma palavra de amor para você' },
 ];
 
 export default function LugarSecretoScreen() {
+  const { usuario } = useAuth();
   const [musicaAtiva, setMusicaAtiva] = useState(false);
   const [orando, setOrando] = useState(false);
+  const [plano, setPlano] = useState<PlanoDevocional>(planoPadrao);
+  const [fotos, setFotos] = useState<Foto[]>([]);
+  const [carregado, setCarregado] = useState(false);
+  const [mostrarFormFoto, setMostrarFormFoto] = useState(false);
+  const [novaFotoUrl, setNovaFotoUrl] = useState('');
+  const [novaFotoLegenda, setNovaFotoLegenda] = useState('');
+  const [cultoSolicitado, setCultoSolicitado] = useState(false);
+  const [acolhimentoSolicitado, setAcolhimentoSolicitado] = useState(false);
+
+  const conteudoDia = diaDoPlano(plano);
+
+  useEffect(() => {
+    if (!firebaseConfigurado || !usuario) return;
+    updateDoc(doc(db, 'usuarias', usuario.uid), { ultimoDiaDevocionalLido: plano.diaAtual }).catch(() => {});
+  }, [usuario, plano.diaAtual]);
+
+  useEffect(() => {
+    carregar(CHAVE_PLANO_DEVOCIONAL, planoPadrao).then(setPlano);
+    carregar<Foto[]>(CHAVE_GALERIA, []).then((salvas) => {
+      setFotos(salvas);
+      setCarregado(true);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (carregado) salvar(CHAVE_GALERIA, fotos);
+  }, [fotos, carregado]);
+
+  function adicionarFoto() {
+    if (!novaFotoUrl.trim()) return;
+    setFotos([
+      { id: String(Date.now()), url: novaFotoUrl.trim(), legenda: novaFotoLegenda.trim() },
+      ...fotos,
+    ]);
+    setNovaFotoUrl('');
+    setNovaFotoLegenda('');
+    setMostrarFormFoto(false);
+  }
+
+  async function solicitar(tipo: string, marcarFeito: (v: boolean) => void) {
+    const pedidos = await carregar<PedidoAcolhimento[]>(CHAVE_PEDIDOS_ACOLHIMENTO, []);
+    const novo: PedidoAcolhimento = { id: String(Date.now()), tipo, data: hojeCurto(), status: 'aberto' };
+    await salvar(CHAVE_PEDIDOS_ACOLHIMENTO, [novo, ...pedidos]);
+    marcarFeito(true);
+  }
 
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container}>
+        <CabecalhoMinisterio />
+
         <Text style={styles.saudacao}>Bem-vinda ao seu Lugar Secreto 🕊️</Text>
         <Text style={styles.data}>{hoje}</Text>
 
         <View style={styles.cardPrincipal}>
-          <Text style={styles.tituloDevocional}>{devocionalDoDia.titulo}</Text>
-          <Text style={styles.versiculo}>{devocionalDoDia.versiculo}</Text>
-          <Text style={styles.resumo}>{devocionalDoDia.resumo}</Text>
-          <TouchableOpacity style={styles.botaoPrimario}>
-            <Text style={styles.botaoPrimarioTexto}>Ler devocional completo</Text>
+          <View style={styles.badgeDia}>
+            <Text style={styles.badgeDiaTexto}>Dia {plano.diaAtual}</Text>
+          </View>
+          <Text style={styles.nomeMes}>{plano.nomeMes}</Text>
+          <Text style={styles.tituloDevocional}>{conteudoDia.titulo}</Text>
+          <Text style={styles.versiculo}>{conteudoDia.versiculo}</Text>
+          <Text style={styles.resumo}>{conteudoDia.resumo}</Text>
+          <TouchableOpacity activeOpacity={0.88} style={styles.botaoEspiritualSombra}>
+            <LinearGradient
+              colors={[cores.dourado, cores.douradoEscuro]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.botaoPrimario}
+            >
+              <Text style={styles.botaoPrimarioTexto}>Ler devocional completo</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+
+        {!!conteudoDia.louvorTitulo && (
+          <View style={styles.cardLouvor}>
+            <Text style={styles.louvorEmoji}>🎶</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.louvorLabel}>Sugestão de louvor da líder</Text>
+              <Text style={styles.louvorTitulo}>{conteudoDia.louvorTitulo}</Text>
+            </View>
+            {!!conteudoDia.louvorUrl && (
+              <TouchableOpacity
+                style={styles.botaoOuvir}
+                onPress={() => Linking.openURL(conteudoDia.louvorUrl!)}
+              >
+                <Text style={styles.botaoOuvirTexto}>Ouvir</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
+
+        <Text style={[styles.secaoTitulo, styles.secaoAcoesTitulo]}>Ações rápidas</Text>
+        <View style={styles.acoesLista}>
+          {conteudoDia.audioUrl ? (
+            <TouchableOpacity
+              style={styles.card}
+              activeOpacity={0.85}
+              onPress={() => Linking.openURL(conteudoDia.audioUrl!)}
+            >
+              <View style={[styles.iconeCirculo, { backgroundColor: cores.bordo }]}>
+                <Text style={styles.iconeTexto}>🎧</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.tituloAcao}>Ouça o devocional de hoje</Text>
+                <Text style={styles.subtituloAcao}>Áudio enviado pela líder</Text>
+              </View>
+              <Text style={styles.seta}>›</Text>
+            </TouchableOpacity>
+          ) : (
+            <LouvorAberturaPlayer />
+          )}
+
+          <TouchableOpacity
+            style={styles.card}
+            activeOpacity={0.85}
+            onPress={() => solicitar('Culto no lar', setCultoSolicitado)}
+          >
+            <View style={[styles.iconeCirculo, { backgroundColor: cores.ouro }]}>
+              <Text style={styles.iconeTexto}>🏠</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.tituloAcao}>Agende um culto no seu lar</Text>
+              <Text style={styles.subtituloAcao}>
+                {cultoSolicitado ? 'Pedido enviado — a líder foi avisada ✓' : 'Receba a igreja em sua casa'}
+              </Text>
+            </View>
+            <Text style={styles.seta}>›</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.card}
+            activeOpacity={0.85}
+            onPress={() => solicitar('Visita de acolhimento', setAcolhimentoSolicitado)}
+          >
+            <View style={[styles.iconeCirculo, { backgroundColor: cores.rosa }]}>
+              <Text style={styles.iconeTexto}>🤝</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.tituloAcao}>Agende uma visita de acolhimento</Text>
+              <Text style={styles.subtituloAcao}>
+                {acolhimentoSolicitado ? 'Pedido enviado — a líder foi avisada ✓' : 'Peça cuidado e oração presencial'}
+              </Text>
+            </View>
+            <Text style={styles.seta}>›</Text>
           </TouchableOpacity>
         </View>
 
@@ -57,6 +203,55 @@ export default function LugarSecretoScreen() {
             </TouchableOpacity>
           ))}
         </View>
+
+        <View style={styles.secaoGaleriaCabecalho}>
+          <Text style={styles.secaoTitulo}>Galeria de fotos</Text>
+          <TouchableOpacity onPress={() => setMostrarFormFoto((v) => !v)}>
+            <Text style={styles.linkAdicionar}>{mostrarFormFoto ? 'Cancelar' : '+ Adicionar'}</Text>
+          </TouchableOpacity>
+        </View>
+
+        {mostrarFormFoto && (
+          <View style={styles.formFoto}>
+            <TextInput
+              style={styles.input}
+              placeholder="Link da foto (ex.: https://...)"
+              placeholderTextColor={cores.cinzaClaro}
+              value={novaFotoUrl}
+              onChangeText={setNovaFotoUrl}
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Legenda (opcional)"
+              placeholderTextColor={cores.cinzaClaro}
+              value={novaFotoLegenda}
+              onChangeText={setNovaFotoLegenda}
+            />
+            <TouchableOpacity style={styles.botaoSalvarFoto} onPress={adicionarFoto}>
+              <Text style={styles.botaoSalvarFotoTexto}>Adicionar à galeria</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {fotos.length === 0 ? (
+          <Text style={styles.semFotos}>
+            Nenhuma foto ainda. Toque em "+ Adicionar" para compartilhar um registro do ministério.
+          </Text>
+        ) : (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.galeria}>
+            {fotos.map((foto) => (
+              <View key={foto.id} style={styles.fotoCard}>
+                <Image source={{ uri: foto.url }} style={styles.foto} />
+                {!!foto.legenda && (
+                  <Text style={styles.fotoLegenda} numberOfLines={2}>
+                    {foto.legenda}
+                  </Text>
+                )}
+              </View>
+            ))}
+          </ScrollView>
+        )}
 
         <View style={styles.rodapeControles}>
           <TouchableOpacity
@@ -84,6 +279,8 @@ export default function LugarSecretoScreen() {
   );
 }
 
+const sombra = sombraTema;
+
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
@@ -94,12 +291,14 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   saudacao: {
-    fontSize: 22,
-    fontWeight: '700',
+    fontSize: 34,
+    lineHeight: 40,
+    fontFamily: fontes.tituloPrincipal,
     color: cores.bordo,
   },
   data: {
     fontSize: 14,
+    fontFamily: fontes.texto,
     color: cores.ouroEscuro,
     marginTop: 4,
     marginBottom: 20,
@@ -107,41 +306,119 @@ const styles = StyleSheet.create({
   },
   cardPrincipal: {
     backgroundColor: cores.cremeCard,
-    borderRadius: 16,
-    padding: 20,
+    borderRadius: raios.card,
+    padding: 24,
     borderWidth: 1,
     borderColor: cores.bordaCard,
+    ...sombra,
+  },
+  badgeDia: {
+    alignSelf: 'flex-start',
+    backgroundColor: cores.bordo,
+    borderRadius: 20,
+    paddingVertical: 5,
+    paddingHorizontal: 14,
+    marginBottom: 10,
+  },
+  badgeDiaTexto: { color: '#fff', fontFamily: fontes.rotulo, fontSize: 13 },
+  nomeMes: {
+    fontSize: 11,
+    fontFamily: fontes.rotulo,
+    color: cores.ouroEscuro,
+    textTransform: 'uppercase',
+    letterSpacing: 0.6,
+    marginBottom: 6,
   },
   tituloDevocional: {
-    fontSize: 20,
-    fontWeight: '700',
+    fontSize: 24,
+    fontFamily: fontes.titulo,
     color: cores.bordo,
-    marginBottom: 8,
+    marginBottom: 10,
   },
   versiculo: {
-    fontSize: 14,
-    fontStyle: 'italic',
+    fontSize: 16,
+    fontFamily: fontes.versiculo,
     color: cores.ouroEscuro,
     marginBottom: 12,
-    lineHeight: 20,
+    lineHeight: 22,
   },
   resumo: {
     fontSize: 15,
+    fontFamily: fontes.texto,
     color: cores.cinzaTexto,
     lineHeight: 22,
     marginBottom: 16,
   },
+  botaoEspiritualSombra: {
+    borderRadius: raios.botao,
+    shadowColor: cores.dourado,
+    shadowOpacity: 0.35,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
+  },
   botaoPrimario: {
-    backgroundColor: cores.ouro,
-    paddingVertical: 12,
-    borderRadius: 10,
+    paddingVertical: 14,
+    borderRadius: raios.botao,
     alignItems: 'center',
   },
   botaoPrimarioTexto: {
     color: '#fff',
-    fontWeight: '700',
+    fontFamily: fontes.rotulo,
     fontSize: 15,
   },
+  cardLouvor: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: raios.card,
+    borderWidth: 1,
+    borderColor: cores.borda,
+    padding: 18,
+    marginTop: 14,
+    gap: 12,
+    ...sombra,
+  },
+  louvorEmoji: { fontSize: 26 },
+  louvorLabel: {
+    fontSize: 11,
+    fontFamily: fontes.rotulo,
+    color: cores.ouroEscuro,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  louvorTitulo: { fontSize: 15, fontFamily: fontes.textoForte, color: cores.bordo, marginTop: 2 },
+  botaoOuvir: {
+    backgroundColor: cores.bordo,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: raios.botao,
+  },
+  botaoOuvirTexto: { color: '#fff', fontFamily: fontes.rotulo, fontSize: 12.5 },
+  secaoAcoesTitulo: { marginTop: 24, marginBottom: 10 },
+  acoesLista: { gap: 12, marginBottom: 6 },
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: raios.card,
+    borderWidth: 1,
+    borderColor: cores.borda,
+    padding: 16,
+    gap: 12,
+    ...sombra,
+  },
+  iconeCirculo: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconeTexto: { fontSize: 20 },
+  tituloAcao: { fontSize: 15, fontFamily: fontes.textoForte, color: cores.bordo },
+  subtituloAcao: { fontSize: 12, fontFamily: fontes.texto, color: cores.cinzaClaro, marginTop: 2 },
+  seta: { fontSize: 22, color: cores.ouroEscuro },
   grade: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -151,8 +428,8 @@ const styles = StyleSheet.create({
   cardSecao: {
     width: '48%',
     backgroundColor: '#fff',
-    borderRadius: 14,
-    padding: 16,
+    borderRadius: raios.card,
+    padding: 18,
     marginBottom: 14,
     borderWidth: 1,
     borderColor: cores.borda,
@@ -163,23 +440,76 @@ const styles = StyleSheet.create({
   },
   cardTitulo: {
     fontSize: 15,
-    fontWeight: '700',
+    fontFamily: fontes.textoForte,
     color: cores.bordo,
     marginBottom: 2,
   },
   cardSubtitulo: {
     fontSize: 12,
+    fontFamily: fontes.texto,
     color: cores.cinzaClaro,
   },
+  secaoGaleriaCabecalho: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  secaoTitulo: {
+    fontSize: 13,
+    fontFamily: fontes.rotulo,
+    color: cores.ouroEscuro,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  linkAdicionar: { fontSize: 13, fontFamily: fontes.rotulo, color: cores.olivaEscuro },
+  formFoto: {
+    backgroundColor: cores.cremeCard,
+    borderRadius: raios.card,
+    borderWidth: 1,
+    borderColor: cores.bordaCard,
+    padding: 16,
+    marginBottom: 14,
+  },
+  input: {
+    backgroundColor: '#fff',
+    borderRadius: raios.campo,
+    borderWidth: 1,
+    borderColor: cores.borda,
+    padding: 14,
+    fontSize: 14,
+    fontFamily: fontes.texto,
+    color: cores.cinzaTexto,
+    marginBottom: 10,
+  },
+  botaoSalvarFoto: {
+    backgroundColor: cores.rosa,
+    paddingVertical: 12,
+    borderRadius: raios.botao,
+    alignItems: 'center',
+  },
+  botaoSalvarFotoTexto: { color: cores.olivaEscuro, fontFamily: fontes.rotulo, fontSize: 14 },
+  semFotos: { fontSize: 13, fontFamily: fontes.texto, color: cores.cinzaClaro, marginBottom: 8 },
+  galeria: { marginBottom: 4 },
+  fotoCard: { width: 120, marginRight: 12 },
+  foto: {
+    width: 120,
+    height: 120,
+    borderRadius: 14,
+    backgroundColor: cores.cremeCard,
+    borderWidth: 1,
+    borderColor: cores.borda,
+  },
+  fotoLegenda: { fontSize: 11, fontFamily: fontes.texto, color: cores.cinzaTexto, marginTop: 4 },
   rodapeControles: {
-    marginTop: 8,
+    marginTop: 22,
     gap: 10,
   },
   controle: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: raios.botao,
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1,
@@ -195,7 +525,7 @@ const styles = StyleSheet.create({
   },
   controleTexto: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: fontes.textoForte,
     color: cores.bordo,
   },
 });

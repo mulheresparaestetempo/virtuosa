@@ -1,0 +1,19 @@
+name: abba_virtuosa
+description: Abba Virtuosa - Spiritual platform for women
+version: 1.0.0
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.13.0'
+
+# This is a Melos workspace
+# All actual dependencies are managed by individual packages and apps
+publish_to: 'none'
+
+packages:
+  - apps/**
+  - packages/**
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

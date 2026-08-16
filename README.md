@@ -1,27 +1,186 @@
-# Virtuosas — PIBAM Espraiado
+# Abba Virtuosa - Monorepo
 
-Este repositório reúne duas partes do mesmo ministério:
+Plataforma espiritual para mulheres com aplicativos móveis, painéis de gestão, e assistente IA.
 
-## 1. Site Virtuosas (na raiz deste repositório)
+## Estrutura do Projeto
 
-Site do ministério feminino Virtuosas, da PIBAM Espraiado:
+```
+filha/
+├── apps/                          # Aplicações principais
+│   ├── app_mobile/               # Flutter app para usuárias
+│   ├── painel_lider/             # Dashboard para líderes
+│   └── painel_admin/             # Dashboard administrativo
+│
+├── packages/                      # Pacotes compartilhados
+│   ├── design_system/            # Design tokens e tema
+│   ├── ui_components/            # Componentes reutilizáveis
+│   ├── stickers/                 # Sistema de stickers/badges
+│   ├── shared/                   # Utilitários compartilhados
+│   ├── bible/                    # Funcionalidades bíblicas
+│   └── ai/                       # Integração com IA
+│
+├── backend/                       # Backend e Cloud Functions
+│   ├── firebase/                 # Configurações Firebase
+│   └── functions/                # Cloud Functions (TypeScript)
+│
+├── docs/                          # Documentação
+│   ├── prd/                      # Product Requirements
+│   ├── ux/                       # UX Documentation
+│   ├── ui/                       # UI Specifications
+│   ├── arquitetura/              # Architecture Docs
+│   ├── banco/                    # Database Docs
+│   └── prompts/                  # AI Prompts
+│
+├── assets/                        # Recursos compartilhados
+│   ├── illustrations/            # Ilustrações
+│   ├── stickers/                 # Stickers/Badges
+│   ├── fonts/                    # Fontes (Google Fonts)
+│   ├── icons/                    # Ícones
+│   └── audio/                    # Áudio/Música
+│
+└── .github/                       # GitHub workflows e configs
+```
 
-- `index.html` / `virtuosas-site.html` — páginas do site
-- `meu-plano.html` — plano de leitura, oração e jejum (com Web App Manifest
-  e Service Worker para instalação no celular)
-- `logo-virtuosas.png`, `musica-boa-parte.mp3`, `a-boa-parte.mp3` — mídia
-  usada pelo site
+## Tecnologias
 
-## 2. App FILHA (pasta `app-filha/`)
+### Frontend
+- **Flutter** - App mobile multiplataforma
+- **Next.js/React** - Painéis web (líder e admin)
+- **Riverpod** - State management
+- **GoRouter** - Navegação
 
-Protótipo do App FILHA, a plataforma de discipulado feminino, construído com
-Expo + React Native (Android e iOS a partir do mesmo código).
+### Backend
+- **Firebase** - Autenticação, Database, Storage, Messaging
+- **Cloud Functions** - Serverless backend logic
+- **Node.js/TypeScript** - Runtime
 
-- Plano completo do produto (18 módulos, priorização, modelo de dados):
-  [`docs/app-filha-plano.md`](docs/app-filha-plano.md)
-- Como rodar em desenvolvimento e gerar o `.apk` instalável:
-  [`app-filha/README.md`](app-filha/README.md)
+### IA
+- **Claude API** - Bible Assistant
+- **OpenAI** - Futuro suporte
 
-O acompanhamento do que falta construir está nas
-[Issues](https://github.com/mulheresparaestetempo/virtuosa/issues) deste
-repositório.
+### Monorepo
+- **Melos** - Gerenciador de monorepo Flutter
+- **npm/yarn** - Workspace monorepo web
+
+## Desenvolvimento
+
+### Setup Inicial
+
+```bash
+# Clone o repositório
+git clone https://github.com/mulheresparaestetempo/virtuosa.git
+cd virtuosa
+
+# Install Melos (monorepo manager)
+dart pub global activate melos
+
+# Bootstrap do monorepo
+melos bootstrap
+```
+
+### Executar Apps
+
+#### App Mobile
+```bash
+cd apps/app_mobile
+flutter run -d <device-id>
+```
+
+#### Painel Líder
+```bash
+cd apps/painel_lider
+npm run dev
+```
+
+#### Painel Admin
+```bash
+cd apps/painel_admin
+npm run dev
+```
+
+### Packages
+
+#### Design System
+```bash
+cd packages/design_system
+flutter pub get
+```
+
+#### UI Components
+```bash
+cd packages/ui_components
+flutter pub get
+```
+
+#### Bible Package
+```bash
+cd packages/bible
+flutter pub get
+```
+
+#### AI Package
+```bash
+cd packages/ai
+flutter pub get
+```
+
+## Estrutura de Branches
+
+- `main` - Production ready code
+- `develop` - Development branch
+- `feature/*` - Feature branches
+- `bugfix/*` - Bug fix branches
+- `release/*` - Release branches
+
+## Fase de Desenvolvimento
+
+### Fase 1 (Concluída)
+- ✅ Identidade visual
+- ✅ Design System v1.0
+- ✅ Mockups e Protótipo
+
+### Fase 2 (Em Progresso)
+- ✅ Flutter project setup
+- ✅ Firebase integration
+- ✅ Autenticação
+- ✅ Home screen
+- 🔄 UI Components
+- 🔄 Features (Devocional, Lugar Secreto)
+
+### Fase 3 (Planejada)
+- Jejum
+- Diário
+- Memoriais
+- Biblioteca
+- Comunidade
+
+### Fase 4 (Planejada)
+- Painel Líder
+- Painel Igreja
+- Eventos
+- Mapa
+- Culto no Lar
+
+### Fase 5 (Planejada)
+- Assistente Bíblica IA
+- Pesquisa Bíblica
+- Recomendações
+
+### Fase 6 (Planejada)
+- Publicação
+- Android
+- iOS
+- Web
+
+## Contribuindo
+
+Veja [CONTRIBUTING.md](docs/CONTRIBUTING.md) para guidelines de contribuição.
+
+## Licença
+
+Proprietary - Abba Virtuosa Ministry
+
+## Contato
+
+- Email: info@abba-virtuosa.app
+- Website: https://abba-virtuosa.app

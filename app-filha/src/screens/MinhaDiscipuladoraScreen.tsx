@@ -1,161 +1,149 @@
 import { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { cores } from '../theme';
+import { cores, fontes, raios, sombra } from '../theme';
 import { carregar, salvar } from '../storage';
+import { doc, getDoc } from 'firebase/firestore';
+import { db, firebaseConfigurado } from '../firebase';
+import { useAuth } from '../context/AuthContext';
 
 const CHAVE_METAS = 'discipuladora_metas';
+const CHAVE_PEDIDOS = 'discipuladora_pedidos';
+const CHAVE_JEJUNS = 'discipuladora_jejuns';
 
-type Meta = {
-  id: string;
-  descricao: string;
-  concluida: boolean;
-};
+type Meta = { id: string; descricao: string; concluida: boolean };
+type PedidoCompartilhado = { id: string; descricao: string; data: string };
+type JejumCompartilhado = { id: string; tipo: string; data: string; status: 'em_andamento' | 'concluido' };
+type DadosDiscipuladora = { nome?: string; email?: string; igreja?: string };
 
-const discipuladora = {
-  nome: 'Ana Paula',
-  emoji: '👩🏻',
-  funcao: 'Discipuladora da célula Vinho Novo',
-  proximoEncontro: 'Quinta-feira, 20h — Videochamada',
-};
-
-const metasIniciais: Meta[] = [
-  { id: '1', descricao: 'Concluir a trilha Identidade', concluida: false },
-  { id: '2', descricao: 'Ler o livro de Salmos em 30 dias', concluida: false },
-  { id: '3', descricao: 'Compartilhar um testemunho na comunidade', concluida: true },
-];
-
-const conversas = [
-  { id: '1', data: '29 de julho', resumo: 'Conversamos sobre perdão e conclui que preciso orar mais por isso.' },
-  { id: '2', data: '15 de julho', resumo: 'Ana orou comigo sobre a decisão do novo trabalho.' },
-];
+const metasVazias: Meta[] = [];
+const pedidosVazios: PedidoCompartilhado[] = [];
+const jejunsVazios: JejumCompartilhado[] = [];
 
 export default function MinhaDiscipuladoraScreen() {
-  const [metas, setMetas] = useState<Meta[]>(metasIniciais);
+  const { perfil } = useAuth();
+  const [metas, setMetas] = useState<Meta[]>(metasVazias);
+  const [pedidos, setPedidos] = useState<PedidoCompartilhado[]>(pedidosVazios);
+  const [jejuns, setJejuns] = useState<JejumCompartilhado[]>(jejunsVazios);
+  const [discipuladora, setDiscipuladora] = useState<DadosDiscipuladora | null>(null);
   const [carregado, setCarregado] = useState(false);
 
   useEffect(() => {
-    carregar(CHAVE_METAS, metasIniciais).then((salvas) => {
-      setMetas(salvas);
+    Promise.all([
+      carregar(CHAVE_METAS, metasVazias),
+      carregar(CHAVE_PEDIDOS, pedidosVazios),
+      carregar(CHAVE_JEJUNS, jejunsVazios),
+    ]).then(([salvasMetas, salvosPedidos, salvosJejuns]) => {
+      setMetas(salvasMetas);
+      setPedidos(salvosPedidos);
+      setJejuns(salvosJejuns);
       setCarregado(true);
     });
   }, []);
 
   useEffect(() => {
-    if (carregado) salvar(CHAVE_METAS, metas);
-  }, [metas, carregado]);
+    if (carregado) {
+      salvar(CHAVE_METAS, metas);
+      salvar(CHAVE_PEDIDOS, pedidos);
+      salvar(CHAVE_JEJUNS, jejuns);
+    }
+  }, [metas, pedidos, jejuns, carregado]);
+
+  useEffect(() => {
+    let ativo = true;
+    async function carregarVinculo() {
+      const id = perfil?.discipuladoraId;
+      if (!firebaseConfigurado || !id) {
+        if (ativo) setDiscipuladora(null);
+        return;
+      }
+      const snap = await getDoc(doc(db, 'usuarias', id)).catch(() => null);
+      if (ativo && snap?.exists()) setDiscipuladora(snap.data() as DadosDiscipuladora);
+    }
+    carregarVinculo();
+    return () => { ativo = false; };
+  }, [perfil?.discipuladoraId]);
 
   function alternarMeta(id: string) {
-    setMetas(metas.map((m) => (m.id === id ? { ...m, concluida: !m.concluida } : m)));
+    setMetas((atuais) => atuais.map((m) => (m.id === id ? { ...m, concluida: !m.concluida } : m)));
   }
+
+  const temVinculo = Boolean(perfil?.discipuladoraId && discipuladora);
 
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.cardPerfil}>
-          <Text style={styles.perfilEmoji}>{discipuladora.emoji}</Text>
-          <Text style={styles.perfilNome}>{discipuladora.nome}</Text>
-          <Text style={styles.perfilFuncao}>{discipuladora.funcao}</Text>
+        <View style={styles.hero}>
+          <Text style={styles.emoji}>🤍</Text>
+          <Text style={styles.titulo}>Minha Discipuladora</Text>
+          <Text style={styles.subtitulo}>{temVinculo ? 'Sua caminhada de discipulado em um só lugar.' : 'Este espaço será preenchido quando sua discipuladora estiver vinculada à sua conta.'}</Text>
         </View>
 
-        <View style={styles.cardEncontro}>
-          <Text style={styles.encontroLabel}>Próximo encontro</Text>
-          <Text style={styles.encontroValor}>{discipuladora.proximoEncontro}</Text>
+        <View style={styles.cardInfo}>
+          <Text style={styles.label}>Vínculo de discipulado</Text>
+          {temVinculo ? (
+            <>
+              <Text style={styles.info}>{discipuladora?.nome ?? 'Discipuladora vinculada'}</Text>
+              {!!discipuladora?.igreja && <Text style={styles.ajuda}>{discipuladora.igreja}</Text>}
+              {!!discipuladora?.email && <Text style={styles.ajuda}>{discipuladora.email}</Text>}
+            </>
+          ) : (
+            <>
+              <Text style={styles.info}>Ainda não há uma discipuladora vinculada.</Text>
+              <Text style={styles.ajuda}>Quando a liderança realizar o vínculo, os dados e os encontros aparecerão aqui.</Text>
+            </>
+          )}
         </View>
 
         <Text style={styles.secaoTitulo}>Metas em acompanhamento</Text>
-        {metas.map((meta) => (
-          <TouchableOpacity
-            key={meta.id}
-            style={styles.cardMeta}
-            onPress={() => alternarMeta(meta.id)}
-          >
-            <View style={[styles.caixa, meta.concluida && styles.caixaMarcada]}>
-              {meta.concluida && <Text style={styles.caixaCheck}>✓</Text>}
-            </View>
-            <Text style={[styles.metaTexto, meta.concluida && styles.metaTextoConcluida]}>
-              {meta.descricao}
-            </Text>
+        {metas.length ? metas.map((meta) => (
+          <TouchableOpacity key={meta.id} style={styles.cardMeta} onPress={() => alternarMeta(meta.id)}>
+            <View style={[styles.caixa, meta.concluida && styles.caixaMarcada]}>{meta.concluida && <Text style={styles.check}>✓</Text>}</View>
+            <Text style={[styles.metaTexto, meta.concluida && styles.metaConcluida]}>{meta.descricao}</Text>
           </TouchableOpacity>
-        ))}
+        )) : <Empty text="Nenhuma meta foi compartilhada com você ainda." />}
 
-        <Text style={styles.secaoTitulo}>Conversas recentes</Text>
-        {conversas.map((c) => (
-          <View key={c.id} style={styles.cardConversa}>
-            <Text style={styles.conversaData}>{c.data}</Text>
-            <Text style={styles.conversaResumo}>{c.resumo}</Text>
-          </View>
-        ))}
+        <Text style={styles.secaoTitulo}>Histórico de conversas</Text>
+        <Empty text="Suas conversas aparecerão aqui quando houver registros compartilhados pela discipuladora." />
+
+        <Text style={styles.secaoTitulo}>Pedidos compartilhados 🙏</Text>
+        {pedidos.length ? pedidos.map((pedido) => (
+          <View key={pedido.id} style={styles.card}><Text style={styles.texto}>{pedido.descricao}</Text><Text style={styles.data}>{pedido.data}</Text></View>
+        )) : <Empty text="Nenhum pedido compartilhado no momento." />}
+
+        <Text style={styles.secaoTitulo}>Jejuns compartilhados 🙏</Text>
+        {jejuns.length ? jejuns.map((jejum) => (
+          <View key={jejum.id} style={styles.card}><Text style={styles.texto}>{jejum.tipo}</Text><Text style={styles.data}>{jejum.data}</Text><Text style={styles.status}>{jejum.status === 'em_andamento' ? 'Em andamento' : 'Concluído'}</Text></View>
+        )) : <Empty text="Nenhum jejum compartilhado no momento." />}
       </ScrollView>
     </SafeAreaView>
   );
 }
 
+function Empty({ text }: { text: string }) {
+  return <View style={styles.empty}><Text style={styles.emptyText}>{text}</Text></View>;
+}
+
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: cores.creme },
   container: { padding: 20, paddingBottom: 40 },
-  cardPerfil: {
-    backgroundColor: cores.cremeCard,
-    borderRadius: 16,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: cores.bordaCard,
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  perfilEmoji: { fontSize: 40, marginBottom: 8 },
-  perfilNome: { fontSize: 18, fontWeight: '700', color: cores.bordo },
-  perfilFuncao: { fontSize: 13, color: cores.ouroEscuro, marginTop: 2 },
-  cardEncontro: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: cores.rosa,
-    padding: 16,
-    marginBottom: 20,
-  },
-  encontroLabel: { fontSize: 12, fontWeight: '700', color: cores.rosa, marginBottom: 4 },
-  encontroValor: { fontSize: 15, fontWeight: '600', color: cores.bordo },
-  secaoTitulo: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: cores.ouroEscuro,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginBottom: 10,
-    marginTop: 4,
-  },
-  cardMeta: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: cores.borda,
-    padding: 12,
-    marginBottom: 8,
-    gap: 10,
-  },
-  caixa: {
-    width: 22,
-    height: 22,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: cores.ouro,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  caixaMarcada: { backgroundColor: cores.ouro },
-  caixaCheck: { color: '#fff', fontSize: 13, fontWeight: '700' },
-  metaTexto: { fontSize: 14, color: cores.cinzaTexto, flex: 1 },
-  metaTextoConcluida: { textDecorationLine: 'line-through', color: cores.cinzaClaro },
-  cardConversa: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: cores.borda,
-    padding: 12,
-    marginBottom: 8,
-  },
-  conversaData: { fontSize: 12, color: cores.cinzaClaro, marginBottom: 4 },
-  conversaResumo: { fontSize: 14, color: cores.cinzaTexto, lineHeight: 19 },
+  hero: { alignItems: 'center', backgroundColor: cores.cremeCard, borderRadius: raios.card, borderWidth: 1, borderColor: cores.bordaCard, padding: 24, marginBottom: 16, ...sombra },
+  emoji: { fontSize: 42, marginBottom: 10 },
+  titulo: { fontSize: 22, fontFamily: fontes.titulo, color: cores.bordo, marginBottom: 8 },
+  subtitulo: { fontSize: 13, fontFamily: fontes.texto, color: cores.cinzaTexto, textAlign: 'center', lineHeight: 19 },
+  cardInfo: { backgroundColor: '#fff', borderRadius: raios.card, borderWidth: 1, borderColor: cores.borda, padding: 16, marginBottom: 18, ...sombra },
+  label: { fontSize: 11, fontFamily: fontes.rotulo, color: cores.ouroEscuro, textTransform: 'uppercase', marginBottom: 6 },
+  info: { fontSize: 15, fontFamily: fontes.textoForte, color: cores.bordo, marginBottom: 6 },
+  ajuda: { fontSize: 12, fontFamily: fontes.texto, color: cores.cinzaClaro, lineHeight: 18 },
+  secaoTitulo: { fontSize: 13, fontFamily: fontes.rotulo, color: cores.ouroEscuro, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 12, marginTop: 16 },
+  cardMeta: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: raios.card, borderWidth: 1, borderColor: cores.borda, padding: 12, marginBottom: 8, gap: 10, ...sombra },
+  caixa: { width: 22, height: 22, borderRadius: 6, borderWidth: 2, borderColor: cores.ouro, alignItems: 'center', justifyContent: 'center' },
+  caixaMarcada: { backgroundColor: cores.ouro }, check: { color: '#fff', fontSize: 13, fontWeight: '700' },
+  metaTexto: { fontSize: 14, fontFamily: fontes.texto, color: cores.cinzaTexto, flex: 1 },
+  metaConcluida: { textDecorationLine: 'line-through', color: cores.cinzaClaro },
+  card: { backgroundColor: '#fff', borderRadius: raios.card, borderWidth: 1, borderColor: cores.borda, padding: 14, marginBottom: 8, ...sombra },
+  texto: { fontSize: 14, fontFamily: fontes.texto, color: cores.cinzaTexto, lineHeight: 19 },
+  data: { fontSize: 11, fontFamily: fontes.texto, color: cores.cinzaClaro, marginTop: 5 },
+  status: { fontSize: 11, fontFamily: fontes.rotulo, color: cores.olivaEscuro, marginTop: 6 },
+  empty: { backgroundColor: cores.cremeCard, borderRadius: raios.card, borderWidth: 1, borderColor: cores.bordaCard, padding: 20, alignItems: 'center', marginBottom: 12 },
+  emptyText: { fontSize: 13, fontFamily: fontes.texto, color: cores.cinzaClaro, textAlign: 'center', lineHeight: 19 },
 });

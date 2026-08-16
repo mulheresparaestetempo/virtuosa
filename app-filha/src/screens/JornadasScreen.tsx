@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { cores } from '../theme';
+import { cores, raios } from '../theme';
 import { carregar, salvar } from '../storage';
 import { trilhas } from '../data/trilhas';
 
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   },
   cardTrilha: {
     backgroundColor: '#fff',
-    borderRadius: 14,
+    borderRadius: raios.card,
     borderWidth: 1,
     borderColor: cores.borda,
     marginBottom: 12,
