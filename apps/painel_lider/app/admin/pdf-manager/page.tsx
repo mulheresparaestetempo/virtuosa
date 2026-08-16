@@ -1,38 +1,58 @@
 'use client';
 
-import { useState } from 'react';
-
-interface PDFDocument {
-  id: string;
-  name: string;
-  uploadedAt: string;
-  size: string;
-}
+import { useState, useEffect } from 'react';
+import { uploadPDF, getPDFs, deletePDF } from '@/lib/services/pdf-service';
+import { PDFDocument } from '@/lib/types';
 
 export default function PDFManagerPage() {
-  const [documents, setDocuments] = useState<PDFDocument[]>([
-    { id: '1', name: 'Guia Espiritual 2024', uploadedAt: '15/08/2024', size: '2.3 MB' },
-    { id: '2', name: 'Apostila de Estudo', uploadedAt: '10/08/2024', size: '5.1 MB' },
-  ]);
+  const [documents, setDocuments] = useState<PDFDocument[]>([]);
   const [newDocName, setNewDocName] = useState('');
   const [newDocFile, setNewDocFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleUpload = () => {
-    if (newDocName.trim() && newDocFile) {
-      const newDoc: PDFDocument = {
-        id: Date.now().toString(),
-        name: newDocName,
-        uploadedAt: new Date().toLocaleDateString('pt-BR'),
-        size: (newDocFile.size / 1024 / 1024).toFixed(1) + ' MB',
-      };
-      setDocuments([newDoc, ...documents]);
-      setNewDocName('');
-      setNewDocFile(null);
+  useEffect(() => {
+    loadDocuments();
+  }, []);
+
+  const loadDocuments = async () => {
+    try {
+      const docs = await getPDFs();
+      setDocuments(docs);
+    } catch (err) {
+      setError('Erro ao carregar PDFs');
+      console.error(err);
     }
   };
 
-  const handleDelete = (id: string) => {
-    setDocuments(documents.filter(doc => doc.id !== id));
+  const handleUpload = async () => {
+    if (!newDocName.trim() || !newDocFile) return;
+
+    setLoading(true);
+    setError('');
+    try {
+      const newDoc = await uploadPDF(newDocFile, newDocName, 'admin');
+      setDocuments([newDoc, ...documents]);
+      setNewDocName('');
+      setNewDocFile(null);
+    } catch (err) {
+      setError('Erro ao fazer upload do PDF');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: string, storagePath: string) => {
+    if (!confirm('Tem certeza que deseja remover este PDF?')) return;
+
+    try {
+      await deletePDF(id, storagePath);
+      setDocuments(documents.filter(doc => doc.id !== id));
+    } catch (err) {
+      setError('Erro ao deletar PDF');
+      console.error(err);
+    }
   };
 
   return (
@@ -96,13 +116,19 @@ export default function PDFManagerPage() {
               {newDocFile && <p style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: '#666' }}>✓ {newDocFile.name}</p>}
             </div>
 
+            {error && (
+              <div style={{ backgroundColor: '#FFE8E8', color: '#C85A54', padding: '0.75rem', borderRadius: '16px', marginBottom: '1rem' }}>
+                {error}
+              </div>
+            )}
+
             <button
               onClick={handleUpload}
-              disabled={!newDocName.trim() || !newDocFile}
+              disabled={!newDocName.trim() || !newDocFile || loading}
               className="btn"
               style={{ width: '100%' }}
             >
-              Enviar PDF
+              {loading ? '⏳ Enviando...' : 'Enviar PDF'}
             </button>
           </div>
         </div>
@@ -127,13 +153,15 @@ export default function PDFManagerPage() {
                   }}
                 >
                   <div>
-                    <p style={{ fontWeight: '600', color: '#2E2E2E' }}>📄 {doc.name}</p>
+                    <a href={doc.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                      <p style={{ fontWeight: '600', color: '#2E2E2E', cursor: 'pointer' }}>📄 {doc.name}</p>
+                    </a>
                     <small style={{ color: '#999' }}>
-                      {doc.uploadedAt} • {doc.size}
+                      {new Date(doc.uploadedAt).toLocaleDateString('pt-BR')} • {(doc.size / 1024 / 1024).toFixed(1)} MB
                     </small>
                   </div>
                   <button
-                    onClick={() => handleDelete(doc.id)}
+                    onClick={() => handleDelete(doc.id, doc.url)}
                     style={{
                       padding: '0.5rem 1rem',
                       backgroundColor: '#E8D7D1',

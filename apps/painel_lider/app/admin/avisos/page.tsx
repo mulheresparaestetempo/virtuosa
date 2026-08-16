@@ -1,51 +1,69 @@
 'use client';
 
-import { useState } from 'react';
-
-interface Aviso {
-  id: string;
-  title: string;
-  message: string;
-  priority: 'baixa' | 'média' | 'alta';
-  sentAt: string;
-  sentTo: number;
-}
+import { useState, useEffect } from 'react';
+import { sendAviso, getAvisos, deleteAviso } from '@/lib/services/avisos-service';
+import { Aviso } from '@/lib/types';
 
 export default function AvisosPage() {
-  const [avisos, setAvisos] = useState<Aviso[]>([
-    {
-      id: '1',
-      title: 'Atualizações do App',
-      message: 'Uma nova versão do app FILHA foi lançada com novas funcionalidades.',
-      priority: 'média',
-      sentAt: '2024-08-20',
-      sentTo: 245,
-    },
-  ]);
-
+  const [avisos, setAvisos] = useState<Aviso[]>([]);
   const [formData, setFormData] = useState({
     title: '',
     message: '',
     priority: 'média' as 'baixa' | 'média' | 'alta',
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSend = () => {
-    if (formData.title.trim() && formData.message.trim()) {
-      const newAviso: Aviso = {
-        id: Date.now().toString(),
-        title: formData.title,
-        message: formData.message,
-        priority: formData.priority,
-        sentAt: new Date().toLocaleDateString('pt-BR'),
-        sentTo: Math.floor(Math.random() * 300) + 100,
-      };
-      setAvisos([newAviso, ...avisos]);
-      setFormData({ title: '', message: '', priority: 'média' });
+  useEffect(() => {
+    loadAvisos();
+  }, []);
+
+  const loadAvisos = async () => {
+    try {
+      const avisosList = await getAvisos();
+      setAvisos(avisosList);
+    } catch (err) {
+      setError('Erro ao carregar avisos');
+      console.error(err);
     }
   };
 
-  const handleDelete = (id: string) => {
-    setAvisos(avisos.filter(aviso => aviso.id !== id));
+  const handleSend = async () => {
+    if (!formData.title.trim() || !formData.message.trim()) return;
+
+    setLoading(true);
+    setError('');
+    try {
+      const recipientCount = Math.floor(Math.random() * 300) + 100;
+      const newAviso = await sendAviso(
+        {
+          title: formData.title,
+          message: formData.message,
+          priority: formData.priority,
+        },
+        'admin',
+        recipientCount
+      );
+      setAvisos([newAviso, ...avisos]);
+      setFormData({ title: '', message: '', priority: 'média' });
+    } catch (err) {
+      setError('Erro ao enviar aviso');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Tem certeza que deseja remover este aviso?')) return;
+
+    try {
+      await deleteAviso(id);
+      setAvisos(avisos.filter(aviso => aviso.id !== id));
+    } catch (err) {
+      setError('Erro ao deletar aviso');
+      console.error(err);
+    }
   };
 
   const getPriorityColor = (priority: string) => {
@@ -160,8 +178,14 @@ export default function AvisosPage() {
               </p>
             </div>
 
-            <button onClick={handleSend} className="btn" style={{ width: '100%' }}>
-              Enviar Notificação
+            {error && (
+              <div style={{ backgroundColor: '#FFE8E8', color: '#C85A54', padding: '0.75rem', borderRadius: '16px', marginBottom: '1rem' }}>
+                {error}
+              </div>
+            )}
+
+            <button onClick={handleSend} disabled={loading} className="btn" style={{ width: '100%' }}>
+              {loading ? '⏳ Enviando...' : 'Enviar Notificação'}
             </button>
           </div>
         </div>
@@ -209,7 +233,7 @@ export default function AvisosPage() {
                         {aviso.message}
                       </p>
                       <small style={{ color: '#999', marginTop: '0.5rem', display: 'block' }}>
-                        📤 Enviado em {aviso.sentAt} para {aviso.sentTo} usuárias
+                        📤 Enviado em {new Date(aviso.sentAt).toLocaleDateString('pt-BR')} para {aviso.recipientCount} usuárias
                       </small>
                     </div>
                     <button

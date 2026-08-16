@@ -1,36 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-
-interface CalendarEvent {
-  id: string;
-  title: string;
-  date: string;
-  time: string;
-  description: string;
-  type: 'retiro' | 'culto' | 'encontro' | 'outro';
-}
+import { useState, useEffect } from 'react';
+import { createEvent, getEvents, deleteEvent } from '@/lib/services/calendar-service';
+import { CalendarEvent } from '@/lib/types';
 
 export default function CalendarPage() {
-  const [events, setEvents] = useState<CalendarEvent[]>([
-    {
-      id: '1',
-      title: 'Retiro Espiritual',
-      date: '2024-09-15',
-      time: '08:00',
-      description: 'Retiro de oração e intimidade com Deus',
-      type: 'retiro',
-    },
-    {
-      id: '2',
-      title: 'Culto de Celebração',
-      date: '2024-08-25',
-      time: '19:00',
-      description: 'Culto com adoração e ministração',
-      type: 'culto',
-    },
-  ]);
-
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [formData, setFormData] = useState<Partial<CalendarEvent>>({
     title: '',
     date: '',
@@ -38,24 +13,59 @@ export default function CalendarPage() {
     description: '',
     type: 'culto',
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = () => {
-    if (formData.title && formData.date && formData.time && formData.type) {
-      const newEvent: CalendarEvent = {
-        id: Date.now().toString(),
-        title: formData.title,
-        date: formData.date,
-        time: formData.time,
-        description: formData.description || '',
-        type: formData.type as CalendarEvent['type'],
-      };
-      setEvents([...events, newEvent].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()));
-      setFormData({ title: '', date: '', time: '', description: '', type: 'culto' });
+  useEffect(() => {
+    loadEvents();
+  }, []);
+
+  const loadEvents = async () => {
+    try {
+      const eventsList = await getEvents();
+      setEvents(eventsList);
+    } catch (err) {
+      setError('Erro ao carregar eventos');
+      console.error(err);
     }
   };
 
-  const handleDelete = (id: string) => {
-    setEvents(events.filter(event => event.id !== id));
+  const handleSubmit = async () => {
+    if (!formData.title || !formData.date || !formData.time || !formData.type) return;
+
+    setLoading(true);
+    setError('');
+    try {
+      const newEvent = await createEvent(
+        {
+          title: formData.title,
+          date: formData.date,
+          time: formData.time,
+          description: formData.description || '',
+          type: formData.type as CalendarEvent['type'],
+        },
+        'admin'
+      );
+      setEvents([...events, newEvent].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()));
+      setFormData({ title: '', date: '', time: '', description: '', type: 'culto' });
+    } catch (err) {
+      setError('Erro ao criar evento');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Tem certeza que deseja remover este evento?')) return;
+
+    try {
+      await deleteEvent(id);
+      setEvents(events.filter(event => event.id !== id));
+    } catch (err) {
+      setError('Erro ao deletar evento');
+      console.error(err);
+    }
   };
 
   const getEventIcon = (type: string) => {
@@ -204,8 +214,14 @@ export default function CalendarPage() {
               />
             </div>
 
-            <button onClick={handleSubmit} className="btn" style={{ width: '100%' }}>
-              Criar Evento
+            {error && (
+              <div style={{ backgroundColor: '#FFE8E8', color: '#C85A54', padding: '0.75rem', borderRadius: '16px', marginBottom: '1rem' }}>
+                {error}
+              </div>
+            )}
+
+            <button onClick={handleSubmit} disabled={loading} className="btn" style={{ width: '100%' }}>
+              {loading ? '⏳ Criando...' : 'Criar Evento'}
             </button>
           </div>
         </div>

@@ -1,31 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-
-interface Devocional {
-  id: string;
-  date: string;
-  title: string;
-  versicles: string;
-  reflection: string;
-  prayer: string;
-  createdAt: string;
-}
+import { useState, useEffect } from 'react';
+import { publishDevocional, getDevotionals, deleteDevocional } from '@/lib/services/devocional-service';
+import { Devocional } from '@/lib/types';
 
 export default function DevocionalPage() {
-  const [devotionals, setDevotionals] = useState<Devocional[]>([
-    {
-      id: '1',
-      date: '2024-08-20',
-      title: 'Confiança em Deus',
-      versicles: 'Salmos 27:10',
-      reflection:
-        'Quando meu pai e minha mãe me abandonarem, o Senhor me acolherá. Nele encontramos segurança em meio às incertezas da vida.',
-      prayer: 'Senhor, ajuda-nos a confiar em Ti em todos os momentos.',
-      createdAt: '2024-08-20',
-    },
-  ]);
-
+  const [devotionals, setDevotionals] = useState<Devocional[]>([]);
   const [formData, setFormData] = useState<Partial<Devocional>>({
     date: new Date().toISOString().split('T')[0],
     title: '',
@@ -33,18 +13,39 @@ export default function DevocionalPage() {
     reflection: '',
     prayer: '',
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = () => {
-    if (formData.date && formData.title && formData.versicles && formData.reflection) {
-      const newDevocional: Devocional = {
-        id: Date.now().toString(),
-        date: formData.date,
-        title: formData.title,
-        versicles: formData.versicles,
-        reflection: formData.reflection,
-        prayer: formData.prayer || '',
-        createdAt: new Date().toISOString().split('T')[0],
-      };
+  useEffect(() => {
+    loadDevotionals();
+  }, []);
+
+  const loadDevotionals = async () => {
+    try {
+      const devs = await getDevotionals();
+      setDevotionals(devs);
+    } catch (err) {
+      setError('Erro ao carregar devocionais');
+      console.error(err);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!formData.date || !formData.title || !formData.versicles || !formData.reflection) return;
+
+    setLoading(true);
+    setError('');
+    try {
+      const newDevocional = await publishDevocional(
+        {
+          date: formData.date,
+          title: formData.title,
+          versicles: formData.versicles,
+          reflection: formData.reflection,
+          prayer: formData.prayer || '',
+        },
+        'admin'
+      );
       setDevotionals([newDevocional, ...devotionals]);
       setFormData({
         date: new Date().toISOString().split('T')[0],
@@ -53,11 +54,24 @@ export default function DevocionalPage() {
         reflection: '',
         prayer: '',
       });
+    } catch (err) {
+      setError('Erro ao publicar devocional');
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleDelete = (id: string) => {
-    setDevotionals(devotionals.filter(dev => dev.id !== id));
+  const handleDelete = async (id: string) => {
+    if (!confirm('Tem certeza que deseja remover este devocional?')) return;
+
+    try {
+      await deleteDevocional(id);
+      setDevotionals(devotionals.filter(dev => dev.id !== id));
+    } catch (err) {
+      setError('Erro ao deletar devocional');
+      console.error(err);
+    }
   };
 
   const formatDate = (dateStr: string) => {
@@ -193,8 +207,14 @@ export default function DevocionalPage() {
               />
             </div>
 
-            <button onClick={handleSubmit} className="btn" style={{ width: '100%' }}>
-              Publicar Devocional
+            {error && (
+              <div style={{ backgroundColor: '#FFE8E8', color: '#C85A54', padding: '0.75rem', borderRadius: '16px', marginBottom: '1rem' }}>
+                {error}
+              </div>
+            )}
+
+            <button onClick={handleSubmit} disabled={loading} className="btn" style={{ width: '100%' }}>
+              {loading ? '⏳ Publicando...' : 'Publicar Devocional'}
             </button>
           </div>
         </div>
