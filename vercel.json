@@ -1,6 +1,6 @@
 {
   "framework": "nextjs",
-  "buildCommand": "cd apps/painel_lider && npm ci && npm run build",
+  "buildCommand": "cd apps/painel_lider && npm run build",
   "outputDirectory": "apps/painel_lider/.next",
   "installCommand": "cd apps/painel_lider && npm ci"
 }
