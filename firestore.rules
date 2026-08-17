@@ -2,33 +2,73 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // ─── helpers ──────────────────────────────────────────────────────────────
     function signedIn() {
       return request.auth != null;
     }
 
-    function myProfile() {
-      return get(/databases/$(database)/documents/usuarias/$(request.auth.uid)).data;
+    // Admin check: verified against the Firebase token email.
+    // To add admins update NEXT_PUBLIC_ADMIN_EMAILS AND this list.
+    function isAdmin() {
+      return signedIn() &&
+             request.auth.token.email in [
+               'daianefeliciano.df@gmail.com'
+             ];
     }
 
-    function isLeader() {
-      return signedIn() && myProfile().papel == 'lider';
+    // ─── admin content collections (devotionals, events, announcements) ───────
+    // Admins can create / update / delete.
+    // Authenticated users (mobile app) can read.
+    // Public can also read these (no-login read on mobile).
+
+    match /devotionals/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
     }
 
-    function isMe(uid) {
-      return signedIn() && request.auth.uid == uid;
+    match /events/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
     }
 
+    match /avisos/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /pdfs/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /resources/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ─── user profiles ────────────────────────────────────────────────────────
     match /usuarias/{uid} {
-      // A new authenticated user may create only her own member profile.
+      function myProfile() {
+        return get(/databases/$(database)/documents/usuarias/$(request.auth.uid)).data;
+      }
+
+      function isLeader() {
+        return signedIn() && myProfile().papel == 'lider';
+      }
+
+      function isMe(userId) {
+        return signedIn() && request.auth.uid == userId;
+      }
+
       allow create: if isMe(uid)
         && request.resource.data.papel == 'membro'
         && request.resource.data.discipuladoraId == null
         && request.resource.data.igrejaId == null
         && request.resource.data.liderId == null;
 
-      allow read: if isMe(uid) || isLeader();
+      allow read: if isMe(uid) || isLeader() || isAdmin();
 
-      // Members cannot promote themselves or change their leadership relationship.
       allow update: if isMe(uid)
         && request.resource.data.papel == resource.data.papel
         && request.resource.data.discipuladoraId == resource.data.discipuladoraId
@@ -37,8 +77,6 @@ service cloud.firestore {
         && request.resource.data.diff(resource.data).affectedKeys()
           .hasOnly(['nome', 'ultimoAcesso', 'ultimoDiaDevocionalLido']);
 
-      // Leaders may create the discipleship relationship without rewriting
-      // unrelated member profile fields or promoting another member.
       allow update: if isLeader()
         && resource.data.papel == 'membro'
         && request.resource.data.papel == resource.data.papel
@@ -48,8 +86,7 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // Other collections stay closed until their data model and permissions
-    // are implemented explicitly.
+    // ─── default: deny everything else ────────────────────────────────────────
     match /{document=**} {
       allow read, write: if false;
     }

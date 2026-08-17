@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react';
 import { publishDevocional, getDevotionals, deleteDevocional } from '@/lib/services/devocional-service';
 import { Devocional } from '@/lib/types';
+import { useAuth } from '@/lib/context/auth-context';
 
 export default function DevocionalPage() {
+  const { user } = useAuth();
   const [devotionals, setDevotionals] = useState<Devocional[]>([]);
   const [formData, setFormData] = useState<Partial<Devocional>>({
     date: new Date().toISOString().split('T')[0],
@@ -44,7 +46,7 @@ export default function DevocionalPage() {
           reflection: formData.reflection,
           prayer: formData.prayer || '',
         },
-        'admin'
+        user?.uid || 'admin'
       );
       setDevotionals([newDevocional, ...devotionals]);
       setFormData({

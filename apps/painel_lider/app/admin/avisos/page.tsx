@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react';
 import { sendAviso, getAvisos, deleteAviso } from '@/lib/services/avisos-service';
 import { Aviso } from '@/lib/types';
+import { useAuth } from '@/lib/context/auth-context';
 
 export default function AvisosPage() {
+  const { user } = useAuth();
   const [avisos, setAvisos] = useState<Aviso[]>([]);
   const [formData, setFormData] = useState({
     title: '',
@@ -34,15 +36,14 @@ export default function AvisosPage() {
     setLoading(true);
     setError('');
     try {
-      const recipientCount = Math.floor(Math.random() * 300) + 100;
       const newAviso = await sendAviso(
         {
           title: formData.title,
           message: formData.message,
           priority: formData.priority,
         },
-        'admin',
-        recipientCount
+        user?.uid || 'admin',
+        0
       );
       setAvisos([newAviso, ...avisos]);
       setFormData({ title: '', message: '', priority: 'média' });

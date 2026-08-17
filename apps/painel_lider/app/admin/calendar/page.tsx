@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react';
 import { createEvent, getEvents, deleteEvent } from '@/lib/services/calendar-service';
 import { CalendarEvent } from '@/lib/types';
+import { useAuth } from '@/lib/context/auth-context';
 
 export default function CalendarPage() {
+  const { user } = useAuth();
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [formData, setFormData] = useState<Partial<CalendarEvent>>({
     title: '',
@@ -44,7 +46,7 @@ export default function CalendarPage() {
           description: formData.description || '',
           type: formData.type as CalendarEvent['type'],
         },
-        'admin'
+        user?.uid || 'admin'
       );
       setEvents([...events, newEvent].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()));
       setFormData({ title: '', date: '', time: '', description: '', type: 'culto' });
