@@ -17,6 +17,7 @@ export default function DevocionalPage() {
   });
   const [loading, setLoading] = useState(false);
   const [loadingItems, setLoadingItems] = useState(true);
+  const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -41,6 +42,7 @@ export default function DevocionalPage() {
 
     setLoading(true);
     setError('');
+    setSuccess('');
     try {
       const newDevocional = await publishDevocional(
         {
@@ -60,6 +62,8 @@ export default function DevocionalPage() {
         reflection: '',
         prayer: '',
       });
+      setSuccess('✅ Devocional publicado com sucesso!');
+      setTimeout(() => setSuccess(''), 4000);
     } catch (err) {
       setError('Erro ao publicar devocional');
       console.error(err);
@@ -212,6 +216,12 @@ export default function DevocionalPage() {
                 }}
               />
             </div>
+
+            {success && (
+              <div style={{ backgroundColor: '#E8F5E8', color: '#2E7D32', padding: '0.75rem', borderRadius: '16px', marginBottom: '1rem' }}>
+                {success}
+              </div>
+            )}
 
             {error && (
               <div style={{ backgroundColor: '#FFE8E8', color: '#C85A54', padding: '0.75rem', borderRadius: '16px', marginBottom: '1rem' }}>

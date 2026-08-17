@@ -17,6 +17,7 @@ export default function CalendarPage() {
   });
   const [loading, setLoading] = useState(false);
   const [loadingItems, setLoadingItems] = useState(true);
+  const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -41,6 +42,7 @@ export default function CalendarPage() {
 
     setLoading(true);
     setError('');
+    setSuccess('');
     try {
       const newEvent = await createEvent(
         {
@@ -54,6 +56,8 @@ export default function CalendarPage() {
       );
       setEvents([...events, newEvent].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()));
       setFormData({ title: '', date: '', time: '', description: '', type: 'culto' });
+      setSuccess('✅ Evento criado com sucesso!');
+      setTimeout(() => setSuccess(''), 4000);
     } catch (err) {
       setError('Erro ao criar evento');
       console.error(err);
@@ -219,6 +223,12 @@ export default function CalendarPage() {
                 }}
               />
             </div>
+
+            {success && (
+              <div style={{ backgroundColor: '#E8F5E8', color: '#2E7D32', padding: '0.75rem', borderRadius: '16px', marginBottom: '1rem' }}>
+                {success}
+              </div>
+            )}
 
             {error && (
               <div style={{ backgroundColor: '#FFE8E8', color: '#C85A54', padding: '0.75rem', borderRadius: '16px', marginBottom: '1rem' }}>

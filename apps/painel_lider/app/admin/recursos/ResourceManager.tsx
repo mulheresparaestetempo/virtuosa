@@ -15,6 +15,7 @@ export default function ResourceManager({ type, title, icon, description, upload
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [loadingItems, setLoadingItems] = useState(true);
+  const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
 
   const load = async () => {
@@ -26,11 +27,13 @@ export default function ResourceManager({ type, title, icon, description, upload
 
   const save = async () => {
     if (!user) return;
-    setLoading(true); setError('');
+    setLoading(true); setError(''); setSuccess('');
     try {
       const created = upload ? await uploadAudio(file!, name, desc, user.uid) : await createLinkResource(type, name, desc, url, user.uid);
       setItems((current) => [created, ...current]); setName(''); setDesc(''); setUrl(''); setFile(null);
       const input = document.getElementById('resource-file') as HTMLInputElement | null; if (input) input.value = '';
+      setSuccess('✅ Publicado com sucesso!');
+      setTimeout(() => setSuccess(''), 4000);
     } catch (e: any) { setError(e?.message || 'Não foi possível salvar.'); } finally { setLoading(false); }
   };
 
@@ -46,6 +49,7 @@ export default function ResourceManager({ type, title, icon, description, upload
       <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Título" style={{ width: '100%', padding: 12, border: '2px solid #E8E8E8', borderRadius: 18, boxSizing: 'border-box' }} />
       <textarea value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="Descrição (opcional)" rows={4} style={{ width: '100%', padding: 12, border: '2px solid #E8E8E8', borderRadius: 18, boxSizing: 'border-box', resize: 'vertical' }} />
       {upload ? <><label style={{ fontWeight: 500 }}>Arquivo de áudio (até 100 MB)</label><input id="resource-file" type="file" accept="audio/*" onChange={(e) => setFile(e.target.files?.[0] || null)} style={{ padding: 12, border: '2px dashed #D4A574', borderRadius: 18 }} /></> : <input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="Link público (Spotify, YouTube, loja, site etc.)" style={{ width: '100%', padding: 12, border: '2px solid #E8E8E8', borderRadius: 18, boxSizing: 'border-box' }} />}
+      {success && <div style={{ background: '#E8F5E8', color: '#2E7D32', padding: 12, borderRadius: 14 }}>{success}</div>}
       {error && <div style={{ background: '#FFE8E8', color: '#A33', padding: 12, borderRadius: 14 }}>{error}</div>}
       <button className="btn" disabled={loading || !user || !name.trim() || (upload ? !file : !url.trim())} onClick={save}>{loading ? '⏳ Salvando...' : 'Salvar e publicar'}</button>
     </div></div>

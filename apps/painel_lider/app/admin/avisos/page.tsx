@@ -15,6 +15,7 @@ export default function AvisosPage() {
   });
   const [loading, setLoading] = useState(false);
   const [loadingItems, setLoadingItems] = useState(true);
+  const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -39,6 +40,7 @@ export default function AvisosPage() {
 
     setLoading(true);
     setError('');
+    setSuccess('');
     try {
       const newAviso = await sendAviso(
         {
@@ -51,6 +53,8 @@ export default function AvisosPage() {
       );
       setAvisos([newAviso, ...avisos]);
       setFormData({ title: '', message: '', priority: 'média' });
+      setSuccess('✅ Aviso enviado com sucesso!');
+      setTimeout(() => setSuccess(''), 4000);
     } catch (err) {
       setError('Erro ao enviar aviso');
       console.error(err);
@@ -182,6 +186,12 @@ export default function AvisosPage() {
                 ℹ️ Este aviso será enviado para <strong>todas as usuárias ativas</strong> do app FILHA como uma notificação.
               </p>
             </div>
+
+            {success && (
+              <div style={{ backgroundColor: '#E8F5E8', color: '#2E7D32', padding: '0.75rem', borderRadius: '16px', marginBottom: '1rem' }}>
+                {success}
+              </div>
+            )}
 
             {error && (
               <div style={{ backgroundColor: '#FFE8E8', color: '#C85A54', padding: '0.75rem', borderRadius: '16px', marginBottom: '1rem' }}>

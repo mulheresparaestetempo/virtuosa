@@ -12,6 +12,7 @@ export default function PDFManagerPage() {
   const [newDocFile, setNewDocFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [loadingItems, setLoadingItems] = useState(true);
+  const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
 
   const loadDocuments = async () => {
@@ -25,13 +26,15 @@ export default function PDFManagerPage() {
 
   const handleUpload = async () => {
     if (!user || !newDocName.trim() || !newDocFile) return;
-    setLoading(true); setError('');
+    setLoading(true); setError(''); setSuccess('');
     try {
       const newDoc = await uploadPDF(newDocFile, newDocName, user.uid);
       setDocuments((current) => [newDoc, ...current]);
       setNewDocName(''); setNewDocFile(null);
       const input = document.getElementById('pdf-file') as HTMLInputElement | null;
       if (input) input.value = '';
+      setSuccess('✅ PDF enviado com sucesso!');
+      setTimeout(() => setSuccess(''), 4000);
     } catch (err: any) {
       setError(err?.message || 'Erro ao fazer upload do PDF.');
       console.error(err);
@@ -57,6 +60,7 @@ export default function PDFManagerPage() {
             <label style={{ display: 'block', margin: '1rem 0 .5rem', fontWeight: 500 }}>Arquivo PDF (máx. 25 MB)</label>
             <input id="pdf-file" type="file" accept="application/pdf,.pdf" onChange={(e) => setNewDocFile(e.target.files?.[0] || null)} style={{ display: 'block', padding: '.75rem', border: '2px dashed #D4A574', borderRadius: 20, width: '100%', boxSizing: 'border-box' }} />
             {newDocFile && <p style={{ marginTop: '.5rem', fontSize: '.9rem', color: '#666' }}>✓ {newDocFile.name}</p>}
+            {success && <div style={{ backgroundColor: '#E8F5E8', color: '#2E7D32', padding: '.75rem', borderRadius: 16, margin: '1rem 0' }}>{success}</div>}
             {error && <div style={{ backgroundColor: '#FFE8E8', color: '#C85A54', padding: '.75rem', borderRadius: 16, margin: '1rem 0' }}>{error}</div>}
             <button onClick={handleUpload} disabled={!newDocName.trim() || !newDocFile || loading || !user} className="btn" style={{ width: '100%', marginTop: '1rem' }}>{loading ? '⏳ Enviando para o Firebase...' : 'Enviar PDF'}</button>
           </div>
