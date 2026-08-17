@@ -16,6 +16,7 @@ export default function DevocionalPage() {
     prayer: '',
   });
   const [loading, setLoading] = useState(false);
+  const [loadingItems, setLoadingItems] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -23,12 +24,15 @@ export default function DevocionalPage() {
   }, []);
 
   const loadDevotionals = async () => {
+    setLoadingItems(true);
     try {
       const devs = await getDevotionals();
       setDevotionals(devs);
     } catch (err) {
       setError('Erro ao carregar devocionais');
       console.error(err);
+    } finally {
+      setLoadingItems(false);
     }
   };
 
@@ -223,7 +227,9 @@ export default function DevocionalPage() {
 
         <div className="card">
           <h2>Devocionais Publicados</h2>
-          {devotionals.length === 0 ? (
+          {loadingItems ? (
+            <p style={{ marginTop: '1rem', color: '#999' }}>⏳ Carregando...</p>
+          ) : devotionals.length === 0 ? (
             <p style={{ marginTop: '1rem', color: '#999' }}>Nenhum devocional publicado ainda.</p>
           ) : (
             <div style={{ marginTop: '1rem' }}>

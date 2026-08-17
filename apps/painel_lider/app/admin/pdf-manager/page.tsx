@@ -11,11 +11,14 @@ export default function PDFManagerPage() {
   const [newDocName, setNewDocName] = useState('');
   const [newDocFile, setNewDocFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [loadingItems, setLoadingItems] = useState(true);
   const [error, setError] = useState('');
 
   const loadDocuments = async () => {
+    setLoadingItems(true);
     try { setDocuments(await getPDFs()); }
     catch (err) { setError('Não foi possível carregar os PDFs. Verifique sua conexão com o Firebase.'); console.error(err); }
+    finally { setLoadingItems(false); }
   };
 
   useEffect(() => { loadDocuments(); }, []);
@@ -60,7 +63,7 @@ export default function PDFManagerPage() {
         </div>
         <div className="card">
           <h2>Documentos Publicados ({documents.length})</h2>
-          {documents.length === 0 ? <p style={{ marginTop: '1rem', color: '#999' }}>Nenhum documento enviado ainda.</p> : <div style={{ marginTop: '1rem' }}>{documents.map((item) => (
+          {loadingItems ? <p style={{ marginTop: '1rem', color: '#999' }}>⏳ Carregando...</p> : documents.length === 0 ? <p style={{ marginTop: '1rem', color: '#999' }}>Nenhum documento enviado ainda.</p> : <div style={{ marginTop: '1rem' }}>{documents.map((item) => (
             <div key={item.id} style={{ padding: '1rem', backgroundColor: '#FAF2F1', borderRadius: 20, marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center' }}>
               <div><a href={item.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}><p style={{ fontWeight: 600, color: '#2E2E2E' }}>📄 {item.name}</p></a><small style={{ color: '#999' }}>{new Date(item.uploadedAt).toLocaleDateString('pt-BR')} • {(item.size / 1024 / 1024).toFixed(1)} MB</small></div>
               <button onClick={() => handleDelete(item.id, item.storagePath)} style={{ padding: '.5rem 1rem', backgroundColor: '#E8D7D1', border: 0 as const, borderRadius: 16, cursor: 'pointer', color: '#8B4513', fontWeight: 500 }}>Remover</button>

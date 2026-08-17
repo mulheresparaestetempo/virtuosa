@@ -16,6 +16,7 @@ export default function CalendarPage() {
     type: 'culto',
   });
   const [loading, setLoading] = useState(false);
+  const [loadingItems, setLoadingItems] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -23,12 +24,15 @@ export default function CalendarPage() {
   }, []);
 
   const loadEvents = async () => {
+    setLoadingItems(true);
     try {
       const eventsList = await getEvents();
       setEvents(eventsList);
     } catch (err) {
       setError('Erro ao carregar eventos');
       console.error(err);
+    } finally {
+      setLoadingItems(false);
     }
   };
 
@@ -230,7 +234,9 @@ export default function CalendarPage() {
 
         <div className="card">
           <h2>Eventos Próximos</h2>
-          {events.length === 0 ? (
+          {loadingItems ? (
+            <p style={{ marginTop: '1rem', color: '#999' }}>⏳ Carregando...</p>
+          ) : events.length === 0 ? (
             <p style={{ marginTop: '1rem', color: '#999' }}>Nenhum evento criado ainda.</p>
           ) : (
             <div style={{ marginTop: '1rem' }}>

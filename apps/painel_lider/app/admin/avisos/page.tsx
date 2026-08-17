@@ -14,6 +14,7 @@ export default function AvisosPage() {
     priority: 'média' as 'baixa' | 'média' | 'alta',
   });
   const [loading, setLoading] = useState(false);
+  const [loadingItems, setLoadingItems] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -21,12 +22,15 @@ export default function AvisosPage() {
   }, []);
 
   const loadAvisos = async () => {
+    setLoadingItems(true);
     try {
       const avisosList = await getAvisos();
       setAvisos(avisosList);
     } catch (err) {
       setError('Erro ao carregar avisos');
       console.error(err);
+    } finally {
+      setLoadingItems(false);
     }
   };
 
@@ -193,7 +197,9 @@ export default function AvisosPage() {
 
         <div className="card">
           <h2>Histórico de Avisos</h2>
-          {avisos.length === 0 ? (
+          {loadingItems ? (
+            <p style={{ marginTop: '1rem', color: '#999' }}>⏳ Carregando...</p>
+          ) : avisos.length === 0 ? (
             <p style={{ marginTop: '1rem', color: '#999' }}>Nenhum aviso enviado ainda.</p>
           ) : (
             <div style={{ marginTop: '1rem' }}>

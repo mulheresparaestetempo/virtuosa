@@ -14,9 +14,14 @@ export default function ResourceManager({ type, title, icon, description, upload
   const [url, setUrl] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [loadingItems, setLoadingItems] = useState(true);
   const [error, setError] = useState('');
 
-  const load = async () => { try { setItems(await getResources(type)); } catch (e) { console.error(e); setError('Não foi possível carregar os itens.'); } };
+  const load = async () => {
+    setLoadingItems(true);
+    try { setItems(await getResources(type)); } catch (e) { console.error(e); setError('Não foi possível carregar os itens.'); }
+    finally { setLoadingItems(false); }
+  };
   useEffect(() => { load(); }, [type]);
 
   const save = async () => {
@@ -44,7 +49,7 @@ export default function ResourceManager({ type, title, icon, description, upload
       {error && <div style={{ background: '#FFE8E8', color: '#A33', padding: 12, borderRadius: 14 }}>{error}</div>}
       <button className="btn" disabled={loading || !user || !name.trim() || (upload ? !file : !url.trim())} onClick={save}>{loading ? '⏳ Salvando...' : 'Salvar e publicar'}</button>
     </div></div>
-    <div className="card"><h2>Publicados ({items.length})</h2>{items.length === 0 ? <p style={{ color: '#999', marginTop: 12 }}>Nenhum item cadastrado.</p> : <div style={{ marginTop: 12 }}>{items.map((item) => <div key={item.id} style={{ padding: 16, background: '#FAF2F1', borderRadius: 18, marginBottom: 10, display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center' }}><div><a href={item.url} target="_blank" rel="noreferrer" style={{ fontWeight: 600, color: '#2E2E2E' }}>{item.title}</a><p style={{ margin: '4px 0', color: '#666' }}>{item.description}</p><small style={{ color: '#999' }}>{new Date(item.createdAt).toLocaleDateString('pt-BR')}</small></div><button onClick={() => remove(item)} style={{ padding: '8px 12px', border: 0, borderRadius: 14, cursor: 'pointer' }}>Remover</button></div>)}</div>}</div>
+    <div className="card"><h2>Publicados ({items.length})</h2>{loadingItems ? <p style={{ color: '#999', marginTop: 12 }}>⏳ Carregando...</p> : items.length === 0 ? <p style={{ color: '#999', marginTop: 12 }}>Nenhum item cadastrado.</p> : <div style={{ marginTop: 12 }}>{items.map((item) => <div key={item.id} style={{ padding: 16, background: '#FAF2F1', borderRadius: 18, marginBottom: 10, display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center' }}><div><a href={item.url} target="_blank" rel="noreferrer" style={{ fontWeight: 600, color: '#2E2E2E' }}>{item.title}</a><p style={{ margin: '4px 0', color: '#666' }}>{item.description}</p><small style={{ color: '#999' }}>{new Date(item.createdAt).toLocaleDateString('pt-BR')}</small></div><button onClick={() => remove(item)} style={{ padding: '8px 12px', border: 0, borderRadius: 14, cursor: 'pointer' }}>Remover</button></div>)}</div>}</div>
     <a href="/admin"><button className="btn secondary" style={{ width: '100%' }}>Voltar ao Painel</button></a>
   </section></main>;
 }
