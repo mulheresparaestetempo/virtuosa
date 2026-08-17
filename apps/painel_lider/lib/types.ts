@@ -2,8 +2,6 @@ export interface PDFDocument {
   id: string;
   name: string;
   url: string;
-  storagePath?: string;
-  size: number;
   uploadedAt: Date;
   uploadedBy: string;
 }
