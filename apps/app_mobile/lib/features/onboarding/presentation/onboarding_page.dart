@@ -44,7 +44,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   void _next() {
     if (_page == _items.length - 1) {
-      context.go('/home');
+      context.go('/login');
       return;
     }
     _controller.nextPage(
@@ -66,7 +66,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () => context.go('/home'),
+                  onPressed: () => context.go('/login'),
                   child: const Text('Pular'),
                 ),
               ),

@@ -1,6 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../features/assistant/presentation/assistant_page.dart';
 import '../../features/auth/presentation/login_page.dart';
+import '../../features/auth/presentation/signup_page.dart';
 import '../../features/community/presentation/community_page.dart';
 import '../../features/devotional/presentation/devotional_page.dart';
 import '../../features/discipleship/presentation/discipleship_page.dart';
@@ -19,12 +22,31 @@ import '../../features/profile/presentation/profile_page.dart';
 import '../../features/secret_place/presentation/secret_place_page.dart';
 import '../../features/splash/presentation/splash_page.dart';
 
+final _authNotifier = _AuthNotifier();
+
+class _AuthNotifier extends ChangeNotifier {
+  _AuthNotifier() {
+    FirebaseAuth.instance.authStateChanges().listen((_) => notifyListeners());
+  }
+}
+
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
+  refreshListenable: _authNotifier,
+  redirect: (context, state) {
+    final loggedIn = FirebaseAuth.instance.currentUser != null;
+    final loc = state.matchedLocation;
+    final isPublic = loc == '/' || loc == '/onboarding' || loc == '/login' || loc == '/signup';
+
+    if (!loggedIn && !isPublic) return '/login';
+    if (loggedIn && isPublic) return '/home';
+    return null;
+  },
   routes: [
     GoRoute(path: '/', builder: (_, __) => const SplashPage()),
     GoRoute(path: '/onboarding', builder: (_, __) => const OnboardingPage()),
     GoRoute(path: '/login', builder: (_, __) => const LoginPage()),
+    GoRoute(path: '/signup', builder: (_, __) => const SignupPage()),
     GoRoute(path: '/home', builder: (_, __) => const HomePage()),
     GoRoute(path: '/secret-place', builder: (_, __) => const SecretPlacePage()),
     GoRoute(path: '/devotional', builder: (_, __) => const DevotionalPage()),

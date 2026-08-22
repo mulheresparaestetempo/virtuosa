@@ -1,20 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../app/theme/filha_theme.dart';
+import '../../../core/services/auth_service.dart';
+import '../../../core/services/firestore_service.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  Devocional? _devocional;
+  List<Aviso> _avisos = [];
+  bool _loadingDev = true;
+  bool _loadingAvisos = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    try {
+      final dev = await FirestoreService.getLatestDevocional();
+      if (mounted) setState(() { _devocional = dev; _loadingDev = false; });
+    } catch (_) {
+      if (mounted) setState(() => _loadingDev = false);
+    }
+    try {
+      final avisos = await FirestoreService.getAvisos(limit: 3);
+      if (mounted) setState(() { _avisos = avisos; _loadingAvisos = false; });
+    } catch (_) {
+      if (mounted) setState(() => _loadingAvisos = false);
+    }
+  }
+
+  String get _greeting {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return 'Bom dia';
+    if (hour < 18) return 'Boa tarde';
+    return 'Boa noite';
+  }
+
+  String get _userName {
+    final user = FirebaseAuth.instance.currentUser;
+    final displayName = user?.displayName ?? '';
+    if (displayName.isNotEmpty) return displayName.split(' ').first;
+    return 'Filha';
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Bom dia, Filha 🌸', style: TextStyle(fontSize: 23, fontWeight: FontWeight.w600)),
-            SizedBox(height: 3),
-            Text('Seu momento com Abba começa aqui.', style: TextStyle(fontSize: 13, color: FilhaColors.textSecondary)),
+            Text('$_greeting, $_userName 🌸', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600)),
+            const SizedBox(height: 3),
+            const Text('Seu momento com Abba começa aqui.', style: TextStyle(fontSize: 13, color: FilhaColors.textSecondary)),
           ],
         ),
         actions: [
@@ -28,56 +76,51 @@ class HomePage extends StatelessWidget {
           const SizedBox(width: 10),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
-        children: [
-          const _VerseCard(),
-          const SizedBox(height: 18),
-          _SectionTitle(
-            title: 'Seu Lugar Secreto',
-            action: 'Entrar',
-            onPressed: () => context.push('/secret-place'),
-          ),
-          const SizedBox(height: 10),
-          _SecretPlaceCard(onTap: () => context.push('/secret-place')),
-          const SizedBox(height: 22),
-          const _SectionTitle(title: 'Hoje'),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              Expanded(child: _QuickCard(icon: Icons.favorite_border, title: 'Oração', subtitle: 'Meu momento', onTap: () => context.push('/prayer'))),
-              const SizedBox(width: 12),
-              Expanded(child: _QuickCard(icon: Icons.local_fire_department_outlined, title: 'Jejum', subtitle: 'Acompanhar', onTap: () => context.push('/fasting'))),
+      body: RefreshIndicator(
+        onRefresh: _load,
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
+          children: [
+            _buildDevocionalCard(),
+            if (_avisos.isNotEmpty) ...[
+              const SizedBox(height: 22),
+              _SectionTitle(title: 'Avisos', action: 'Ver todos', onPressed: () {}),
+              const SizedBox(height: 10),
+              ..._avisos.map((a) => _AvisoCard(aviso: a)),
             ],
-          ),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              Expanded(child: _QuickCard(icon: Icons.edit_note_outlined, title: 'Diário', subtitle: 'Minha reflexão', onTap: () => context.push('/journal'))),
-              const SizedBox(width: 12),
-              Expanded(child: _QuickCard(icon: Icons.local_florist_outlined, title: 'Memoriais', subtitle: 'Minha caminhada', onTap: () => context.push('/memorials'))),
-            ],
-          ),
-          const SizedBox(height: 22),
-          InkWell(
-            onTap: () => context.push('/devotional'),
-            borderRadius: BorderRadius.circular(28),
-            child: const _DailyLetterCard(),
-          ),
-        ],
+            const SizedBox(height: 22),
+            _SectionTitle(title: 'Seu Lugar Secreto', action: 'Entrar', onPressed: () => context.push('/secret-place')),
+            const SizedBox(height: 10),
+            _SecretPlaceCard(onTap: () => context.push('/secret-place')),
+            const SizedBox(height: 22),
+            const _SectionTitle(title: 'Hoje'),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(child: _QuickCard(icon: Icons.favorite_border, title: 'Oração', subtitle: 'Meu momento', onTap: () => context.push('/prayer'))),
+                const SizedBox(width: 12),
+                Expanded(child: _QuickCard(icon: Icons.local_fire_department_outlined, title: 'Jejum', subtitle: 'Acompanhar', onTap: () => context.push('/fasting'))),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(child: _QuickCard(icon: Icons.edit_note_outlined, title: 'Diário', subtitle: 'Minha reflexão', onTap: () => context.push('/journal'))),
+                const SizedBox(width: 12),
+                Expanded(child: _QuickCard(icon: Icons.local_florist_outlined, title: 'Memoriais', subtitle: 'Minha caminhada', onTap: () => context.push('/memorials'))),
+              ],
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: 0,
         onDestinationSelected: (index) {
           switch (index) {
-            case 1:
-              context.push('/devotional');
-            case 2:
-              context.push('/community');
-            case 3:
-              context.push('/library');
-            case 4:
-              context.push('/profile');
+            case 1: context.push('/devotional');
+            case 2: context.push('/community');
+            case 3: context.push('/library');
+            case 4: context.push('/profile');
           }
         },
         destinations: const [
@@ -90,13 +133,19 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-}
 
-class _VerseCard extends StatelessWidget {
-  const _VerseCard();
-
-  @override
-  Widget build(BuildContext context) => Card(
+  Widget _buildDevocionalCard() {
+    if (_loadingDev) {
+      return Card(
+        color: FilhaColors.roseLight,
+        child: const Padding(
+          padding: EdgeInsets.all(24),
+          child: Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
+    if (_devocional == null) {
+      return Card(
         color: FilhaColors.roseLight,
         child: const Padding(
           padding: EdgeInsets.all(24),
@@ -107,11 +156,75 @@ class _VerseCard extends StatelessWidget {
               SizedBox(height: 14),
               Text('Um momento para guardar a Palavra no coração.', style: TextStyle(fontSize: 22, height: 1.35, fontWeight: FontWeight.w600)),
               SizedBox(height: 12),
-              Text('Referência bíblica será exibida aqui.', style: TextStyle(color: FilhaColors.textSecondary)),
+              Text('Nenhum devocional publicado ainda.', style: TextStyle(color: FilhaColors.textSecondary)),
             ],
           ),
         ),
       );
+    }
+    return InkWell(
+      onTap: () => context.push('/secret-place'),
+      borderRadius: BorderRadius.circular(28),
+      child: Card(
+        color: FilhaColors.roseLight,
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('DEVOCIONAL DO DIA', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, letterSpacing: 1.5, color: FilhaColors.olive)),
+              const SizedBox(height: 14),
+              Text(_devocional!.verse, style: const TextStyle(fontSize: 20, height: 1.4, fontWeight: FontWeight.w600)),
+              const SizedBox(height: 8),
+              Text(_devocional!.verseReference, style: const TextStyle(color: FilhaColors.textSecondary, fontWeight: FontWeight.w500)),
+              const SizedBox(height: 12),
+              Text(_devocional!.title, style: const TextStyle(color: FilhaColors.textSecondary)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AvisoCard extends StatelessWidget {
+  const _AvisoCard({required this.aviso});
+  final Aviso aviso;
+
+  Color get _bg {
+    switch (aviso.priority) {
+      case 'alta': return const Color(0xFFFFE8E8);
+      case 'baixa': return const Color(0xFFF0F4E8);
+      default: return const Color(0xFFFFF8E8);
+    }
+  }
+
+  Color get _text {
+    switch (aviso.priority) {
+      case 'alta': return const Color(0xFFC85A54);
+      case 'baixa': return const Color(0xFF7A9C3B);
+      default: return const Color(0xFFD4A574);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: _bg,
+      margin: const EdgeInsets.only(bottom: 10),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(aviso.title, style: TextStyle(fontWeight: FontWeight.w700, color: _text)),
+            const SizedBox(height: 6),
+            Text(aviso.message, style: const TextStyle(height: 1.4, color: FilhaColors.text)),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class _SecretPlaceCard extends StatelessWidget {
@@ -184,35 +297,6 @@ class _QuickCard extends StatelessWidget {
                 Text(subtitle, style: const TextStyle(fontSize: 12, color: FilhaColors.textSecondary)),
               ],
             ),
-          ),
-        ),
-      );
-}
-
-class _DailyLetterCard extends StatelessWidget {
-  const _DailyLetterCard();
-
-  @override
-  Widget build(BuildContext context) => Card(
-        color: FilhaColors.ivory,
-        child: Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(28), border: Border.all(color: FilhaColors.nude)),
-          padding: const EdgeInsets.all(22),
-          child: const Row(
-            children: [
-              Icon(Icons.mail_outline, size: 34, color: FilhaColors.gold),
-              SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Carta de Abba', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
-                    SizedBox(height: 5),
-                    Text('Uma reflexão para você hoje.', style: TextStyle(color: FilhaColors.textSecondary)),
-                  ],
-                ),
-              ),
-            ],
           ),
         ),
       );
