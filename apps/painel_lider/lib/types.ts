@@ -37,3 +37,15 @@ export interface Aviso {
   sentBy: string;
   recipientCount: number;
 }
+
+export interface Usuaria {
+  id: string;
+  nome: string;
+  email?: string;
+  papel: 'membro' | 'lider';
+  discipuladoraId?: string | null;
+  igrejaId?: string | null;
+  liderId?: string | null;
+  ultimoAcesso?: Date;
+  ultimoDiaDevocionalLido?: string;
+}

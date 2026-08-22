@@ -1,5 +1,5 @@
 import { db } from '../firebase';
-import { collection, addDoc, getDocs, deleteDoc, doc, orderBy, query, Timestamp } from 'firebase/firestore';
+import { collection, addDoc, getDocs, deleteDoc, doc, orderBy, query, Timestamp, updateDoc } from 'firebase/firestore';
 import { PDFDocument } from '../types';
 
 export async function savePDFLink(url: string, name: string, userId: string): Promise<PDFDocument> {
@@ -8,6 +8,12 @@ export async function savePDFLink(url: string, name: string, userId: string): Pr
   const uploadedAt = Timestamp.now();
   const docRef = await addDoc(collection(db, 'pdfs'), { name: name.trim(), url: url.trim(), uploadedAt, uploadedBy: userId });
   return { id: docRef.id, name: name.trim(), url: url.trim(), uploadedAt: uploadedAt.toDate(), uploadedBy: userId };
+}
+
+export async function updatePDF(docId: string, name: string, url: string): Promise<void> {
+  if (!name.trim()) throw new Error('Informe o nome do documento.');
+  try { new URL(url); } catch { throw new Error('Informe um link válido.'); }
+  await updateDoc(doc(db, 'pdfs', docId), { name: name.trim(), url: url.trim() });
 }
 
 export async function getPDFs(): Promise<PDFDocument[]> {
