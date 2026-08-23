@@ -1,4 +1,1 @@
-{
-  "buildCommand": "cd apps/painel_lider && npm ci && npm run build",
-  "outputDirectory": "apps/painel_lider/.next"
-}
+{}
