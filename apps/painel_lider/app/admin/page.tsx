@@ -11,6 +11,7 @@ export default function AdminPage() {
     ['📖 Livros', 'Indicações de Livros', 'Publique recomendações de leitura.', '/admin/recursos/livros'],
     ['🔗 Indicações', 'Links Úteis', 'Publique cursos, sites e materiais.', '/admin/recursos/indicacoes'],
     ['👥 Usuárias', 'Comunidade', 'Visualize as mulheres cadastradas no app FILHA.', '/admin/usuarios'],
+    ['📊 Estatísticas', 'Visão Geral', 'Veja contagens e resumo de todo o conteúdo publicado.', '/admin-dashboard'],
   ];
   return (
     <main className="page">

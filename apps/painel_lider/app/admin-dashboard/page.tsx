@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useAuth } from '@/lib/context/auth-context';
 import { useRouter } from 'next/navigation';
 import { db } from '@/lib/firebase';
@@ -124,14 +125,14 @@ export default function AdminDashboardPage() {
         <h2 style={{ color: '#5a4a47', marginBottom: '1rem' }}>Módulos de Conteúdo</h2>
         <div className="grid">
           {MODULES.map(({ icon, label, href, desc }) => (
-            <a href={href} key={href} style={{ textDecoration: 'none' }}>
+            <Link href={href} key={href} style={{ textDecoration: 'none' }}>
               <div className="card" style={{ cursor: 'pointer', transition: 'transform 0.15s', height: '100%' }}>
                 <div className="kicker" style={{ fontSize: '1.5rem' }}>{icon}</div>
                 <h2 style={{ marginTop: '0.5rem' }}>{label}</h2>
                 <p style={{ color: '#8b7770', fontSize: '0.9rem' }}>{desc}</p>
                 <button className="btn" style={{ marginTop: '1rem', width: '100%' }}>Acessar</button>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -140,7 +141,7 @@ export default function AdminDashboardPage() {
           <div style={{ marginTop: '1rem', display: 'grid', gap: '0.75rem' }}>
             <p>✅ Login com Firebase Authentication</p>
             <p>🗄️ Dados persistentes no Firestore</p>
-            <p>☁️ Arquivos no Firebase Storage</p>
+            <p>🔗 Links e conteúdo externo (Drive, YouTube, Spotify)</p>
             <p>📱 Conteúdo sincronizado com o app FILHA</p>
           </div>
         </div>
