@@ -1,6 +1,5 @@
 {
-  "framework": "nextjs",
   "buildCommand": "npm run build",
-  "outputDirectory": "out",
+  "outputDirectory": "apps/painel_lider/out",
   "installCommand": "npm install"
 }
