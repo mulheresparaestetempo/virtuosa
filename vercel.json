@@ -1,5 +1,1 @@
-{
-  "buildCommand": "npm run build",
-  "outputDirectory": "apps/painel_lider/out",
-  "installCommand": "npm install"
-}
+{}
