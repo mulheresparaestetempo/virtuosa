@@ -42,7 +42,7 @@ export default function DashboardPage() {
             <div className="kicker">👩‍💼 Liderança</div>
             <h2>Painel de Líder</h2>
             <p>Vincule e acompanhe suas discípulas.</p>
-            <a href="/page">
+            <a href="/admin">
               <button className="btn" style={{ marginTop: '1rem', width: '100%' }}>
                 Acessar
               </button>

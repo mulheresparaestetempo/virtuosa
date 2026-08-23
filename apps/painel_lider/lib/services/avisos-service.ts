@@ -1,5 +1,5 @@
 import { db } from '../firebase';
-import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from 'firebase/firestore';
+import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, updateDoc, Timestamp } from 'firebase/firestore';
 import { Aviso } from '../types';
 
 export async function sendAviso(
@@ -7,47 +7,32 @@ export async function sendAviso(
   userId: string,
   recipientCount: number
 ): Promise<Aviso> {
-  try {
-    const docRef = await addDoc(collection(db, 'avisos'), {
-      ...aviso,
-      sentAt: new Date(),
-      sentBy: userId,
-      recipientCount,
-    });
+  const docRef = await addDoc(collection(db, 'avisos'), {
+    ...aviso,
+    sentAt: Timestamp.now(),
+    sentBy: userId,
+    recipientCount,
+  });
+  return { id: docRef.id, ...aviso, sentAt: new Date(), sentBy: userId, recipientCount };
+}
 
-    return {
-      id: docRef.id,
-      ...aviso,
-      sentAt: new Date(),
-      sentBy: userId,
-      recipientCount,
-    };
-  } catch (error) {
-    console.error('Erro ao enviar aviso:', error);
-    throw error;
-  }
+export async function updateAviso(
+  avisoId: string,
+  aviso: Pick<Aviso, 'title' | 'message' | 'priority'>
+): Promise<void> {
+  await updateDoc(doc(db, 'avisos', avisoId), { ...aviso });
 }
 
 export async function getAvisos(): Promise<Aviso[]> {
-  try {
-    const q = query(collection(db, 'avisos'), orderBy('sentAt', 'desc'));
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      sentAt: doc.data().sentAt?.toDate() || new Date(),
-    })) as Aviso[];
-  } catch (error) {
-    console.error('Erro ao buscar avisos:', error);
-    throw error;
-  }
+  const q = query(collection(db, 'avisos'), orderBy('sentAt', 'desc'));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(d => ({
+    id: d.id,
+    ...d.data(),
+    sentAt: d.data().sentAt?.toDate?.() || new Date(),
+  })) as Aviso[];
 }
 
 export async function deleteAviso(avisoId: string): Promise<void> {
-  try {
-    await deleteDoc(doc(db, 'avisos', avisoId));
-  } catch (error) {
-    console.error('Erro ao deletar aviso:', error);
-    throw error;
-  }
+  await deleteDoc(doc(db, 'avisos', avisoId));
 }

@@ -3,14 +3,15 @@ import 'package:go_router/go_router.dart';
 import '../../../app/theme/filha_theme.dart';
 import '../../../core/services/auth_service.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignupPageState extends State<SignupPage> {
+  final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
   bool _obscure = true;
@@ -19,16 +20,21 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
+    _name.dispose();
     _email.dispose();
     _password.dispose();
     super.dispose();
   }
 
-  Future<void> _enter() async {
-    if (_email.text.trim().isEmpty || _password.text.isEmpty) return;
+  Future<void> _create() async {
+    if (_name.text.trim().isEmpty || _email.text.trim().isEmpty || _password.text.isEmpty) return;
+    if (_password.text.length < 6) {
+      setState(() => _error = 'A senha precisa ter pelo menos 6 caracteres.');
+      return;
+    }
     setState(() { _loading = true; _error = null; });
     try {
-      await AuthService.signIn(_email.text, _password.text);
+      await AuthService.signUp(_name.text, _email.text, _password.text);
       if (mounted) context.go('/home');
     } on Exception catch (e) {
       setState(() { _error = _friendlyError(e.toString()); });
@@ -38,31 +44,35 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   String _friendlyError(String raw) {
-    if (raw.contains('user-not-found') || raw.contains('wrong-password') || raw.contains('invalid-credential')) {
-      return 'E-mail ou senha incorretos.';
-    }
-    if (raw.contains('too-many-requests')) return 'Muitas tentativas. Tente mais tarde.';
+    if (raw.contains('email-already-in-use')) return 'Este e-mail já está cadastrado.';
+    if (raw.contains('invalid-email')) return 'E-mail inválido.';
+    if (raw.contains('weak-password')) return 'Senha muito fraca. Use pelo menos 6 caracteres.';
     if (raw.contains('network-request-failed')) return 'Sem conexão com a internet.';
-    return 'Erro ao entrar. Tente novamente.';
+    return 'Erro ao criar conta. Tente novamente.';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('Criar conta')),
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(28, 40, 28, 32),
+          padding: const EdgeInsets.fromLTRB(28, 24, 28, 32),
           children: [
-            const SizedBox(height: 24),
-            const Icon(Icons.local_florist_outlined, size: 54, color: FilhaColors.gold),
-            const SizedBox(height: 20),
-            const Text('Bem-vinda, Filha.', style: TextStyle(fontSize: 34, fontWeight: FontWeight.w600)),
+            const Text('Sua jornada começa aqui.', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600)),
             const SizedBox(height: 8),
             const Text(
-              'Entre para continuar sua caminhada com Abba.',
+              'Crie sua conta e comece sua caminhada com Abba.',
               style: TextStyle(color: FilhaColors.textSecondary, height: 1.5),
             ),
-            const SizedBox(height: 34),
+            const SizedBox(height: 30),
+            TextField(
+              controller: _name,
+              textCapitalization: TextCapitalization.words,
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(labelText: 'Seu nome', prefixIcon: Icon(Icons.person_outline)),
+            ),
+            const SizedBox(height: 14),
             TextField(
               controller: _email,
               keyboardType: TextInputType.emailAddress,
@@ -74,9 +84,9 @@ class _LoginPageState extends State<LoginPage> {
               controller: _password,
               obscureText: _obscure,
               textInputAction: TextInputAction.done,
-              onSubmitted: (_) => _enter(),
+              onSubmitted: (_) => _create(),
               decoration: InputDecoration(
-                labelText: 'Senha',
+                labelText: 'Senha (mín. 6 caracteres)',
                 prefixIcon: const Icon(Icons.lock_outline),
                 suffixIcon: IconButton(
                   onPressed: () => setState(() => _obscure = !_obscure),
@@ -96,25 +106,22 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 56,
               child: FilledButton(
-                onPressed: _loading ? null : _enter,
+                onPressed: _loading ? null : _create,
                 style: FilledButton.styleFrom(
                   backgroundColor: FilhaColors.olive,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
                 ),
                 child: _loading
                     ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                    : const Text('Entrar'),
+                    : const Text('Criar conta'),
               ),
             ),
             const SizedBox(height: 12),
-            OutlinedButton(
-              onPressed: () => context.push('/signup'),
-              style: OutlinedButton.styleFrom(
-                minimumSize: const Size.fromHeight(56),
-                side: const BorderSide(color: FilhaColors.nude),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+            Center(
+              child: TextButton(
+                onPressed: () => context.go('/login'),
+                child: const Text('Já tenho conta — Entrar'),
               ),
-              child: const Text('Criar conta'),
             ),
           ],
         ),

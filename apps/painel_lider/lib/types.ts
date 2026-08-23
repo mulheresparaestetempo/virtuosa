@@ -2,8 +2,6 @@ export interface PDFDocument {
   id: string;
   name: string;
   url: string;
-  storagePath?: string;
-  size: number;
   uploadedAt: Date;
   uploadedBy: string;
 }
@@ -38,4 +36,16 @@ export interface Aviso {
   sentAt: Date;
   sentBy: string;
   recipientCount: number;
+}
+
+export interface Usuaria {
+  id: string;
+  nome: string;
+  email?: string;
+  papel: 'membro' | 'lider';
+  discipuladoraId?: string | null;
+  igrejaId?: string | null;
+  liderId?: string | null;
+  ultimoAcesso?: Date;
+  ultimoDiaDevocionalLido?: string;
 }

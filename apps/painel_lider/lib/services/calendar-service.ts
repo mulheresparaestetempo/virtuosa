@@ -1,50 +1,36 @@
 import { db } from '../firebase';
-import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from 'firebase/firestore';
+import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, updateDoc, Timestamp } from 'firebase/firestore';
 import { CalendarEvent } from '../types';
 
 export async function createEvent(
   event: Omit<CalendarEvent, 'id' | 'createdAt' | 'createdBy'>,
   userId: string
 ): Promise<CalendarEvent> {
-  try {
-    const docRef = await addDoc(collection(db, 'events'), {
-      ...event,
-      createdAt: new Date(),
-      createdBy: userId,
-    });
+  const docRef = await addDoc(collection(db, 'events'), {
+    ...event,
+    createdAt: Timestamp.now(),
+    createdBy: userId,
+  });
+  return { id: docRef.id, ...event, createdAt: new Date(), createdBy: userId };
+}
 
-    return {
-      id: docRef.id,
-      ...event,
-      createdAt: new Date(),
-      createdBy: userId,
-    };
-  } catch (error) {
-    console.error('Erro ao criar evento:', error);
-    throw error;
-  }
+export async function updateEvent(
+  eventId: string,
+  event: Omit<CalendarEvent, 'id' | 'createdAt' | 'createdBy'>
+): Promise<void> {
+  await updateDoc(doc(db, 'events', eventId), { ...event });
 }
 
 export async function getEvents(): Promise<CalendarEvent[]> {
-  try {
-    const q = query(collection(db, 'events'), orderBy('date', 'asc'));
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt: doc.data().createdAt?.toDate() || new Date(),
-    })) as CalendarEvent[];
-  } catch (error) {
-    console.error('Erro ao buscar eventos:', error);
-    throw error;
-  }
+  const q = query(collection(db, 'events'), orderBy('date', 'asc'));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(d => ({
+    id: d.id,
+    ...d.data(),
+    createdAt: d.data().createdAt?.toDate?.() || new Date(),
+  })) as CalendarEvent[];
 }
 
 export async function deleteEvent(eventId: string): Promise<void> {
-  try {
-    await deleteDoc(doc(db, 'events', eventId));
-  } catch (error) {
-    console.error('Erro ao deletar evento:', error);
-    throw error;
-  }
+  await deleteDoc(doc(db, 'events', eventId));
 }
