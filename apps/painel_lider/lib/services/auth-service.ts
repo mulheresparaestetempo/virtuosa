@@ -4,17 +4,31 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  sendPasswordResetEmail,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence,
   updateProfile,
   User as FirebaseUser
 } from 'firebase/auth';
 import { doc, setDoc, Timestamp } from 'firebase/firestore';
 
-export async function loginWithEmail(email: string, password: string) {
+export async function loginWithEmail(email: string, password: string, remember = true) {
   try {
+    await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
     const result = await signInWithEmailAndPassword(auth, email, password);
     return result.user;
   } catch (error) {
     console.error('Erro ao fazer login:', error);
+    throw error;
+  }
+}
+
+export async function resetPassword(email: string) {
+  try {
+    await sendPasswordResetEmail(auth, email);
+  } catch (error) {
+    console.error('Erro ao enviar e-mail de recuperação:', error);
     throw error;
   }
 }
