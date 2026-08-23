@@ -1,11 +1,13 @@
-import { auth } from '../firebase';
-import { 
-  signInWithEmailAndPassword, 
+import { auth, db } from '../firebase';
+import {
+  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  updateProfile,
   User as FirebaseUser
 } from 'firebase/auth';
+import { doc, setDoc, Timestamp } from 'firebase/firestore';
 
 export async function loginWithEmail(email: string, password: string) {
   try {
@@ -25,6 +27,18 @@ export async function registerWithEmail(email: string, password: string) {
     console.error('Erro ao registrar:', error);
     throw error;
   }
+}
+
+export async function registerMember(name: string, email: string, password: string) {
+  const result = await createUserWithEmailAndPassword(auth, email, password);
+  await updateProfile(result.user, { displayName: name });
+  await setDoc(doc(db, 'usuarias', result.user.uid), {
+    nome: name,
+    email,
+    papel: 'membro',
+    ultimoAcesso: Timestamp.now(),
+  });
+  return result.user;
 }
 
 export async function logout() {
