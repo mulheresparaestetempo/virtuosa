@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { savePDFLink, getPDFs, deletePDF, updatePDF } from '@/lib/services/pdf-service';
 import { PDFDocument } from '@/lib/types';
 import { useAuth } from '@/lib/context/auth-context';
@@ -133,7 +134,7 @@ export default function PDFManagerPage() {
             </div>}
         </div>
 
-        <a href="/admin"><button className="btn secondary" style={{ width: '100%' }}>Voltar ao Painel Admin</button></a>
+        <Link href="/admin"><button className="btn secondary" style={{ width: '100%' }}>Voltar ao Painel Admin</button></Link>
       </section>
     </main>
   );

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useAuth } from '@/lib/context/auth-context';
 import { createLinkResource, deleteResource, getResources, updateResource, ResourceItem, ResourceType } from '@/lib/services/resource-service';
 
@@ -150,7 +151,7 @@ export default function ResourceManager({ type, title, icon, description, urlPla
             </div>}
         </div>
 
-        <a href="/admin"><button className="btn secondary" style={{ width: '100%' }}>Voltar ao Painel</button></a>
+        <Link href="/admin"><button className="btn secondary" style={{ width: '100%' }}>Voltar ao Painel</button></Link>
       </section>
     </main>
   );

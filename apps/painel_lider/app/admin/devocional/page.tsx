@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { publishDevocional, getDevotionals, deleteDevocional, updateDevocional } from '@/lib/services/devocional-service';
 import { Devocional } from '@/lib/types';
 import { useAuth } from '@/lib/context/auth-context';
@@ -134,7 +135,7 @@ export default function DevocionalPage() {
             </div>}
         </div>
 
-        <a href="/admin"><button className="btn secondary" style={{ width: '100%' }}>Voltar ao Painel Admin</button></a>
+        <Link href="/admin"><button className="btn secondary" style={{ width: '100%' }}>Voltar ao Painel Admin</button></Link>
       </section>
     </main>
   );

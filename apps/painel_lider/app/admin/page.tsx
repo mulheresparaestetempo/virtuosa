@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function AdminPage() {
   const modules: [string, string, string, string][] = [
     ['✦ Devocional', 'Meditações Diárias', 'Publique devocionais com versículos, reflexão e oração.', '/admin/devocional'],
@@ -21,14 +23,14 @@ export default function AdminPage() {
         </div>
         <div className="grid">
           {modules.map(([kicker, title, text, href]) => (
-            <a href={href} key={href}>
+            <Link href={href} key={href} style={{ textDecoration: 'none' }}>
               <div className="card">
                 <div className="kicker">{kicker}</div>
                 <h2>{title}</h2>
                 <p>{text}</p>
                 <button className="btn" style={{ marginTop: '1rem' }}>Abrir módulo</button>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
         <div className="card">

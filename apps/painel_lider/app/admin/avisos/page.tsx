@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { sendAviso, getAvisos, deleteAviso, updateAviso } from '@/lib/services/avisos-service';
 import { Aviso } from '@/lib/types';
 import { useAuth } from '@/lib/context/auth-context';
@@ -142,7 +143,7 @@ export default function AvisosPage() {
             </div>}
         </div>
 
-        <a href="/admin" style={{ display: 'block', marginTop: '2rem' }}><button className="btn secondary" style={{ width: '100%' }}>Voltar ao Painel Admin</button></a>
+        <Link href="/admin" style={{ display: 'block', marginTop: '2rem' }}><button className="btn secondary" style={{ width: '100%' }}>Voltar ao Painel Admin</button></Link>
       </section>
     </main>
   );
