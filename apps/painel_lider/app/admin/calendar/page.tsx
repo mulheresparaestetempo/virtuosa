@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { createEvent, getEvents, deleteEvent } from '@/lib/services/calendar-service';
 import { CalendarEvent } from '@/lib/types';
 
@@ -279,11 +280,11 @@ export default function CalendarPage() {
           )}
         </div>
 
-        <a href="/admin" style={{ display: 'block', marginTop: '2rem' }}>
+        <Link href="/admin" style={{ display: 'block', marginTop: '2rem' }}>
           <button className="btn secondary" style={{ width: '100%' }}>
             Voltar ao Painel Admin
           </button>
-        </a>
+        </Link>
       </section>
     </main>
   );

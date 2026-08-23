@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { publishDevocional, getDevotionals, deleteDevocional } from '@/lib/services/devocional-service';
 import { Devocional } from '@/lib/types';
 
@@ -278,11 +279,11 @@ export default function DevocionalPage() {
           )}
         </div>
 
-        <a href="/admin" style={{ display: 'block', marginTop: '2rem' }}>
+        <Link href="/admin" style={{ display: 'block', marginTop: '2rem' }}>
           <button className="btn secondary" style={{ width: '100%' }}>
             Voltar ao Painel Admin
           </button>
-        </a>
+        </Link>
       </section>
     </main>
   );
