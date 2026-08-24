@@ -3,7 +3,7 @@ name: Build and publish Site + App FILHA
 on:
   push:
     branches:
-      - claude/new-session-au1ezt
+      - main
   workflow_dispatch:
 
 permissions:
