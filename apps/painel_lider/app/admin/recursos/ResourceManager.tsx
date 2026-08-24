@@ -11,21 +11,30 @@ function MediaPlayer({ url, title }: { url: string; title: string }) {
   const isYouTube = /youtube\.com|youtu\.be/.test(url);
   const isSpotify = /spotify\.com/.test(url);
   const isSoundCloud = /soundcloud\.com/.test(url);
+  const isAnchor = /anchor\.fm|podcasters\.spotify\.com/.test(url);
   const isAudio = /\.(mp3|wav|ogg|m4a|aac|flac|opus)(\?|$)/i.test(url);
   const isDriveAudio = /drive\.google\.com/.test(url);
 
   if (isYouTube) {
     const id = url.match(/(?:v=|youtu\.be\/)([^&?/]+)/)?.[1];
     if (!id) return <a href={url} target="_blank" rel="noreferrer" style={{ color: '#2A5C9E' }}>▶ Abrir no YouTube</a>;
-    return <iframe width="100%" height="180" src={`https://www.youtube.com/embed/${id}`} style={{ border: 'none', borderRadius: 12, marginTop: 8 }} title={title} allowFullScreen />;
+    return <iframe width="100%" height="200" src={`https://www.youtube.com/embed/${id}`} style={{ border: 'none', borderRadius: 12, marginTop: 8 }} title={title} allowFullScreen />;
   }
   if (isSpotify) {
-    const match = url.match(/spotify\.com\/(episode|track|show)\/([^?]+)/);
+    const match = url.match(/spotify\.com\/(episode|track|show|playlist)\/([^?]+)/);
     if (!match) return <a href={url} target="_blank" rel="noreferrer" style={{ color: '#1DB954' }}>▶ Abrir no Spotify</a>;
-    return <iframe src={`https://open.spotify.com/embed/${match[1]}/${match[2]}`} width="100%" height="152" style={{ border: 'none', borderRadius: 12, marginTop: 8 }} title={title} allowFullScreen />;
+    const height = match[1] === 'show' || match[1] === 'playlist' ? 232 : 152;
+    return <iframe src={`https://open.spotify.com/embed/${match[1]}/${match[2]}`} width="100%" height={height} style={{ border: 'none', borderRadius: 12, marginTop: 8 }} title={title} allowFullScreen />;
   }
   if (isSoundCloud) {
     return <iframe width="100%" height="120" style={{ border: 'none', borderRadius: 12, marginTop: 8 }} src={`https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23D4A574&auto_play=false&hide_related=true&show_comments=false&show_user=true`} title={title} />;
+  }
+  if (isAnchor) {
+    const epMatch = url.match(/episodes\/([^/?]+)/);
+    if (epMatch) {
+      return <iframe src={`https://anchor.fm/s/embed/${epMatch[1]}`} width="100%" height="102" style={{ border: 'none', borderRadius: 12, marginTop: 8 }} title={title} />;
+    }
+    return <a href={url} target="_blank" rel="noreferrer" style={{ color: '#6940a5', fontWeight: 600, marginTop: 8, display: 'inline-block' }}>▶ Abrir podcast</a>;
   }
   if (isAudio || isDriveAudio) {
     return (
@@ -36,7 +45,11 @@ function MediaPlayer({ url, title }: { url: string; title: string }) {
       </div>
     );
   }
-  return null;
+  return (
+    <a href={url} target="_blank" rel="noreferrer" style={{ color: '#D89BB7', fontWeight: 600, marginTop: 8, display: 'inline-block', fontSize: '0.88rem' }}>
+      ▶ Abrir link externo
+    </a>
+  );
 }
 
 export default function ResourceManager({ type, title, icon, description, urlPlaceholder }: Props) {
@@ -94,10 +107,12 @@ export default function ResourceManager({ type, title, icon, description, urlPla
   };
 
   const inp: React.CSSProperties = { width: '100%', padding: 12, border: '2px solid #E8E8E8', borderRadius: 18, boxSizing: 'border-box', fontFamily: 'inherit', fontSize: '1rem' };
-  const isAudioType = type === 'audio';
+  const isAudioType = type === 'audio' || type === 'podcast';
 
-  const defaultPlaceholder = isAudioType
+  const defaultPlaceholder = type === 'audio'
     ? 'https://drive.google.com/file/... · YouTube · SoundCloud · Spotify'
+    : type === 'podcast'
+    ? 'https://open.spotify.com/show/... · YouTube · Anchor · SoundCloud'
     : urlPlaceholder || 'Link público (Spotify, YouTube, site, loja, etc.)';
 
   return (
@@ -116,7 +131,8 @@ export default function ResourceManager({ type, title, icon, description, urlPla
             <textarea value={form.desc} onChange={e => setForm({ ...form, desc: e.target.value })} placeholder="Descrição (opcional)" rows={3} style={{ ...inp, resize: 'vertical' }} />
             <div>
               <input value={form.url} onChange={e => setForm({ ...form, url: e.target.value })} placeholder={defaultPlaceholder} style={inp} />
-              {isAudioType && <p style={{ margin: '4px 0 0', fontSize: '0.8rem', color: '#999' }}>Aceita: Google Drive · YouTube · SoundCloud · Spotify · link direto de áudio (.mp3 etc.)</p>}
+              {type === 'audio' && <p style={{ margin: '4px 0 0', fontSize: '0.8rem', color: '#999' }}>Aceita: Google Drive · YouTube · SoundCloud · Spotify · link direto de áudio (.mp3 etc.)</p>}
+              {type === 'podcast' && <p style={{ margin: '4px 0 0', fontSize: '0.8rem', color: '#999' }}>Aceita: Spotify (show/episode) · YouTube · Anchor · SoundCloud · qualquer link de podcast</p>}
             </div>
             {success && <div style={{ background: '#E8F5E8', color: '#2E7D32', padding: 12, borderRadius: 14 }}>{success}</div>}
             {error && <div style={{ background: '#FFE8E8', color: '#A33', padding: 12, borderRadius: 14 }}>{error}</div>}
