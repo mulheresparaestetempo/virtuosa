@@ -3,582 +3,682 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="FILHA é a plataforma de discipulado feminino do Ministério Virtuosas: Palavra, oração, comunhão e crescimento em Cristo.">
-  <meta name="theme-color" content="#761d42">
+  <meta name="description" content="Ministério Virtuosas: devocionais, discipulado feminino, encontros e a estação Florescer 2026.">
+  <meta name="theme-color" content="#741d42">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://mulheresparaestetempo.github.io/virtuosa/">
   <link rel="icon" href="logo-virtuosas.png" type="image/png">
-  <title>FILHA | Discipulado Feminino — Ministério Virtuosas</title>
+  <title>Virtuosas | Estação Florescer 2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --vinho: #761d42;
-      --vinho-escuro: #451126;
-      --magenta: #b82962;
-      --rosa: #e54d8b;
-      --rosa-claro: #fff0f6;
-      --rose: #f4cede;
-      --ouro: #ae7929;
-      --ouro-claro: #eed9ac;
-      --creme: #fffaf7;
+      --vinho: #741d42;
+      --vinho-profundo: #3f1025;
+      --rosa: #c83f74;
+      --rosa-vivo: #e64f8c;
+      --rosa-claro: #fbe8f0;
+      --rosa-nevoa: #fff6f9;
+      --verde: #65765a;
+      --verde-claro: #eef2e9;
+      --ouro: #b6873c;
+      --creme: #fffaf8;
       --branco: #fff;
-      --texto: #2b1a22;
-      --texto-suave: #705b64;
-      --borda: rgba(118, 29, 66, .14);
-      --sombra: 0 24px 70px rgba(69, 17, 38, .12);
-      --container: 1160px;
+      --texto: #321f27;
+      --texto-suave: #74616a;
+      --borda: rgba(116, 29, 66, .13);
+      --sombra: 0 24px 70px rgba(74, 24, 44, .11);
+      --container: 1180px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    html { scroll-behavior: smooth; scroll-padding-top: 94px; }
     body {
-      background: var(--creme);
-      color: var(--texto);
-      font-family: "DM Sans", sans-serif;
-      font-size: 1rem;
-      line-height: 1.7;
-      overflow-x: hidden;
+      background: var(--creme); color: var(--texto);
+      font-family: "DM Sans", sans-serif; font-size: 1rem;
+      line-height: 1.65; overflow-x: hidden;
     }
     img { display: block; max-width: 100%; }
     a { color: inherit; }
     button, a { -webkit-tap-highlight-color: transparent; }
-    :focus-visible { outline: 3px solid var(--rosa); outline-offset: 4px; }
+    button { font: inherit; }
+    :focus-visible { outline: 3px solid var(--rosa-vivo); outline-offset: 4px; }
     .container { width: min(calc(100% - 2rem), var(--container)); margin-inline: auto; }
     .skip-link {
-      position: fixed; left: 1rem; top: -5rem; z-index: 2000;
-      background: var(--vinho-escuro); color: #fff; padding: .8rem 1rem;
-      border-radius: .5rem; text-decoration: none;
+      position: fixed; left: 1rem; top: -5rem; z-index: 3000;
+      border-radius: .7rem; background: var(--vinho-profundo); color: #fff;
+      padding: .8rem 1rem; text-decoration: none;
     }
     .skip-link:focus { top: 1rem; }
-
     .eyebrow {
-      color: var(--magenta); font-size: .78rem; font-weight: 700;
-      letter-spacing: .16em; text-transform: uppercase;
+      color: var(--rosa); font-size: .78rem; font-weight: 700;
+      letter-spacing: .17em; text-transform: uppercase;
     }
-    .section-heading { max-width: 720px; margin-bottom: 3rem; }
-    .section-heading.center { margin-inline: auto; text-align: center; }
-    .section-heading h2, .mission-copy h2, .final-cta h2 {
-      color: var(--vinho-escuro); font-family: "Playfair Display", serif;
-      font-size: clamp(2rem, 4.5vw, 3.5rem); letter-spacing: -.035em;
-      line-height: 1.08; margin: .7rem 0 1rem;
+    .section-heading { max-width: 730px; margin-bottom: 3rem; }
+    .section-heading h2, .mission-copy h2, .final-copy h2 {
+      color: var(--vinho-profundo); font-family: "Playfair Display", serif;
+      font-size: clamp(2.15rem, 5vw, 3.75rem); letter-spacing: -.04em;
+      line-height: 1.08; margin: .65rem 0 1rem;
     }
-    .section-heading p, .mission-copy p, .final-cta p {
-      color: var(--texto-suave); font-size: 1.03rem;
+    .section-heading p, .mission-copy p, .final-copy p { color: var(--texto-suave); font-size: 1.03rem; }
+
+    /* Florescer em destaque no topo */
+    .event-bar {
+      position: relative; z-index: 1200; overflow: hidden;
+      background: linear-gradient(112deg, var(--vinho-profundo), var(--vinho) 54%, #a62c61);
+      color: #fff;
     }
+    .event-bar::after {
+      content: ""; position: absolute; width: 260px; height: 260px;
+      right: 8%; top: -190px; border: 1px solid rgba(255,255,255,.15); border-radius: 50%;
+    }
+    .event-bar-inner {
+      min-height: 94px; display: grid; grid-template-columns: 1fr auto;
+      align-items: center; gap: 2rem; padding-block: .9rem;
+    }
+    .event-intro { display: flex; align-items: center; gap: 1rem; }
+    .event-flower {
+      width: 48px; height: 48px; display: grid; place-items: center; flex: 0 0 auto;
+      border: 1px solid rgba(255,255,255,.24); border-radius: 50%;
+      background: rgba(255,255,255,.1); font-size: 1.35rem;
+    }
+    .event-label {
+      color: #f6d8e4; font-size: .71rem; font-weight: 700;
+      letter-spacing: .15em; text-transform: uppercase;
+    }
+    .event-title { font-family: "Playfair Display", serif; font-size: 1.23rem; line-height: 1.25; }
+    .event-meta { color: #f9eaf0; font-size: .84rem; margin-top: .12rem; }
+    .countdown { display: flex; align-items: center; gap: .48rem; }
+    .countdown-label {
+      color: #f6d8e4; font-size: .67rem; font-weight: 700;
+      letter-spacing: .11em; margin-right: .35rem; text-transform: uppercase;
+    }
+    .countdown-unit {
+      min-width: 58px; border: 1px solid rgba(255,255,255,.22); border-radius: .75rem;
+      background: rgba(255,255,255,.1); padding: .42rem .5rem; text-align: center;
+      backdrop-filter: blur(8px);
+    }
+    .countdown-unit strong { display: block; font-size: 1.1rem; line-height: 1.05; }
+    .countdown-unit span { color: #f9eaf0; font-size: .63rem; text-transform: uppercase; }
+    .countdown-finished { font-family: "Playfair Display", serif; font-size: 1.15rem; }
 
     /* Cabeçalho */
     .site-header {
-      position: sticky; top: 0; z-index: 1000;
-      background: rgba(255, 250, 247, .95);
-      border-bottom: 1px solid var(--borda);
-      backdrop-filter: blur(16px);
+      position: sticky; top: 0; z-index: 1100;
+      border-bottom: 1px solid var(--borda); background: rgba(255,250,248,.94);
+      backdrop-filter: blur(18px);
     }
     .nav-container {
-      min-height: 80px; display: flex; align-items: center;
+      min-height: 82px; display: flex; align-items: center;
       justify-content: space-between; gap: 1.5rem;
     }
-    .brand { display: inline-flex; text-decoration: none; }
-    .brand img { width: 230px; height: 64px; object-fit: contain; }
-    .nav-links {
-      display: flex; align-items: center; gap: 1.5rem; list-style: none;
-    }
+    .brand { display: inline-flex; flex: 0 0 auto; text-decoration: none; }
+    .brand img { width: 224px; height: 62px; object-fit: contain; }
+    .nav-links { display: flex; align-items: center; gap: 1.35rem; list-style: none; }
     .nav-links a {
-      color: var(--texto-suave); font-size: .91rem; font-weight: 600;
+      color: var(--texto-suave); font-size: .88rem; font-weight: 600;
       text-decoration: none; transition: color .18s ease;
     }
     .nav-links a:hover { color: var(--vinho); }
     .nav-links .nav-cta {
-      background: var(--vinho); border-radius: 999px; color: #fff;
-      padding: .72rem 1.2rem; transition: background .18s ease, transform .18s ease;
+      border-radius: 999px; background: var(--vinho); color: #fff;
+      padding: .68rem 1.15rem; transition: background .18s ease, transform .18s ease;
     }
-    .nav-links .nav-cta:hover {
-      background: var(--magenta); color: #fff; transform: translateY(-1px);
+    .nav-links .nav-cta:hover { background: var(--rosa); color: #fff; transform: translateY(-1px); }
+    .nav-tools { display: flex; align-items: center; gap: .65rem; }
+    .audio-toggle, .menu-button {
+      min-height: 42px; border: 1px solid var(--borda); background: #fff;
+      color: var(--vinho); cursor: pointer;
     }
+    .audio-toggle {
+      display: inline-flex; align-items: center; gap: .5rem; border-radius: 999px;
+      padding: .55rem .85rem; font-size: .78rem; font-weight: 700;
+      box-shadow: 0 8px 24px rgba(74,24,44,.07);
+    }
+    .audio-toggle svg { width: 17px; height: 17px; }
+    .audio-toggle .pause-icon { display: none; }
+    .audio-toggle.playing .play-icon { display: none; }
+    .audio-toggle.playing .pause-icon { display: block; }
+    .audio-toggle.playing { border-color: rgba(101,118,90,.35); color: var(--verde); }
     .menu-button {
-      display: none; width: 44px; height: 44px; align-items: center;
-      justify-content: center; border: 1px solid var(--borda);
-      border-radius: 50%; background: #fff; color: var(--vinho); cursor: pointer;
+      display: none; width: 42px; align-items: center; justify-content: center;
+      border-radius: 50%;
     }
-    .menu-button svg { width: 22px; height: 22px; }
+    .menu-button svg { width: 21px; height: 21px; }
 
-    /* Capa */
+    /* Abertura */
     .hero {
-      position: relative; isolation: isolate; overflow: hidden;
-      padding: clamp(4.5rem, 8vw, 7.5rem) 0 4.8rem;
-    }
-    .hero::before, .hero::after {
-      content: ""; position: absolute; z-index: -1; border-radius: 50%;
+      position: relative; isolation: isolate; min-height: 650px; overflow: hidden;
+      display: flex; align-items: center; padding: clamp(5rem, 10vw, 8.5rem) 0;
+      background:
+        radial-gradient(circle at 7% 8%, rgba(251,232,240,.9), transparent 31%),
+        linear-gradient(145deg, #fffaf8 0%, #fff 56%, #fff5f8 100%);
     }
     .hero::before {
-      width: 720px; height: 720px; top: -330px; right: -230px;
-      background: radial-gradient(circle, rgba(229, 77, 139, .18), transparent 68%);
+      content: ""; position: absolute; z-index: -2; width: 540px; height: 540px;
+      left: -360px; bottom: -340px; border: 1px solid rgba(200,63,116,.15); border-radius: 50%;
     }
-    .hero::after {
-      width: 460px; height: 460px; bottom: -330px; left: -130px;
-      background: radial-gradient(circle, rgba(174, 121, 41, .17), transparent 68%);
+    .hero-floral {
+      position: absolute; z-index: -1; width: min(62vw, 860px); max-width: none;
+      right: -4%; bottom: -11%; opacity: .95; pointer-events: none;
+      filter: drop-shadow(0 28px 34px rgba(75,38,35,.08));
     }
-    .hero-grid {
-      display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(360px, .92fr);
-      align-items: center; gap: clamp(2.7rem, 7vw, 6rem);
+    .hero-content { position: relative; z-index: 2; max-width: 650px; }
+    .season-badge {
+      display: inline-flex; align-items: center; gap: .6rem;
+      border: 1px solid rgba(200,63,116,.24); border-radius: 999px;
+      background: rgba(255,255,255,.78); color: var(--vinho);
+      padding: .58rem .9rem; font-size: .75rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      box-shadow: 0 10px 30px rgba(74,24,44,.06);
     }
-    .hero-kicker {
-      display: inline-flex; align-items: center; gap: .65rem;
-      border: 1px solid rgba(174, 121, 41, .35); border-radius: 999px;
-      background: rgba(255,255,255,.72); color: var(--vinho);
-      font-size: .77rem; font-weight: 700; letter-spacing: .12em;
-      padding: .6rem .9rem; text-transform: uppercase;
-    }
-    .hero-kicker::before {
-      content: ""; width: 8px; height: 8px; border-radius: 50%;
-      background: var(--ouro); box-shadow: 0 0 0 5px rgba(174, 121, 41, .12);
-    }
+    .season-badge span { color: var(--rosa); font-size: 1rem; }
     .hero h1 {
-      color: var(--vinho-escuro); font-family: "Playfair Display", serif;
-      font-size: clamp(4rem, 10vw, 7.5rem); letter-spacing: -.055em;
-      line-height: .9; margin: 1.6rem 0 1.3rem;
+      color: var(--vinho-profundo); font-family: "Playfair Display", serif;
+      font-size: clamp(4.25rem, 10vw, 8rem); letter-spacing: -.07em;
+      line-height: .87; margin: 1.35rem 0 1.2rem;
     }
-    .hero h1 span {
-      display: block; color: var(--magenta);
-      font-family: "Cormorant Garamond", serif;
-      font-size: clamp(1.55rem, 3.3vw, 2.6rem); font-style: italic;
-      font-weight: 600; letter-spacing: -.015em; line-height: 1.15; margin-top: 1.3rem;
+    .hero h1 small {
+      display: block; color: var(--rosa); font-family: "Cormorant Garamond", serif;
+      font-size: clamp(1.65rem, 3.7vw, 2.8rem); font-style: italic; font-weight: 600;
+      letter-spacing: -.015em; line-height: 1.16; margin-top: 1.25rem;
     }
-    .hero-description { color: var(--texto-suave); font-size: 1.08rem; max-width: 620px; }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: .9rem; margin-top: 2rem; }
+    .hero-description { max-width: 600px; color: var(--texto-suave); font-size: 1.08rem; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: .85rem; margin-top: 2rem; }
     .button {
-      display: inline-flex; min-height: 52px; align-items: center;
-      justify-content: center; gap: .65rem; border: 1px solid transparent;
-      border-radius: 999px; padding: .82rem 1.45rem; font-size: .96rem;
-      font-weight: 700; text-decoration: none;
-      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+      min-height: 52px; display: inline-flex; align-items: center; justify-content: center;
+      gap: .62rem; border: 1px solid transparent; border-radius: 999px;
+      padding: .83rem 1.4rem; font-size: .94rem; font-weight: 700;
+      text-decoration: none; transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
     }
     .button:hover { transform: translateY(-2px); }
-    .button-primary {
-      background: linear-gradient(135deg, var(--vinho), var(--magenta));
-      box-shadow: 0 14px 35px rgba(118,29,66,.22); color: #fff;
-    }
-    .button-primary:hover { box-shadow: 0 18px 42px rgba(118,29,66,.3); }
-    .button-secondary {
-      border-color: var(--borda); background: rgba(255,255,255,.76); color: var(--vinho);
-    }
-    .button-secondary:hover { background: #fff; box-shadow: 0 12px 30px rgba(69,17,38,.1); }
     .button svg { width: 18px; height: 18px; }
-    .hero-trust {
-      display: flex; flex-wrap: wrap; gap: .65rem 1.2rem;
-      margin-top: 2rem; color: var(--texto-suave); font-size: .88rem;
+    .button-primary {
+      background: linear-gradient(135deg, var(--vinho), var(--rosa));
+      box-shadow: 0 15px 35px rgba(116,29,66,.23); color: #fff;
     }
-    .hero-trust span { display: inline-flex; align-items: center; gap: .45rem; }
-    .hero-trust span::before {
-      content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--ouro);
+    .button-primary:hover { box-shadow: 0 19px 42px rgba(116,29,66,.3); }
+    .button-secondary { border-color: var(--borda); background: rgba(255,255,255,.82); color: var(--vinho); }
+    .button-secondary:hover { background: #fff; box-shadow: 0 12px 30px rgba(74,24,44,.09); }
+    .hero-verse {
+      max-width: 480px; display: flex; gap: .85rem; align-items: flex-start;
+      border-left: 2px solid var(--ouro); margin-top: 2.1rem; padding-left: 1rem;
+      color: var(--vinho); font-family: "Cormorant Garamond", serif;
+      font-size: 1.15rem; font-style: italic; line-height: 1.4;
     }
-    .hero-visual { position: relative; }
-    .logo-card {
-      position: relative; border: 1px solid rgba(174,121,41,.23);
-      border-radius: 2rem 2rem 6rem 2rem;
-      background: linear-gradient(145deg, #fff, #fff8fb);
-      box-shadow: var(--sombra); padding: clamp(1.2rem, 3vw, 2rem); overflow: hidden;
-    }
-    .logo-card::after {
-      content: ""; position: absolute; width: 150px; height: 150px;
-      right: -75px; bottom: -75px; border-radius: 50%; background: var(--rosa-claro);
-    }
-    .logo-card img {
-      position: relative; z-index: 1; width: 100%; min-height: 270px; object-fit: contain;
-    }
-    .scripture-ribbon {
-      position: relative; z-index: 2; width: min(92%, 380px); margin: -1.3rem auto 0;
-      border-radius: 1rem; background: var(--vinho-escuro);
-      box-shadow: 0 18px 35px rgba(69,17,38,.24); color: #fff; padding: 1.15rem 1.25rem;
-    }
-    .scripture-ribbon p {
-      font-family: "Cormorant Garamond", serif; font-size: 1.13rem;
-      font-style: italic; line-height: 1.4;
-    }
-    .scripture-ribbon span {
-      display: block; color: var(--ouro-claro); font-size: .72rem; font-weight: 700;
-      letter-spacing: .12em; margin-top: .55rem; text-transform: uppercase;
+    .hero-verse cite {
+      display: block; color: var(--texto-suave); font-family: "DM Sans", sans-serif;
+      font-size: .7rem; font-style: normal; font-weight: 700; letter-spacing: .1em;
+      margin-top: .35rem; text-transform: uppercase;
     }
 
-    /* Pilares */
-    .pillars { border-block: 1px solid var(--borda); background: #fff; }
-    .pillar-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
-    .pillar { padding: 1.35rem 1rem; text-align: center; }
-    .pillar + .pillar { border-left: 1px solid var(--borda); }
-    .pillar strong {
-      color: var(--vinho); font-family: "Playfair Display", serif; font-size: 1.05rem;
+    /* Convites principais */
+    .pathways { position: relative; z-index: 4; padding: 1rem 0 clamp(5rem, 9vw, 8rem); }
+    .pathway-intro {
+      display: flex; align-items: end; justify-content: space-between; gap: 2rem;
+      margin-bottom: 2.2rem;
     }
+    .pathway-intro h2 {
+      max-width: 650px; color: var(--vinho-profundo); font-family: "Playfair Display", serif;
+      font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.12; margin-top: .55rem;
+    }
+    .pathway-intro > p { max-width: 390px; color: var(--texto-suave); }
+    .pathway-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .pathway-card {
+      min-height: 300px; position: relative; overflow: hidden;
+      display: flex; flex-direction: column; align-items: flex-start;
+      border: 1px solid var(--borda); border-radius: 1.55rem; background: #fff;
+      box-shadow: 0 17px 48px rgba(74,24,44,.07); padding: 1.7rem;
+      text-decoration: none; transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+    .pathway-card::after {
+      content: ""; position: absolute; width: 150px; height: 150px; right: -75px; bottom: -80px;
+      border-radius: 50%; background: var(--rosa-nevoa); transition: transform .3s ease;
+    }
+    .pathway-card:nth-child(2)::after { background: var(--verde-claro); }
+    .pathway-card:nth-child(3)::after { background: #fff4df; }
+    .pathway-card:hover {
+      border-color: rgba(200,63,116,.28); box-shadow: var(--sombra); transform: translateY(-5px);
+    }
+    .pathway-card:hover::after { transform: scale(1.14); }
+    .pathway-icon {
+      width: 52px; height: 52px; display: grid; place-items: center;
+      border-radius: 1rem; background: var(--rosa-claro); color: var(--vinho);
+    }
+    .pathway-card:nth-child(2) .pathway-icon { background: var(--verde-claro); color: var(--verde); }
+    .pathway-card:nth-child(3) .pathway-icon { background: #fff4df; color: #976b22; }
+    .pathway-icon svg { width: 24px; height: 24px; }
+    .pathway-card h3 {
+      color: var(--vinho-profundo); font-family: "Playfair Display", serif;
+      font-size: 1.45rem; line-height: 1.25; margin: 1.25rem 0 .7rem;
+    }
+    .pathway-card p { color: var(--texto-suave); font-size: .93rem; }
+    .pathway-link {
+      position: relative; z-index: 2; display: inline-flex; align-items: center; gap: .45rem;
+      color: var(--rosa); font-size: .86rem; font-weight: 700; margin-top: auto; padding-top: 1.35rem;
+    }
+    .pathway-link svg { width: 16px; height: 16px; }
 
-    /* Missão */
-    .mission { padding: clamp(5rem, 9vw, 8rem) 0; }
+    /* Essência */
+    .mission { padding: clamp(5rem, 9vw, 8rem) 0; background: #fff; }
     .mission-grid {
-      display: grid; grid-template-columns: .9fr 1.1fr;
-      align-items: center; gap: clamp(2.5rem, 7vw, 6rem);
+      display: grid; grid-template-columns: .88fr 1.12fr; align-items: center;
+      gap: clamp(2.5rem, 7vw, 6.5rem);
     }
-    .verse-card {
-      position: relative; border: 1px solid var(--borda); border-radius: 1.6rem;
-      background: linear-gradient(150deg, var(--vinho-escuro), var(--vinho));
-      box-shadow: var(--sombra); color: #fff; padding: clamp(2rem, 5vw, 3.5rem);
-      overflow: hidden;
+    .mission-card {
+      position: relative; overflow: hidden; border: 1px solid var(--borda);
+      border-radius: 2rem 2rem 5rem 2rem; background: var(--rosa-nevoa);
+      box-shadow: var(--sombra); padding: clamp(2rem, 5vw, 4rem);
     }
-    .verse-card::before {
-      content: "“"; position: absolute; top: -1.8rem; right: 1.2rem;
-      color: rgba(255,255,255,.08); font-family: Georgia, serif;
-      font-size: 12rem; line-height: 1;
+    .mission-card::before {
+      content: "“"; position: absolute; right: 1.2rem; top: -.8rem;
+      color: rgba(200,63,116,.1); font-family: Georgia, serif; font-size: 10rem; line-height: 1;
     }
-    .verse-card blockquote {
-      position: relative; font-family: "Cormorant Garamond", serif;
-      font-size: clamp(1.45rem, 3vw, 2rem); font-weight: 500; line-height: 1.35;
+    .mission-card blockquote {
+      position: relative; color: var(--vinho); font-family: "Cormorant Garamond", serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.25rem); font-style: italic; line-height: 1.28;
     }
-    .verse-card cite {
-      display: block; color: var(--ouro-claro); font-size: .8rem; font-style: normal;
-      font-weight: 700; letter-spacing: .12em; margin-top: 1.5rem; text-transform: uppercase;
+    .mission-card cite {
+      display: block; color: var(--texto-suave); font-size: .76rem; font-style: normal;
+      font-weight: 700; letter-spacing: .12em; margin-top: 1.2rem; text-transform: uppercase;
     }
-    .mission-copy p { margin-bottom: 1rem; }
-    .mission-list { display: grid; gap: .8rem; list-style: none; margin-top: 1.5rem; }
-    .mission-list li {
-      display: flex; align-items: flex-start; gap: .75rem; font-weight: 600;
-    }
-    .mission-list li::before {
-      content: ""; flex: 0 0 auto; width: 9px; height: 9px;
-      border: 2px solid var(--ouro); border-radius: 50%; margin-top: .45rem;
+    .mission-copy p + p { margin-top: 1rem; }
+    .mission-values { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.7rem; }
+    .mission-values span {
+      border: 1px solid var(--borda); border-radius: 999px; background: var(--creme);
+      color: var(--vinho); padding: .55rem .85rem; font-size: .82rem; font-weight: 700;
     }
 
-    /* Recursos */
-    .resources { background: var(--rosa-claro); padding: clamp(5rem, 9vw, 8rem) 0; }
-    .resource-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-    .resource-card {
-      min-height: 245px; border: 1px solid var(--borda); border-radius: 1.25rem;
-      background: rgba(255,255,255,.9); padding: 1.7rem;
-      transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+    /* Mapa interativo */
+    .locations {
+      position: relative; overflow: hidden; padding: clamp(5rem, 9vw, 8rem) 0;
+      background: linear-gradient(180deg, #fff8fa, #fff 64%);
     }
-    .resource-card:hover {
-      border-color: rgba(184,41,98,.36);
-      box-shadow: 0 18px 40px rgba(69,17,38,.09); transform: translateY(-4px);
+    .locations::before {
+      content: ""; position: absolute; width: 540px; height: 540px; left: -350px; top: 14%;
+      border: 1px solid rgba(200,63,116,.13); border-radius: 50%;
     }
-    .resource-number {
-      color: var(--ouro); font-family: "Playfair Display", serif;
-      font-size: .9rem; font-weight: 700; letter-spacing: .12em;
+    .location-stats {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem;
+      max-width: 690px; margin: -1.4rem 0 2rem;
     }
-    .resource-card h3 {
-      color: var(--vinho); font-family: "Playfair Display", serif;
-      font-size: 1.38rem; line-height: 1.2; margin: 1.7rem 0 .7rem;
+    .stat-card {
+      border: 1px solid var(--borda); border-radius: 1rem; background: rgba(255,255,255,.8);
+      padding: 1rem 1.1rem;
     }
-    .resource-card p { color: var(--texto-suave); font-size: .95rem; }
+    .stat-card strong {
+      display: block; color: var(--vinho); font-family: "Playfair Display", serif;
+      font-size: 1.65rem; line-height: 1;
+    }
+    .stat-card span { color: var(--texto-suave); font-size: .77rem; }
+    .map-layout {
+      display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(310px, .75fr);
+      align-items: start; gap: 1.2rem;
+    }
+    .map-stage {
+      position: relative; overflow: hidden; border: 1px solid rgba(116,29,66,.15);
+      border-radius: 1.6rem; background: #fff; box-shadow: var(--sombra);
+    }
+    .map-stage img { width: 100%; height: auto; }
+    .map-marker {
+      position: absolute; width: 46px; height: 46px; display: grid; place-items: center;
+      border: 2px solid #fff; border-radius: 50%; background: var(--vinho); color: #fff;
+      box-shadow: 0 8px 22px rgba(63,16,37,.28); cursor: pointer;
+      font-size: .72rem; font-weight: 800; transform: translate(-50%, -50%);
+      transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+    .map-marker:hover, .map-marker.active {
+      z-index: 2; background: var(--rosa-vivo);
+      box-shadow: 0 0 0 7px rgba(230,79,140,.16), 0 10px 28px rgba(63,16,37,.28);
+      transform: translate(-50%, -50%) scale(1.08);
+    }
+    .marker-ba { left: 58.3%; top: 25.2%; }
+    .marker-ms { left: 40.5%; top: 35.3%; }
+    .marker-sp { left: 47%; top: 40%; }
+    .marker-rj { left: 57%; top: 42%; }
+    .marker-rs { left: 43.7%; top: 49%; }
+    .map-caption {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      border-top: 1px solid var(--borda); padding: .9rem 1rem;
+      color: var(--texto-suave); font-size: .77rem;
+    }
+    .map-caption strong { color: var(--vinho); }
+    .map-caption a { color: var(--rosa); font-weight: 700; text-decoration: none; }
+    .location-panel {
+      min-height: 100%; border: 1px solid var(--borda); border-radius: 1.6rem;
+      background: #fff; box-shadow: 0 20px 60px rgba(74,24,44,.08); padding: 1.5rem;
+    }
+    .panel-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+    .panel-kicker {
+      color: var(--rosa); font-size: .7rem; font-weight: 700;
+      letter-spacing: .13em; text-transform: uppercase;
+    }
+    .location-panel h3 {
+      color: var(--vinho-profundo); font-family: "Playfair Display", serif;
+      font-size: 1.7rem; line-height: 1.15; margin-top: .25rem;
+    }
+    .panel-total {
+      min-width: 64px; border-radius: 1rem; background: var(--rosa-claro);
+      color: var(--vinho); padding: .7rem; text-align: center;
+    }
+    .panel-total strong { display: block; font-size: 1.35rem; line-height: 1; }
+    .panel-total span { font-size: .62rem; text-transform: uppercase; }
+    .panel-description { color: var(--texto-suave); font-size: .86rem; margin: 1rem 0; }
+    .place-list { display: grid; gap: .42rem; }
+    .place-row {
+      width: 100%; display: flex; align-items: center; justify-content: space-between; gap: .8rem;
+      border: 1px solid transparent; border-bottom-color: var(--borda); background: transparent;
+      color: var(--texto); padding: .66rem .2rem; text-align: left;
+    }
+    button.place-row { cursor: pointer; }
+    button.place-row:hover {
+      border-color: var(--borda); border-radius: .65rem; background: var(--rosa-nevoa); padding-inline: .65rem;
+    }
+    .place-row strong { color: var(--vinho); }
+    .place-row small { color: var(--rosa); font-size: .68rem; font-weight: 700; margin-left: .35rem; }
+    .panel-back {
+      display: none; align-items: center; gap: .4rem; border: 0; background: transparent;
+      color: var(--rosa); cursor: pointer; font-size: .78rem; font-weight: 700; margin-bottom: .8rem;
+    }
+    .panel-back.visible { display: inline-flex; }
+    .panel-cta {
+      width: 100%; min-height: 48px; display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 999px; background: var(--vinho); color: #fff; padding: .75rem 1rem;
+      font-size: .84rem; font-weight: 700; margin-top: 1.15rem; text-decoration: none;
+    }
 
-    /* Jornada */
-    .journey { padding: clamp(5rem, 9vw, 8rem) 0; }
-    .journey-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 2rem; counter-reset: steps;
-    }
-    .journey-step { position: relative; counter-increment: steps; padding-top: 4.5rem; }
-    .journey-step::before {
-      content: "0" counter(steps); position: absolute; top: 0; left: 0;
-      color: var(--rose); font-family: "Playfair Display", serif;
-      font-size: 4rem; font-weight: 700; line-height: 1;
-    }
-    .journey-step h3 {
-      color: var(--vinho); font-family: "Playfair Display", serif;
-      font-size: 1.4rem; margin-bottom: .55rem;
-    }
-    .journey-step p { color: var(--texto-suave); }
-
-    /* Evento */
-    .event { padding: 0 0 clamp(5rem, 9vw, 8rem); }
-    .event-panel {
-      position: relative; isolation: isolate; display: grid;
+    /* Encerramento */
+    .final-cta { padding: clamp(5rem, 9vw, 8rem) 0; }
+    .final-panel {
+      position: relative; overflow: hidden; display: grid;
       grid-template-columns: 1fr auto; align-items: center; gap: 2rem;
-      border-radius: 2rem; background: linear-gradient(135deg, var(--vinho-escuro), var(--vinho) 60%, #9b2655);
-      box-shadow: 0 30px 80px rgba(69,17,38,.23); color: #fff;
-      padding: clamp(2rem, 6vw, 4.5rem); overflow: hidden;
+      border-radius: 2rem; background: linear-gradient(120deg, var(--vinho-profundo), var(--vinho));
+      box-shadow: 0 28px 70px rgba(63,16,37,.22); color: #fff;
+      padding: clamp(2rem, 6vw, 4.8rem);
     }
-    .event-panel::after {
-      content: ""; position: absolute; z-index: -1; width: 320px; height: 320px;
-      right: -110px; top: -190px; border: 1px solid rgba(238,217,172,.3);
-      border-radius: 50%; box-shadow: 0 0 0 50px rgba(238,217,172,.04), 0 0 0 100px rgba(238,217,172,.025);
+    .final-panel::after {
+      content: ""; position: absolute; width: 260px; height: 260px; right: -120px; bottom: -170px;
+      border: 1px solid rgba(255,255,255,.18); border-radius: 50%;
     }
-    .event-copy .eyebrow { color: var(--ouro-claro); }
-    .event-copy h2 {
-      font-family: "Playfair Display", serif; font-size: clamp(2.2rem,5vw,4rem);
-      line-height: 1; margin: .7rem 0 1rem;
-    }
-    .event-copy p { max-width: 640px; color: rgba(255,255,255,.82); }
-    .event-details {
-      display: flex; flex-wrap: wrap; gap: .7rem 1.2rem; margin-top: 1.5rem;
-      color: var(--ouro-claro); font-weight: 700;
-    }
-    .event .button {
-      min-width: 205px; background: #fff; color: var(--vinho); white-space: nowrap;
-    }
+    .final-copy { position: relative; z-index: 1; max-width: 700px; }
+    .final-copy .eyebrow { color: #f3c8d8; }
+    .final-copy h2 { color: #fff; }
+    .final-copy p { color: #f5dfe7; }
+    .final-panel .button { position: relative; z-index: 1; background: #fff; color: var(--vinho); }
 
-    /* Chamada final e rodapé */
-    .final-cta {
-      border-top: 1px solid var(--borda); background: #fff;
-      padding: clamp(4.5rem,8vw,7rem) 0; text-align: center;
-    }
-    .final-cta h2 { max-width: 760px; margin-inline: auto; }
-    .final-cta p { max-width: 650px; margin-inline: auto; }
-    .final-cta .hero-actions { justify-content: center; }
-    footer { background: #24131a; color: rgba(255,255,255,.72); padding: 3.5rem 0 1.5rem; }
+    footer { border-top: 1px solid var(--borda); background: #fff; padding: 3.2rem 0 1.6rem; }
     .footer-grid {
-      display: grid; grid-template-columns: 1.3fr .7fr .7fr;
-      gap: 2rem; padding-bottom: 2.5rem;
+      display: grid; grid-template-columns: 1.4fr .8fr .8fr; gap: 2rem;
+      padding-bottom: 2.3rem;
     }
-    .footer-brand img { width: 285px; height: 100px; object-fit: contain; }
+    .footer-brand img { width: 270px; max-height: 90px; object-fit: contain; }
+    .footer-brand p { max-width: 420px; color: var(--texto-suave); font-size: .86rem; margin-top: .8rem; }
     .footer-column h3 {
-      color: #fff; font-size: .82rem; letter-spacing: .13em;
-      margin-bottom: .85rem; text-transform: uppercase;
+      color: var(--vinho); font-family: "Playfair Display", serif; font-size: 1rem; margin-bottom: .8rem;
     }
     .footer-column ul { display: grid; gap: .55rem; list-style: none; }
-    .footer-column a { color: rgba(255,255,255,.7); text-decoration: none; }
-    .footer-column a:hover { color: var(--ouro-claro); }
+    .footer-column a { color: var(--texto-suave); font-size: .84rem; text-decoration: none; }
+    .footer-column a:hover { color: var(--rosa); }
     .footer-bottom {
-      display: flex; justify-content: space-between; gap: 1rem;
-      border-top: 1px solid rgba(255,255,255,.1); padding-top: 1.5rem; font-size: .82rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      border-top: 1px solid var(--borda); color: var(--texto-suave);
+      font-size: .75rem; padding-top: 1.3rem;
     }
     .whatsapp-float {
-      position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 900;
-      display: inline-flex; width: 56px; height: 56px; align-items: center;
-      justify-content: center; border: 2px solid #fff; border-radius: 50%;
-      background: #178b52; box-shadow: 0 12px 30px rgba(23,139,82,.3);
-      color: #fff; transition: transform .18s ease;
+      position: fixed; z-index: 1000; right: 1.2rem; bottom: 1.2rem;
+      width: 54px; height: 54px; display: grid; place-items: center;
+      border: 3px solid #fff; border-radius: 50%; background: #25d366; color: #fff;
+      box-shadow: 0 12px 28px rgba(24,130,72,.28);
     }
-    .whatsapp-float:hover { transform: translateY(-3px) scale(1.03); }
     .whatsapp-float svg { width: 27px; height: 27px; }
 
-    @media (max-width: 940px) {
+    @media (max-width: 1040px) {
+      .nav-links { gap: .9rem; }
+      .nav-links a { font-size: .82rem; }
+      .hero-floral { right: -17%; opacity: .6; }
+      .map-layout { grid-template-columns: 1fr; }
+      .location-panel { min-height: 0; }
+    }
+    @media (max-width: 880px) {
+      .event-bar-inner { grid-template-columns: 1fr; gap: .7rem; }
+      .event-intro, .countdown { justify-content: center; }
+      .event-intro { text-align: center; }
       .menu-button { display: inline-flex; }
+      .nav-container { position: relative; }
       .nav-links {
         position: absolute; top: calc(100% + 1px); left: 0; right: 0;
-        display: none; align-items: stretch; flex-direction: column; gap: .25rem;
-        border-bottom: 1px solid var(--borda); background: rgba(255,250,247,.99);
-        box-shadow: 0 18px 30px rgba(69,17,38,.1); padding: 1rem;
+        display: none; align-items: stretch; flex-direction: column; gap: .18rem;
+        border: 1px solid var(--borda); border-radius: 0 0 1rem 1rem;
+        background: rgba(255,250,248,.99); box-shadow: var(--sombra); padding: .8rem;
       }
       .nav-links.open { display: flex; }
-      .nav-links a { display: block; padding: .8rem 1rem; text-align: center; }
-      .hero-grid, .mission-grid { grid-template-columns: 1fr; }
-      .hero-copy { text-align: center; }
-      .hero-description { margin-inline: auto; }
-      .hero-actions, .hero-trust { justify-content: center; }
-      .hero-visual { width: min(100%, 620px); margin-inline: auto; }
-      .resource-grid { grid-template-columns: repeat(2, 1fr); }
-      .event-panel { grid-template-columns: 1fr; }
-      .event .button { justify-self: start; }
+      .nav-links a { display: block; padding: .72rem 1rem; text-align: center; }
+      .pathway-intro { align-items: flex-start; flex-direction: column; }
+      .pathway-grid, .mission-grid { grid-template-columns: 1fr; }
+      .pathway-card { min-height: 245px; }
+      .mission-card { max-width: 660px; }
+      .final-panel { grid-template-columns: 1fr; }
+      .final-panel .button { justify-self: start; }
       .footer-grid { grid-template-columns: 1fr 1fr; }
       .footer-brand { grid-column: 1/-1; }
     }
     @media (max-width: 620px) {
-      .container { width: min(calc(100% - 1.25rem), var(--container)); }
-      .nav-container { min-height: 72px; }
-      .brand img { width: 185px; height: 54px; }
-      .hero { padding-top: 3.8rem; }
-      .hero h1 { font-size: clamp(3.8rem,24vw,5.7rem); }
+      .container { width: min(calc(100% - 1.2rem), var(--container)); }
+      .event-bar-inner { padding-block: .75rem; }
+      .event-flower { display: none; }
+      .event-title { font-size: 1.08rem; }
+      .event-meta { font-size: .76rem; }
+      .countdown { gap: .3rem; }
+      .countdown-label { display: none; }
+      .countdown-unit { min-width: 52px; padding-inline: .3rem; }
+      .nav-container { min-height: 70px; }
+      .brand img { width: 154px; height: 48px; }
+      .audio-toggle { width: 42px; justify-content: center; padding: 0; }
+      .audio-toggle span {
+        position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);
+      }
+      .hero { min-height: 720px; align-items: flex-start; padding-top: 4.2rem; }
+      .hero-floral { width: 760px; right: -360px; bottom: -50px; opacity: .52; }
+      .hero-content { text-align: center; }
+      .hero h1 { font-size: clamp(4rem, 25vw, 6rem); }
+      .hero-description, .hero-verse { margin-inline: auto; }
       .hero-actions { align-items: stretch; flex-direction: column; }
       .button { width: 100%; }
-      .pillar-grid { grid-template-columns: repeat(2, 1fr); }
-      .pillar:nth-child(3) { border-left: 0; border-top: 1px solid var(--borda); }
-      .pillar:nth-child(4) { border-top: 1px solid var(--borda); }
-      .resource-grid, .journey-grid, .footer-grid { grid-template-columns: 1fr; }
-      .resource-card { min-height: 0; }
-      .event-panel { border-radius: 1.25rem; }
-      .event .button { justify-self: stretch; }
+      .hero-verse { text-align: left; }
+      .pathways { padding-top: 0; }
+      .pathway-intro { text-align: center; }
+      .pathway-intro > p { margin-inline: auto; }
+      .location-stats { grid-template-columns: repeat(3, 1fr); }
+      .stat-card { padding: .8rem .55rem; text-align: center; }
+      .stat-card strong { font-size: 1.35rem; }
+      .stat-card span { font-size: .68rem; }
+      .map-stage { border-radius: 1rem; }
+      .map-marker { width: 37px; height: 37px; font-size: .61rem; }
+      .map-caption { align-items: flex-start; flex-direction: column; }
+      .location-panel { border-radius: 1rem; padding: 1.15rem; }
+      .final-panel { border-radius: 1.35rem; }
+      .final-panel .button { justify-self: stretch; }
+      .footer-grid { grid-template-columns: 1fr; }
       .footer-brand { grid-column: auto; }
       .footer-bottom { align-items: flex-start; flex-direction: column; }
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      *, *::before, *::after { transition-duration: .01ms !important; }
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
     }
   </style>
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
 
+  <section class="event-bar" aria-label="Contagem regressiva para o Encontro Florescer">
+    <div class="container event-bar-inner">
+      <div class="event-intro">
+        <div class="event-flower" aria-hidden="true">❀</div>
+        <div>
+          <p class="event-label">Encontro de Mulheres 2026</p>
+          <p class="event-title">Florescer — uma nova estação começa em nós</p>
+          <p class="event-meta">19 de setembro • 19h • PIBAMAR Centro, Maricá</p>
+        </div>
+      </div>
+      <div class="countdown" id="countdown" aria-label="Tempo restante para o encontro">
+        <span class="countdown-label">Faltam</span>
+        <div class="countdown-unit"><strong id="days">00</strong><span>dias</span></div>
+        <div class="countdown-unit"><strong id="hours">00</strong><span>horas</span></div>
+        <div class="countdown-unit"><strong id="minutes">00</strong><span>minutos</span></div>
+        <div class="countdown-unit"><strong id="seconds">00</strong><span>segundos</span></div>
+      </div>
+    </div>
+  </section>
+
   <header class="site-header">
     <nav class="container nav-container" aria-label="Navegação principal">
       <a class="brand" href="#inicio" aria-label="Virtuosas — início">
         <img src="logo-virtuosas.png" alt="Virtuosas — Mulheres para Este Tempo">
       </a>
-      <button class="menu-button" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-          <path d="M4 7h16M4 12h16M4 17h16"/>
-        </svg>
-      </button>
       <ul class="nav-links" id="menu-principal">
-        <li><a href="#missao">Nossa missão</a></li>
-        <li><a href="#recursos">Recursos</a></li>
         <li><a href="#florescer">Florescer</a></li>
-        <li><a href="#contato">Contato</a></li>
-        <li><a class="nav-cta" href="app/" aria-label="Entrar no App FILHA">Entrar na plataforma</a></li>
+        <li><a href="#caminhe">Caminhe conosco</a></li>
+        <li><a href="#missao">Nossa essência</a></li>
+        <li><a href="#mapa">Onde estamos</a></li>
+        <li><a class="nav-cta" href="app/" aria-label="Entrar no App FILHA">Plataforma FILHA</a></li>
       </ul>
+      <div class="nav-tools">
+        <button class="audio-toggle" id="audio-toggle" type="button" aria-label="Ouvir o louvor do Florescer" aria-pressed="false">
+          <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h4v14H7zm6 0h4v14h-4z"/></svg>
+          <span id="audio-label">Ouvir louvor</span>
+        </button>
+        <button class="menu-button" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
     </nav>
   </header>
 
+  <audio id="florescer-audio" autoplay preload="metadata" playsinline>
+    <source src="florescer-louvor-1.mp3" type="audio/mpeg">
+  </audio>
+
   <main id="conteudo">
     <section class="hero" id="inicio">
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <div class="hero-kicker">Discipulado feminino • Tito 2:3–5</div>
-          <h1>FILHA<span>Firmadas na Palavra. Unidas em Cristo.</span></h1>
-          <p class="hero-description">
-            Uma plataforma do Ministério Virtuosas para mulheres que desejam conhecer mais profundamente a Cristo, amadurecer na fé e caminhar em discipulado bíblico.
-          </p>
+      <img class="hero-floral" src="florescer-floral.webp" alt="" aria-hidden="true">
+      <div class="container">
+        <div class="hero-content">
+          <div class="season-badge"><span aria-hidden="true">✦</span> Estação Florescer 2026</div>
+          <h1>Florescer<small>É tempo de viver o novo de Deus.</small></h1>
+          <p class="hero-description">Uma estação de Palavra, oração e comunhão para mulheres que desejam criar raízes profundas em Cristo e frutificar onde Deus as plantou.</p>
           <div class="hero-actions">
-            <a class="button button-primary" href="app/">
-              Entrar na plataforma
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-                <path d="M5 12h14M13 6l6 6-6 6"/>
-              </svg>
+            <a class="button button-primary" href="https://wa.me/5521977356086?text=Ol%C3%A1%21%20Quero%20participar%20do%20Encontro%20de%20Mulheres%20Florescer%20no%20dia%2019%20de%20setembro." target="_blank" rel="noopener noreferrer">
+              Quero participar
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
-            <a class="button button-secondary" href="#missao">Conheça nossa missão</a>
+            <a class="button button-secondary" href="#caminhe">Caminhe conosco</a>
           </div>
-          <div class="hero-trust" aria-label="Pilares da plataforma">
-            <span>Conteúdo bíblico</span>
-            <span>Comunhão feminina</span>
-            <span>Crescimento espiritual</span>
-          </div>
-        </div>
-
-        <div class="hero-visual">
-          <div class="logo-card">
-            <img src="logo-virtuosas.png" alt="Virtuosas — Mulheres para Este Tempo">
-          </div>
-          <div class="scripture-ribbon">
-            <p>“Ensinem o que é bom e orientem as mulheres mais jovens.”</p>
-            <span>Tito 2:3–5</span>
-          </div>
+          <blockquote class="hero-verse">
+            <div>“As flores aparecem na terra; chegou o tempo de cantar.”<cite>Cânticos 2:12</cite></div>
+          </blockquote>
         </div>
       </div>
     </section>
 
-    <section class="pillars" aria-label="Pilares do Ministério Virtuosas">
-      <div class="container pillar-grid">
-        <div class="pillar"><strong>Palavra</strong></div>
-        <div class="pillar"><strong>Oração</strong></div>
-        <div class="pillar"><strong>Comunhão</strong></div>
-        <div class="pillar"><strong>Missão</strong></div>
+    <section class="pathways" id="caminhe">
+      <div class="container">
+        <div class="pathway-intro">
+          <div>
+            <p class="eyebrow">Há um lugar para você</p>
+            <h2>Escolha como deseja caminhar conosco.</h2>
+          </div>
+          <p>Recursos e encontros para fortalecer sua fé no cotidiano, em comunidade e com os olhos firmados em Cristo.</p>
+        </div>
+        <div class="pathway-grid">
+          <a class="pathway-card" href="https://chat.whatsapp.com/IvsPQAXMFa57Y3AKzjvXLI" target="_blank" rel="noopener noreferrer">
+            <span class="pathway-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg></span>
+            <h3>Participe dos devocionais diários</h3>
+            <p>Entre no grupo oficial do Ministério Virtuosas e receba diariamente Palavra, oração e direcionamento.</p>
+            <span class="pathway-link">Entrar no grupo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
+          <a class="pathway-card" href="app/">
+            <span class="pathway-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M12 7v6M9 10l3 3 3-3"/></svg></span>
+            <h3>Baixe nossos devocionais em PDF</h3>
+            <p>Acesse a Biblioteca FILHA e leve com você materiais preparados para aprofundar sua caminhada com Deus.</p>
+            <span class="pathway-link">Acessar a biblioteca <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
+          <a class="pathway-card" href="https://wa.me/5521977356086?text=Ol%C3%A1%21%20Gostaria%20de%20receber%20um%20Encontro%20Virtuosas%20no%20meu%20lar.%20Podem%20me%20orientar%3F" target="_blank" rel="noopener noreferrer">
+            <span class="pathway-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg></span>
+            <h3>Receba um encontro no seu lar</h3>
+            <p>Abra as portas da sua casa para um tempo de comunhão, cuidado e edificação entre mulheres.</p>
+            <span class="pathway-link">Quero receber um encontro <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
+        </div>
       </div>
     </section>
 
     <section class="mission" id="missao">
       <div class="container mission-grid">
-        <div class="verse-card">
-          <blockquote>
-            O discipulado não é uma caminhada solitária. Crescemos quando a Palavra de Cristo habita em nós e aprendemos a encorajar umas às outras.
-          </blockquote>
-          <cite>Uma fé vivida em comunhão</cite>
+        <div class="mission-card">
+          <blockquote>Florescer não é apressar processos. É permanecer em Cristo, aprofundar raízes e confiar no tempo de Deus.</blockquote>
+          <cite>Uma nova estação de fé</cite>
         </div>
         <div class="mission-copy">
-          <p class="eyebrow">Nossa missão</p>
-          <h2>Formar mulheres bíblicas, piedosas e disponíveis para servir.</h2>
-          <p>
-            FILHA nasceu para apoiar a caminhada cristã de mulheres em diferentes fases da vida. Não oferecemos fórmulas prontas: apontamos para as Escrituras, para a suficiência de Cristo e para a vida no corpo da igreja.
-          </p>
-          <p>Cada recurso aproxima a fé da vida diária — em casa, na igreja e no cuidado com outras mulheres.</p>
-          <ul class="mission-list">
-            <li>Conhecer e aplicar a Palavra de Deus</li>
-            <li>Desenvolver uma vida constante de oração</li>
-            <li>Ser discipulada e aprender a discipular</li>
-            <li>Servir com amor, verdade e graça</li>
-          </ul>
+          <p class="eyebrow">Nossa essência</p>
+          <h2>Mulheres cuidadas pela Palavra, fortalecidas na comunhão.</h2>
+          <p>O Ministério Virtuosas nasceu para aproximar mulheres de Cristo e umas das outras, por meio do discipulado bíblico, da oração e do cuidado intencional.</p>
+          <p>Não oferecemos fórmulas prontas. Caminhamos com a Bíblia aberta, o coração disponível e a certeza de que Deus forma cada mulher em Sua graça.</p>
+          <div class="mission-values" aria-label="Pilares do Ministério Virtuosas"><span>Palavra</span><span>Oração</span><span>Discipulado</span><span>Comunhão</span><span>Serviço</span></div>
         </div>
       </div>
     </section>
 
-    <section class="resources" id="recursos">
-      <div class="container">
-        <div class="section-heading center">
-          <p class="eyebrow">Recursos para a caminhada</p>
-          <h2>Uma plataforma que conduz da leitura à prática</h2>
-          <p>Ferramentas simples para cultivar hábitos espirituais, guardar memoriais e permanecer conectada à comunidade.</p>
-        </div>
-        <div class="resource-grid">
-          <article class="resource-card">
-            <span class="resource-number">01</span>
-            <h3>Devocional diário</h3>
-            <p>Reflexões orientadas pelas Escrituras para começar o dia com clareza, oração e aplicação prática.</p>
-          </article>
-          <article class="resource-card">
-            <span class="resource-number">02</span>
-            <h3>Bíblia e reflexão</h3>
-            <p>Espaço para ler, meditar e registrar o que Deus ensina por meio da Sua Palavra.</p>
-          </article>
-          <article class="resource-card">
-            <span class="resource-number">03</span>
-            <h3>Oração e jejum</h3>
-            <p>Acompanhamento dos seus propósitos, pedidos de oração e respostas recebidas ao longo da caminhada.</p>
-          </article>
-          <article class="resource-card">
-            <span class="resource-number">04</span>
-            <h3>Lugar secreto</h3>
-            <p>Um ambiente pessoal para diário espiritual, gratidão, memoriais e momentos de quietude diante de Deus.</p>
-          </article>
-          <article class="resource-card">
-            <span class="resource-number">05</span>
-            <h3>Discipulado</h3>
-            <p>Conexões que favorecem acompanhamento, encorajamento e crescimento responsável entre mulheres.</p>
-          </article>
-          <article class="resource-card">
-            <span class="resource-number">06</span>
-            <h3>Biblioteca e agenda</h3>
-            <p>Devocionais, áudios, materiais de estudo e encontros reunidos em um só lugar.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="journey" aria-labelledby="jornada-titulo">
+    <section class="locations" id="mapa">
       <div class="container">
         <div class="section-heading">
-          <p class="eyebrow">Uma caminhada com propósito</p>
-          <h2 id="jornada-titulo">Da Palavra à vida, um passo de cada vez</h2>
-          <p>O crescimento espiritual acontece no cotidiano, pela graça de Deus, com obediência perseverante e apoio da comunidade.</p>
+          <p class="eyebrow">Onde estão as Virtuosas?</p>
+          <h2>Uma rede de mulheres florescendo em diferentes lugares.</h2>
+          <p>Clique nos pontos do mapa para conhecer as cidades alcançadas. Cada localização representa uma mulher conectada pela fé, pela oração e pelo propósito.</p>
         </div>
-        <div class="journey-grid">
-          <article class="journey-step">
-            <h3>Ouça a Palavra</h3>
-            <p>Separe tempo para ler a Bíblia com atenção, humildade e disposição para obedecer.</p>
-          </article>
-          <article class="journey-step">
-            <h3>Responda em oração</h3>
-            <p>Leve ao Senhor suas lutas, decisões e gratidão, confiando no caráter de Deus.</p>
-          </article>
-          <article class="journey-step">
-            <h3>Caminhe em comunhão</h3>
-            <p>Receba cuidado, compartilhe a caminhada e encoraje outras mulheres em Cristo.</p>
-          </article>
+        <div class="location-stats" aria-label="Resumo das localizações">
+          <div class="stat-card"><strong>275+</strong><span>mulheres na comunidade</span></div>
+          <div class="stat-card"><strong>105</strong><span>localizações compartilhadas</span></div>
+          <div class="stat-card"><strong>5</strong><span>estados representados</span></div>
         </div>
-      </div>
-    </section>
-
-    <section class="event" id="florescer">
-      <div class="container">
-        <div class="event-panel">
-          <div class="event-copy">
-            <p class="eyebrow">Encontro de Mulheres 2026</p>
-            <h2>Florescer</h2>
-            <p>Uma noite de Palavra, comunhão e adoração para mulheres que desejam viver uma nova estação firmadas em Cristo.</p>
-            <div class="event-details">
-              <span>19 de setembro de 2026</span>
-              <span>19h</span>
-              <span>PIBAMAR Centro, Maricá</span>
+        <div class="map-layout">
+          <figure class="map-stage">
+            <img src="mapa-virtuosas.webp" alt="Mapa das Virtuosas com presença no Rio de Janeiro, São Paulo, Bahia, Mato Grosso do Sul e Rio Grande do Sul" loading="lazy">
+            <button class="map-marker marker-ba" type="button" data-state="BA" aria-label="Ver localizações na Bahia">BA</button>
+            <button class="map-marker marker-ms" type="button" data-state="MS" aria-label="Ver localizações em Mato Grosso do Sul">MS</button>
+            <button class="map-marker marker-sp" type="button" data-state="SP" aria-label="Ver localizações em São Paulo">SP</button>
+            <button class="map-marker marker-rj active" type="button" data-state="RJ" aria-label="Ver localizações no Rio de Janeiro">RJ</button>
+            <button class="map-marker marker-rs" type="button" data-state="RS" aria-label="Ver localizações no Rio Grande do Sul">RS</button>
+            <figcaption class="map-caption">
+              <span><strong>Dica:</strong> toque em um estado para explorar.</span>
+              <a href="https://wa.me/5521977356086?text=Ol%C3%A1%21%20Quero%20compartilhar%20minha%20localiza%C3%A7%C3%A3o%20e%20fazer%20parte%20do%20mapa%20das%20Virtuosas." target="_blank" rel="noopener noreferrer">Adicionar minha localização</a>
+            </figcaption>
+          </figure>
+          <aside class="location-panel" id="location-panel" aria-live="polite">
+            <button class="panel-back" id="panel-back" type="button" aria-label="Voltar para as cidades do estado">← Voltar às cidades</button>
+            <div class="panel-top">
+              <div><p class="panel-kicker" id="panel-kicker">Estado selecionado</p><h3 id="state-title">Rio de Janeiro</h3></div>
+              <div class="panel-total"><strong id="state-total">97</strong><span>Virtuosas</span></div>
             </div>
-          </div>
-          <a class="button" href="https://wa.me/5521977356086?text=Ol%C3%A1%21%20Gostaria%20de%20receber%20mais%20informa%C3%A7%C3%B5es%20sobre%20o%20Encontro%20de%20Mulheres%20Florescer." target="_blank" rel="noopener noreferrer">Quero saber mais</a>
+            <p class="panel-description" id="state-description">Selecione Maricá para conhecer também os bairros representados.</p>
+            <div class="place-list" id="place-list"></div>
+            <a class="panel-cta" href="https://wa.me/5521977356086?text=Ol%C3%A1%21%20Quero%20compartilhar%20minha%20localiza%C3%A7%C3%A3o%20e%20fazer%20parte%20do%20mapa%20das%20Virtuosas." target="_blank" rel="noopener noreferrer">Compartilhar minha localização</a>
+          </aside>
         </div>
       </div>
     </section>
 
-    <section class="final-cta" id="contato">
+    <section class="final-cta" id="florescer">
       <div class="container">
-        <p class="eyebrow">Há um lugar para você</p>
-        <h2>Cresça na fé e caminhe com outras mulheres.</h2>
-        <p>Entre na plataforma FILHA ou fale com o Ministério Virtuosas para conhecer melhor essa caminhada de discipulado.</p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="app/">Acessar FILHA</a>
-          <a class="button button-secondary" href="https://wa.me/5521977356086?text=Ol%C3%A1%21%20Gostaria%20de%20saber%20mais%20sobre%20a%20plataforma%20FILHA%20e%20o%20Minist%C3%A9rio%20Virtuosas." target="_blank" rel="noopener noreferrer">Falar no WhatsApp</a>
+        <div class="final-panel">
+          <div class="final-copy">
+            <p class="eyebrow">19 de setembro de 2026 • 19h</p>
+            <h2>O Florescer também pode começar em você.</h2>
+            <p>Venha viver uma noite de Palavra, adoração e comunhão no Encontro de Mulheres Florescer, na PIBAMAR Centro, em Maricá.</p>
+          </div>
+          <a class="button" href="https://wa.me/5521977356086?text=Ol%C3%A1%21%20Quero%20participar%20do%20Encontro%20de%20Mulheres%20Florescer%20no%20dia%2019%20de%20setembro." target="_blank" rel="noopener noreferrer">Quero participar</a>
         </div>
       </div>
     </section>
@@ -589,38 +689,172 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <img src="logo-virtuosas.png" alt="Virtuosas — Mulheres para Este Tempo">
+          <p>Mulheres firmadas na Palavra, conectadas em oração e disponíveis para viver o propósito de Deus.</p>
         </div>
         <div class="footer-column">
-          <h3>Navegação</h3>
-          <ul>
-            <li><a href="#missao">Nossa missão</a></li>
-            <li><a href="#recursos">Recursos</a></li>
-            <li><a href="#florescer">Florescer</a></li>
-          </ul>
+          <h3>Explore</h3>
+          <ul><li><a href="#caminhe">Caminhe conosco</a></li><li><a href="#missao">Nossa essência</a></li><li><a href="#mapa">Onde estamos</a></li></ul>
         </div>
         <div class="footer-column">
           <h3>Conecte-se</h3>
-          <ul>
-            <li><a href="app/">Plataforma FILHA</a></li>
-            <li><a href="https://www.instagram.com/virtuosaspibam/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-            <li><a href="https://wa.me/5521977356086" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
-          </ul>
+          <ul><li><a href="app/">Plataforma FILHA</a></li><li><a href="https://www.instagram.com/virtuosaspibam/" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://chat.whatsapp.com/IvsPQAXMFa57Y3AKzjvXLI" target="_blank" rel="noopener noreferrer">Grupo de devocionais</a></li></ul>
         </div>
       </div>
-      <div class="footer-bottom">
-        <p>© <span id="ano">2026</span> Ministério Virtuosas.</p>
-        <p>Para a glória de Deus e o crescimento de mulheres em Cristo.</p>
-      </div>
+      <div class="footer-bottom"><p>© <span id="ano">2026</span> Ministério Virtuosas.</p><p>Para a glória de Deus e o crescimento de mulheres em Cristo.</p></div>
     </div>
   </footer>
 
-  <a class="whatsapp-float" href="https://wa.me/5521977356086?text=Ol%C3%A1%21%20Gostaria%20de%20saber%20mais%20sobre%20a%20plataforma%20FILHA%20e%20o%20Minist%C3%A9rio%20Virtuosas." target="_blank" rel="noopener noreferrer" aria-label="Falar com o Ministério Virtuosas pelo WhatsApp">
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M20.52 3.48A11.82 11.82 0 0 0 12.1 0C5.55 0 .22 5.33.22 11.89c0 2.09.55 4.13 1.6 5.93L.12 24l6.33-1.66a11.86 11.86 0 0 0 5.65 1.44h.01C18.66 23.78 24 18.45 24 11.9c0-3.18-1.24-6.17-3.48-8.42ZM12.1 21.77h-.01a9.84 9.84 0 0 1-5.02-1.38l-.36-.21-3.76.99 1-3.66-.24-.38a9.84 9.84 0 0 1-1.51-5.24c0-5.46 4.45-9.9 9.91-9.9a9.84 9.84 0 0 1 7.01 2.9 9.84 9.84 0 0 1 2.9 7.01c-.01 5.45-4.46 9.87-9.92 9.87Zm5.43-7.41c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z"/>
-    </svg>
+  <a class="whatsapp-float" href="https://wa.me/5521977356086?text=Ol%C3%A1%21%20Gostaria%20de%20saber%20mais%20sobre%20o%20Minist%C3%A9rio%20Virtuosas." target="_blank" rel="noopener noreferrer" aria-label="Falar com o Ministério Virtuosas pelo WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.52 3.48A11.82 11.82 0 0 0 12.1 0C5.55 0 .22 5.33.22 11.89c0 2.09.55 4.13 1.6 5.93L.12 24l6.33-1.66a11.86 11.86 0 0 0 5.65 1.44h.01C18.66 23.78 24 18.45 24 11.9c0-3.18-1.24-6.17-3.48-8.42ZM12.1 21.77h-.01a9.84 9.84 0 0 1-5.02-1.38l-.36-.21-3.76.99 1-3.66-.24-.38a9.84 9.84 0 0 1-1.51-5.24c0-5.46 4.45-9.9 9.91-9.9a9.84 9.84 0 0 1 7.01 2.9 9.84 9.84 0 0 1 2.9 7.01c-.01 5.45-4.46 9.87-9.92 9.87Zm5.43-7.41c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z"/></svg>
   </a>
 
   <script>
+    const eventDate = new Date("2026-09-19T19:00:00-03:00").getTime();
+    const countdown = document.getElementById("countdown");
+
+    function updateCountdown() {
+      const distance = eventDate - Date.now();
+      if (distance <= 0) {
+        countdown.innerHTML = '<span class="countdown-finished">Chegou o tempo de florescer.</span>';
+        return false;
+      }
+      const day = 1000 * 60 * 60 * 24;
+      document.getElementById("days").textContent = String(Math.floor(distance / day)).padStart(2, "0");
+      document.getElementById("hours").textContent = String(Math.floor((distance % day) / (1000 * 60 * 60))).padStart(2, "0");
+      document.getElementById("minutes").textContent = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, "0");
+      document.getElementById("seconds").textContent = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, "0");
+      return true;
+    }
+
+    if (updateCountdown()) {
+      const countdownTimer = setInterval(() => {
+        if (!updateCountdown()) clearInterval(countdownTimer);
+      }, 1000);
+    }
+
+    const audio = document.getElementById("florescer-audio");
+    const audioToggle = document.getElementById("audio-toggle");
+    const audioLabel = document.getElementById("audio-label");
+    const audioTracks = ["florescer-louvor-1.mp3", "florescer-louvor-2.mp3", "florescer-louvor-3.mp3"];
+    let currentTrack = 0;
+    audio.volume = 0.38;
+
+    function setAudioState(isPlaying) {
+      audioToggle.classList.toggle("playing", isPlaying);
+      audioToggle.setAttribute("aria-pressed", String(isPlaying));
+      audioToggle.setAttribute("aria-label", isPlaying ? "Pausar o louvor do Florescer" : "Ouvir o louvor do Florescer");
+      audioLabel.textContent = isPlaying ? "Pausar louvor" : "Ouvir louvor";
+    }
+
+    function playAudio() {
+      const attempt = audio.play();
+      if (attempt) attempt.then(() => setAudioState(true)).catch(() => setAudioState(false));
+    }
+
+    window.addEventListener("load", playAudio, { once: true });
+    document.addEventListener("pointerdown", event => {
+      if (!event.target.closest("#audio-toggle") && audio.paused) playAudio();
+    }, { once: true });
+    audioToggle.addEventListener("click", event => {
+      event.stopPropagation();
+      if (audio.paused) playAudio();
+      else { audio.pause(); setAudioState(false); }
+    });
+    audio.addEventListener("ended", () => {
+      if (currentTrack < audioTracks.length - 1) {
+        currentTrack += 1;
+        audio.src = audioTracks[currentTrack];
+        playAudio();
+      } else {
+        currentTrack = 0;
+        audio.src = audioTracks[0];
+        setAudioState(false);
+      }
+    });
+
+    const stateData = {
+      RJ: {
+        name: "Rio de Janeiro", total: 97,
+        description: "Selecione Maricá para conhecer também os bairros representados.",
+        places: [["Maricá", 77, true], ["Rio de Janeiro", 8], ["São Gonçalo", 7], ["Saquarema", 2], ["São João de Meriti", 1], ["Niterói", 1], ["Duque de Caxias", 1]]
+      },
+      SP: {
+        name: "São Paulo", total: 3,
+        description: "Três cidades paulistas já fazem parte desta caminhada.",
+        places: [["São Paulo", 1], ["São Bernardo do Campo", 1], ["Santo André", 1]]
+      },
+      BA: {
+        name: "Bahia", total: 3,
+        description: "Virtuosas conectadas do litoral à capital baiana.",
+        places: [["Salvador", 1], ["Canavieiras", 1], ["Porto Seguro", 1]]
+      },
+      MS: {
+        name: "Mato Grosso do Sul", total: 1,
+        description: "A presença das Virtuosas também chegou ao Centro-Oeste.",
+        places: [["Campo Grande", 1]]
+      },
+      RS: {
+        name: "Rio Grande do Sul", total: 1,
+        description: "Uma Virtuosa já compartilhou sua localização no Sul do Brasil.",
+        places: [["Localização no estado", 1]]
+      }
+    };
+
+    const maricaPlaces = [["Maricá", 36], ["Flamengo", 7], ["Jardim Interlagos", 5], ["São José do Imbassaí", 4], ["Ubatiba", 3], ["Gamboa", 2], ["Bairro da Amizade", 2], ["Centro", 2], ["Parque Nanci", 2], ["Ponta Negra", 2], ["Marquês", 2], ["Jacaroá", 1], ["Guaratiba", 1], ["Parque Eldorado", 1], ["Pindobas", 1], ["Itapeba", 1], ["Zacarias", 1], ["Araçatiba", 1], ["Itajuaçu", 1], ["Condado", 1], ["Caxito", 1]];
+    let activeState = "RJ";
+    const title = document.getElementById("state-title");
+    const total = document.getElementById("state-total");
+    const description = document.getElementById("state-description");
+    const list = document.getElementById("place-list");
+    const kicker = document.getElementById("panel-kicker");
+    const back = document.getElementById("panel-back");
+    const markers = document.querySelectorAll(".map-marker");
+
+    function addPlaceRow(place, count, opensMarica = false) {
+      const row = document.createElement(opensMarica ? "button" : "div");
+      row.className = "place-row";
+      if (opensMarica) row.type = "button";
+      const label = document.createElement("span");
+      label.textContent = place;
+      if (opensMarica) {
+        const hint = document.createElement("small");
+        hint.textContent = "ver bairros";
+        label.appendChild(hint);
+        row.addEventListener("click", renderMarica);
+      }
+      const number = document.createElement("strong");
+      number.textContent = String(count);
+      row.append(label, number);
+      list.appendChild(row);
+    }
+
+    function renderState(code) {
+      activeState = code;
+      const state = stateData[code];
+      kicker.textContent = "Estado selecionado";
+      title.textContent = state.name;
+      total.textContent = String(state.total);
+      description.textContent = state.description;
+      list.replaceChildren();
+      state.places.forEach(([place, count, opensMarica]) => addPlaceRow(place, count, opensMarica));
+      back.classList.remove("visible");
+      markers.forEach(marker => marker.classList.toggle("active", marker.dataset.state === code));
+    }
+
+    function renderMarica() {
+      kicker.textContent = "Bairros e regiões";
+      title.textContent = "Maricá";
+      total.textContent = "77";
+      description.textContent = "A maior concentração de Virtuosas está em Maricá, alcançando diferentes bairros da cidade.";
+      list.replaceChildren();
+      maricaPlaces.forEach(([place, count]) => addPlaceRow(place, count));
+      back.classList.add("visible");
+    }
+
+    markers.forEach(marker => marker.addEventListener("click", () => renderState(marker.dataset.state)));
+    back.addEventListener("click", () => renderState(activeState));
+    renderState("RJ");
+
     const menuButton = document.querySelector(".menu-button");
     const menu = document.querySelector(".nav-links");
     menuButton.addEventListener("click", () => {
@@ -628,13 +862,11 @@
       menuButton.setAttribute("aria-expanded", String(isOpen));
       menuButton.setAttribute("aria-label", isOpen ? "Fechar menu" : "Abrir menu");
     });
-    menu.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => {
-        menu.classList.remove("open");
-        menuButton.setAttribute("aria-expanded", "false");
-        menuButton.setAttribute("aria-label", "Abrir menu");
-      });
-    });
+    menu.querySelectorAll("a").forEach(link => link.addEventListener("click", () => {
+      menu.classList.remove("open");
+      menuButton.setAttribute("aria-expanded", "false");
+      menuButton.setAttribute("aria-label", "Abrir menu");
+    }));
     document.getElementById("ano").textContent = String(new Date().getFullYear());
   </script>
 </body>
