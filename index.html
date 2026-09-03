@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Ministério Virtuosas: devocionais, discipulado feminino, encontros e a estação Florescer 2026.">
-  <meta name="theme-color" content="#741d42">
+  <meta name="theme-color" content="#d66791">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://mulheresparaestetempo.github.io/virtuosa/">
   <link rel="icon" href="logo-virtuosas.png" type="image/png">
@@ -14,24 +14,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --vinho: #741d42;
-      --vinho-profundo: #3f1025;
-      --rosa: #c83f74;
-      --rosa-vivo: #e64f8c;
-      --rosa-claro: #fbe8f0;
-      --rosa-nevoa: #fff6f9;
+      --vinho: #b94f78;
+      --vinho-profundo: #74334f;
+      --rosa: #d66791;
+      --rosa-vivo: #ea8bad;
+      --rosa-claro: #fdebf3;
+      --rosa-nevoa: #fff8fb;
       --verde: #65765a;
       --verde-claro: #eef2e9;
       --ouro: #c5a15b;
       --ouro-escuro: #8d692f;
       --ouro-claro: #ead6a8;
       --ouro-nevoa: #fbf6e9;
-      --creme: #fffdfb;
+      --creme: #fffafd;
       --branco: #fff;
-      --texto: #321f27;
-      --texto-suave: #705f67;
-      --borda: rgba(116, 29, 66, .13);
-      --sombra: 0 24px 70px rgba(74, 24, 44, .11);
+      --texto: #5a3544;
+      --texto-suave: #806a74;
+      --borda: rgba(185, 79, 120, .15);
+      --sombra: 0 24px 70px rgba(135, 74, 97, .1);
       --container: 1180px;
     }
 
@@ -75,7 +75,7 @@
     .event-bar {
       position: relative; z-index: 1200; overflow: hidden;
       border-block: 1px solid rgba(197,161,91,.4);
-      background: linear-gradient(105deg, #fffdfb, #fff5f8 58%, var(--ouro-nevoa));
+      background: linear-gradient(105deg, #fffafd, #fdebf3 58%, #fff8ee);
       color: var(--texto);
     }
     .event-bar::after {
@@ -83,8 +83,8 @@
       right: 8%; top: -190px; border: 1px solid rgba(197,161,91,.24); border-radius: 50%;
     }
     .event-bar-inner {
-      min-height: 84px; display: grid; grid-template-columns: 1fr auto;
-      align-items: center; gap: 2rem; padding-block: .72rem;
+      min-height: 104px; display: grid; grid-template-columns: 1fr auto;
+      align-items: center; gap: 2rem; padding-block: .72rem 1.15rem;
     }
     .event-intro { display: flex; align-items: center; gap: 1rem; }
     .event-flower {
@@ -98,7 +98,11 @@
     }
     .event-title { color: var(--vinho); font-family: "Playfair Display", serif; font-size: 1.18rem; line-height: 1.25; }
     .event-meta { color: var(--texto-suave); font-size: .82rem; margin-top: .1rem; }
-    .countdown { display: flex; align-items: center; gap: .48rem; }
+    .countdown-scene {
+      position: relative; isolation: isolate; min-width: max-content;
+      padding: .25rem 1.3rem 1.15rem;
+    }
+    .countdown { position: relative; z-index: 3; display: flex; align-items: center; gap: .48rem; }
     .countdown-label {
       color: var(--ouro-escuro); font-size: .67rem; font-weight: 700;
       letter-spacing: .11em; margin-right: .35rem; text-transform: uppercase;
@@ -106,11 +110,32 @@
     .countdown-unit {
       min-width: 58px; border: 1px solid rgba(197,161,91,.34); border-radius: .75rem;
       background: rgba(255,255,255,.8); padding: .4rem .5rem; text-align: center;
-      box-shadow: 0 7px 20px rgba(116,29,66,.05); backdrop-filter: blur(8px);
+      box-shadow: 0 7px 20px rgba(185,79,120,.07); backdrop-filter: blur(8px);
     }
     .countdown-unit strong { display: block; color: var(--vinho); font-size: 1.08rem; line-height: 1.05; }
     .countdown-unit span { color: var(--ouro-escuro); font-size: .63rem; text-transform: uppercase; }
     .countdown-finished { font-family: "Playfair Display", serif; font-size: 1.15rem; }
+    .countdown-garden {
+      position: absolute; z-index: 1; right: -.4rem; bottom: -.65rem; left: -.4rem;
+      height: 72px; overflow: hidden; pointer-events: none;
+    }
+    .garden-cluster {
+      position: absolute; bottom: -41px; width: 205px; opacity: .34;
+      filter: saturate(.72) brightness(1.08); transform-origin: 50% 100%;
+      animation: garden-bloom 1.8s cubic-bezier(.2,.75,.25,1) both;
+    }
+    .garden-left {
+      left: -38px; animation-name: garden-bloom-left;
+    }
+    .garden-right { right: -36px; animation-delay: .22s; }
+    @keyframes garden-bloom {
+      from { opacity: 0; transform: translateY(28px) scale(.55); }
+      to { opacity: .34; transform: translateY(0) scale(1); }
+    }
+    @keyframes garden-bloom-left {
+      from { opacity: 0; transform: translateY(28px) scaleX(-1) scale(.55); }
+      to { opacity: .34; transform: translateY(0) scaleX(-1) scale(1); }
+    }
 
     /* Cabeçalho */
     .site-header {
@@ -222,10 +247,10 @@
     .button svg { width: 18px; height: 18px; }
     .button-primary {
       border-color: rgba(234,214,168,.7);
-      background: linear-gradient(135deg, var(--vinho), #9e2c5e);
-      box-shadow: 0 15px 35px rgba(116,29,66,.23); color: #fff;
+      background: linear-gradient(135deg, var(--vinho), var(--rosa));
+      box-shadow: 0 15px 35px rgba(185,79,120,.2); color: #fff;
     }
-    .button-primary:hover { box-shadow: 0 19px 42px rgba(116,29,66,.3); }
+    .button-primary:hover { box-shadow: 0 19px 42px rgba(185,79,120,.27); }
     .button-secondary { border-color: var(--borda); background: rgba(255,255,255,.82); color: var(--vinho); }
     .button-secondary:hover { background: #fff; box-shadow: 0 12px 30px rgba(74,24,44,.09); }
     .hero-verse {
@@ -506,6 +531,7 @@
     @media (max-width: 880px) {
       .event-bar-inner { grid-template-columns: 1fr; gap: .7rem; }
       .event-intro, .countdown { justify-content: center; }
+      .countdown-scene { justify-self: center; }
       .event-intro { text-align: center; }
       .menu-button { display: inline-flex; }
       .nav-container { position: relative; }
@@ -528,13 +554,18 @@
     }
     @media (max-width: 620px) {
       .container { width: min(calc(100% - 1.2rem), var(--container)); }
-      .event-bar-inner { padding-block: .75rem; }
+      .event-bar-inner { padding-block: .75rem .95rem; }
       .event-flower { display: none; }
       .event-title { font-size: 1.08rem; }
       .event-meta { font-size: .76rem; }
       .countdown { gap: .3rem; }
+      .countdown-scene { padding-inline: .25rem; }
       .countdown-label { display: none; }
       .countdown-unit { min-width: 52px; padding-inline: .3rem; }
+      .countdown-garden { right: -1.1rem; left: -1.1rem; height: 62px; }
+      .garden-cluster { bottom: -35px; width: 168px; opacity: .29; }
+      .garden-left { left: -45px; }
+      .garden-right { right: -45px; }
       .nav-container { min-height: 70px; }
       .brand-mark { width: 34px; height: 34px; }
       .brand-mark img { height: 34px; }
@@ -567,7 +598,10 @@
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+      *, *::before, *::after {
+        scroll-behavior: auto !important; transition-duration: .01ms !important;
+        animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+      }
     }
   </style>
 </head>
@@ -581,15 +615,21 @@
         <div>
           <p class="event-label">Encontro de Mulheres 2026</p>
           <p class="event-title">Florescer — uma nova estação começa em nós</p>
-          <p class="event-meta">19 de setembro • 19h • PIBAMAR Centro, Maricá</p>
+          <p class="event-meta">19 de setembro • 19h • pibam Centro, Maricá</p>
         </div>
       </div>
-      <div class="countdown" id="countdown" aria-label="Tempo restante para o encontro">
-        <span class="countdown-label">Faltam</span>
-        <div class="countdown-unit"><strong id="days">00</strong><span>dias</span></div>
-        <div class="countdown-unit"><strong id="hours">00</strong><span>horas</span></div>
-        <div class="countdown-unit"><strong id="minutes">00</strong><span>minutos</span></div>
-        <div class="countdown-unit"><strong id="seconds">00</strong><span>segundos</span></div>
+      <div class="countdown-scene">
+        <div class="countdown" id="countdown" aria-label="Tempo restante para o encontro">
+          <span class="countdown-label">Faltam</span>
+          <div class="countdown-unit"><strong id="days">00</strong><span>dias</span></div>
+          <div class="countdown-unit"><strong id="hours">00</strong><span>horas</span></div>
+          <div class="countdown-unit"><strong id="minutes">00</strong><span>minutos</span></div>
+          <div class="countdown-unit"><strong id="seconds">00</strong><span>segundos</span></div>
+        </div>
+        <div class="countdown-garden" aria-hidden="true">
+          <img class="garden-cluster garden-left" src="florescer-jardim.webp" alt="">
+          <img class="garden-cluster garden-right" src="florescer-jardim.webp" alt="">
+        </div>
       </div>
     </div>
   </section>
@@ -736,7 +776,7 @@
           <div class="final-copy">
             <p class="eyebrow">19 de setembro de 2026 • 19h</p>
             <h2>O Florescer também pode começar em você.</h2>
-            <p>Uma noite de Palavra, adoração e comunhão na PIBAMAR Centro, em Maricá.</p>
+            <p>Uma noite de Palavra, adoração e comunhão na pibam Centro, em Maricá.</p>
           </div>
           <a class="button" href="https://wa.me/5521977356086?text=Ol%C3%A1%21%20Quero%20participar%20do%20Encontro%20de%20Mulheres%20Florescer%20no%20dia%2019%20de%20setembro." target="_blank" rel="noopener noreferrer">Quero participar</a>
         </div>
