@@ -122,8 +122,25 @@
       min-height: 82px; display: flex; align-items: center;
       justify-content: space-between; gap: 1.5rem;
     }
-    .brand { display: inline-flex; flex: 0 0 auto; text-decoration: none; }
-    .brand img { width: 224px; height: 62px; object-fit: contain; }
+    .brand {
+      display: inline-flex; align-items: center; gap: .68rem;
+      flex: 0 0 auto; text-decoration: none;
+    }
+    .brand-mark {
+      width: 38px; height: 38px; flex: 0 0 auto; overflow: hidden;
+      border: 1px solid rgba(197,161,91,.35); border-radius: 50%; opacity: .82;
+      box-shadow: 0 5px 15px rgba(74,24,44,.08);
+    }
+    .brand-mark img { width: auto; max-width: none; height: 38px; }
+    .brand-name { display: grid; line-height: 1; }
+    .brand-name strong {
+      color: var(--vinho); font-family: "Playfair Display", serif;
+      font-size: 1.02rem; letter-spacing: .055em;
+    }
+    .brand-name small {
+      color: var(--ouro-escuro); font-size: .62rem; font-weight: 600;
+      letter-spacing: .08em; margin-top: .28rem; text-transform: uppercase;
+    }
     .nav-links { display: flex; align-items: center; gap: 1.35rem; list-style: none; }
     .nav-links a {
       color: var(--texto-suave); font-size: .88rem; font-weight: 600;
@@ -136,20 +153,10 @@
     }
     .nav-links .nav-cta:hover { background: var(--rosa); color: #fff; transform: translateY(-1px); }
     .nav-tools { display: flex; align-items: center; gap: .65rem; }
-    .audio-toggle, .menu-button {
+    .menu-button {
       min-height: 42px; border: 1px solid var(--borda); background: #fff;
       color: var(--vinho); cursor: pointer;
     }
-    .audio-toggle {
-      display: inline-flex; align-items: center; gap: .5rem; border-radius: 999px;
-      padding: .55rem .85rem; font-size: .78rem; font-weight: 700;
-      box-shadow: 0 8px 24px rgba(74,24,44,.07);
-    }
-    .audio-toggle svg { width: 17px; height: 17px; }
-    .audio-toggle .pause-icon { display: none; }
-    .audio-toggle.playing .play-icon { display: none; }
-    .audio-toggle.playing .pause-icon { display: block; }
-    .audio-toggle.playing { border-color: rgba(101,118,90,.35); color: var(--verde); }
     .menu-button {
       display: none; width: 42px; align-items: center; justify-content: center;
       border-radius: 50%;
@@ -182,16 +189,26 @@
       letter-spacing: .12em; text-transform: uppercase;
       box-shadow: 0 10px 30px rgba(74,24,44,.06);
     }
-    .season-badge span { color: var(--ouro); font-size: 1rem; }
     .hero h1 {
       color: var(--vinho-profundo); font-family: "Playfair Display", serif;
-      font-size: clamp(4.25rem, 10vw, 8rem); letter-spacing: -.07em;
-      line-height: .87; margin: 1.35rem 0 1.2rem;
+      font-size: clamp(2.9rem, 6.8vw, 5.6rem); letter-spacing: -.055em;
+      line-height: .97; margin: 1.35rem 0 1rem;
     }
-    .hero h1 small {
-      display: block; color: var(--rosa); font-family: "Cormorant Garamond", serif;
-      font-size: clamp(1.65rem, 3.7vw, 2.8rem); font-style: italic; font-weight: 600;
-      letter-spacing: -.015em; line-height: 1.16; margin-top: 1.25rem;
+    .hero h1 strong {
+      display: block; color: var(--rosa); font-size: 1.08em;
+      font-weight: 700; letter-spacing: .015em; margin-block: .12em;
+      text-shadow: 0 1px 0 rgba(197,161,91,.2);
+    }
+    .hero-season {
+      color: var(--vinho); font-family: "Cormorant Garamond", serif;
+      font-size: clamp(1.65rem, 3.3vw, 2.35rem); font-style: italic;
+      font-weight: 600; line-height: 1.15; margin-bottom: 1rem;
+    }
+    .hero-season em { color: var(--ouro-escuro); font-style: inherit; }
+    .season-badge strong { color: var(--vinho); font-family: "Playfair Display", serif; }
+    .season-badge span {
+      border-left: 1px solid rgba(197,161,91,.5); color: var(--ouro-escuro);
+      font-size: .69rem; margin-left: .1rem; padding-left: .65rem;
     }
     .hero-description { max-width: 570px; color: var(--texto-suave); font-size: 1.04rem; }
     .hero-actions { display: flex; flex-wrap: wrap; gap: .85rem; margin-top: 2rem; }
@@ -457,7 +474,8 @@
       display: grid; grid-template-columns: 1.4fr .8fr .8fr; gap: 2rem;
       padding-bottom: 2.3rem;
     }
-    .footer-brand img { width: 270px; max-height: 90px; object-fit: contain; }
+    .footer-lockup .brand-mark { width: 34px; height: 34px; }
+    .footer-lockup .brand-mark img { height: 34px; }
     .footer-brand p { max-width: 420px; color: var(--texto-suave); font-size: .86rem; margin-top: .8rem; }
     .footer-column h3 {
       color: var(--vinho); font-family: "Playfair Display", serif; font-size: 1rem; margin-bottom: .8rem;
@@ -518,15 +536,14 @@
       .countdown-label { display: none; }
       .countdown-unit { min-width: 52px; padding-inline: .3rem; }
       .nav-container { min-height: 70px; }
-      .brand img { width: 154px; height: 48px; }
-      .audio-toggle { width: 42px; justify-content: center; padding: 0; }
-      .audio-toggle span {
-        position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);
-      }
+      .brand-mark { width: 34px; height: 34px; }
+      .brand-mark img { height: 34px; }
+      .brand-name strong { font-size: .88rem; }
+      .brand-name small { font-size: .53rem; }
       .hero { min-height: 720px; align-items: flex-start; padding-top: 4.2rem; }
       .hero-floral { width: 760px; right: -360px; bottom: -50px; opacity: .52; }
       .hero-content { text-align: center; }
-      .hero h1 { font-size: clamp(4rem, 25vw, 6rem); }
+      .hero h1 { font-size: clamp(2.75rem, 13vw, 4rem); }
       .hero-description, .hero-verse { margin-inline: auto; }
       .hero-actions { align-items: stretch; flex-direction: column; }
       .button { width: 100%; }
@@ -579,8 +596,9 @@
 
   <header class="site-header">
     <nav class="container nav-container" aria-label="Navegação principal">
-      <a class="brand" href="#inicio" aria-label="Virtuosas — início">
-        <img src="logo-virtuosas.png" alt="Virtuosas — Mulheres para Este Tempo">
+      <a class="brand" href="#inicio" aria-label="Virtuosas — Mulheres para Este Tempo — início">
+        <span class="brand-mark" aria-hidden="true"><img src="logo-virtuosas.png" alt=""></span>
+        <span class="brand-name"><strong>VIRTUOSAS</strong><small>Mulheres para Este Tempo</small></span>
       </a>
       <ul class="nav-links" id="menu-principal">
         <li><a href="#florescer">Florescer</a></li>
@@ -590,11 +608,6 @@
         <li><a class="nav-cta" href="app/" aria-label="Entrar no App FILHA">Plataforma FILHA</a></li>
       </ul>
       <div class="nav-tools">
-        <button class="audio-toggle" id="audio-toggle" type="button" aria-label="Ouvir o louvor do Florescer" aria-pressed="false">
-          <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-          <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h4v14H7zm6 0h4v14h-4z"/></svg>
-          <span id="audio-label">Ouvir louvor</span>
-        </button>
         <button class="menu-button" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menu">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>
@@ -602,7 +615,7 @@
     </nav>
   </header>
 
-  <audio id="florescer-audio" autoplay preload="metadata" playsinline>
+  <audio id="florescer-audio" autoplay preload="auto" playsinline>
     <source src="florescer-louvor-1.mp3" type="audio/mpeg">
   </audio>
 
@@ -611,9 +624,10 @@
       <img class="hero-floral" src="florescer-floral.webp" alt="" aria-hidden="true">
       <div class="container">
         <div class="hero-content">
-          <div class="season-badge"><span aria-hidden="true">✦</span> Estação Florescer 2026</div>
-          <h1>Florescer<small>É tempo de viver o novo de Deus.</small></h1>
-          <p class="hero-description">Palavra, oração e comunhão para mulheres que desejam criar raízes em Cristo e frutificar onde Deus as plantou.</p>
+          <div class="season-badge">Ministério <strong>Virtuosas</strong><span>Mulheres para Este Tempo</span></div>
+          <h1>Um exército de mulheres <strong>“VIRTUOSAS”</strong> tem se levantado!</h1>
+          <p class="hero-season">Estamos vivendo uma nova estação: <em>Florescer.</em></p>
+          <p class="hero-description">Mulheres criando raízes em Cristo, unidas pela Palavra, pela oração e pela comunhão.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="https://wa.me/5521977356086?text=Ol%C3%A1%21%20Quero%20participar%20do%20Encontro%20de%20Mulheres%20Florescer%20no%20dia%2019%20de%20setembro." target="_blank" rel="noopener noreferrer">
               Quero participar
@@ -734,7 +748,10 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <img src="logo-virtuosas.png" alt="Virtuosas — Mulheres para Este Tempo">
+          <div class="brand footer-lockup" aria-label="Virtuosas — Mulheres para Este Tempo">
+            <span class="brand-mark" aria-hidden="true"><img src="logo-virtuosas.png" alt=""></span>
+            <span class="brand-name"><strong>VIRTUOSAS</strong><small>Mulheres para Este Tempo</small></span>
+          </div>
           <p>Mulheres firmadas na Palavra, conectadas em oração e disponíveis para viver o propósito de Deus.</p>
         </div>
         <div class="footer-column">
@@ -779,33 +796,21 @@
     }
 
     const audio = document.getElementById("florescer-audio");
-    const audioToggle = document.getElementById("audio-toggle");
-    const audioLabel = document.getElementById("audio-label");
     const audioTracks = ["florescer-louvor-1.mp3", "florescer-louvor-2.mp3", "florescer-louvor-3.mp3"];
     let currentTrack = 0;
     audio.volume = 0.38;
-
-    function setAudioState(isPlaying) {
-      audioToggle.classList.toggle("playing", isPlaying);
-      audioToggle.setAttribute("aria-pressed", String(isPlaying));
-      audioToggle.setAttribute("aria-label", isPlaying ? "Pausar o louvor do Florescer" : "Ouvir o louvor do Florescer");
-      audioLabel.textContent = isPlaying ? "Pausar louvor" : "Ouvir louvor";
-    }
+    audio.muted = false;
 
     function playAudio() {
       const attempt = audio.play();
-      if (attempt) attempt.then(() => setAudioState(true)).catch(() => setAudioState(false));
+      if (attempt) attempt.catch(() => {});
     }
 
-    window.addEventListener("load", playAudio, { once: true });
-    document.addEventListener("pointerdown", event => {
-      if (!event.target.closest("#audio-toggle") && audio.paused) playAudio();
-    }, { once: true });
-    audioToggle.addEventListener("click", event => {
-      event.stopPropagation();
-      if (audio.paused) playAudio();
-      else { audio.pause(); setAudioState(false); }
-    });
+    playAudio();
+    window.addEventListener("pageshow", playAudio, { once: true });
+    audio.addEventListener("canplay", playAudio, { once: true });
+    document.addEventListener("pointerdown", () => { if (audio.paused) playAudio(); }, { once: true });
+    document.addEventListener("keydown", () => { if (audio.paused) playAudio(); }, { once: true });
     audio.addEventListener("ended", () => {
       if (currentTrack < audioTracks.length - 1) {
         currentTrack += 1;
@@ -814,7 +819,6 @@
       } else {
         currentTrack = 0;
         audio.src = audioTracks[0];
-        setAudioState(false);
       }
     });
 
