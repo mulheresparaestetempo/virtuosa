@@ -1,0 +1,39 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "users",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {"fieldPath": "igrejaId", "order": "ASCENDING"},
+        {"fieldPath": "status", "order": "ASCENDING"},
+        {"fieldPath": "criadoEm", "order": "DESCENDING"}
+      ]
+    },
+    {
+      "collectionGroup": "prayers",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {"fieldPath": "userId", "order": "ASCENDING"},
+        {"fieldPath": "status", "order": "ASCENDING"},
+        {"fieldPath": "criadoEm", "order": "DESCENDING"}
+      ]
+    },
+    {
+      "collectionGroup": "devotionals",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {"fieldPath": "igrejaId", "order": "ASCENDING"},
+        {"fieldPath": "dataDeDica", "order": "DESCENDING"}
+      ]
+    },
+    {
+      "collectionGroup": "communityPosts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {"fieldPath": "comunidadeId", "order": "ASCENDING"},
+        {"fieldPath": "criadoEm", "order": "DESCENDING"}
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

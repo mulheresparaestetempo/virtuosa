@@ -1,0 +1,71 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // User roles helper function
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['administradora', 'superAdministradora'];
+    }
+    
+    function isLeader() {
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['lider', 'pastora', 'administradora', 'superAdministradora'];
+    }
+    
+    function isDisciple() {
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['discipuladora', 'lider', 'pastora', 'administradora', 'superAdministradora'];
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (resource.data.uid == request.auth.uid || isAdmin());
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && (resource.data.uid == request.auth.uid || isAdmin());
+      allow delete: if isAdmin();
+    }
+    
+    // Prayers collection
+    match /prayers/{prayerId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && (resource.data.userId == request.auth.uid || isLeader());
+      allow delete: if isAuthenticated() && (resource.data.userId == request.auth.uid || isLeader());
+    }
+    
+    // Devotionals collection
+    match /devotionals/{devotionalId} {
+      allow read: if isAuthenticated();
+      allow create: if isLeader();
+      allow update: if isLeader();
+      allow delete: if isLeader();
+    }
+    
+    // Community posts
+    match /communityPosts/{postId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && (resource.data.userId == request.auth.uid || isLeader());
+      allow delete: if isAuthenticated() && (resource.data.userId == request.auth.uid || isLeader());
+    }
+    
+    // Events
+    match /events/{eventId} {
+      allow read: if isAuthenticated();
+      allow create: if isLeader();
+      allow update: if isLeader();
+      allow delete: if isLeader();
+    }
+    
+    // Default deny for all other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
