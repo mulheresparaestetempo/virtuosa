@@ -64,7 +64,7 @@ export default function PainelIgrejaScreen() {
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.aviso}>
-          Prévia de gestão — número de igrejas fixo neste protótipo (1: PIBAM Espraiado);
+          Prévia de gestão — número de igrejas fixo neste protótipo (1 igreja parceira);
           relatórios completos dependem de um backend com dados reais de todas as usuárias.
         </Text>
 

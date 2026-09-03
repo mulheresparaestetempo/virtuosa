@@ -23,7 +23,7 @@ type Perfil = {
 const perfilInicial: Perfil = {
   nome: 'Filha',
   emoji: '🌸',
-  igreja: 'PIBAM Espraiado',
+  igreja: 'PIBAM',
   lider: 'Não informado',
   discipuladora: 'Não informada',
   dataBatismo: 'Não informado',

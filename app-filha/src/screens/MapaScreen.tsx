@@ -8,7 +8,7 @@ type Local = {
 };
 
 const locais: Local[] = [
-  { tipo: 'Igreja', nome: 'PIBAM Espraiado', endereco: 'Bairro Espraiado, sede da igreja' },
+  { tipo: 'Igreja', nome: 'PIBAM', endereco: 'Maricá, Rio de Janeiro' },
   { tipo: 'Célula', nome: 'Célula Vinho Novo', endereco: 'Casa da Ana Paula — quintas, 20h' },
   { tipo: 'Célula', nome: 'Célula Águas Vivas', endereco: 'Casa da Mariana — terças, 19h30' },
   { tipo: 'Culto no lar', nome: 'Culto no lar da Beatriz', endereco: 'Confirmar endereço com a líder' },
