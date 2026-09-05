@@ -47,6 +47,11 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
+    match /negocios/{docId} {
+      allow read: if signedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
     // ─── user profiles ────────────────────────────────────────────────────────
     match /usuarias/{uid} {
       function myProfile() {

@@ -38,6 +38,17 @@ export interface Aviso {
   recipientCount: number;
 }
 
+export interface Negocio {
+  id: string;
+  nome: string;
+  descricao: string;
+  categoria: string;
+  contato: string;
+  link?: string;
+  criadoEm: Date;
+  criadoPor: string;
+}
+
 export interface Usuaria {
   id: string;
   nome: string;
